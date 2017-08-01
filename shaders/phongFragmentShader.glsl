@@ -13,32 +13,52 @@ varying vec2 outTexCoord;
 varying vec3 normalInterp;
 
 uniform vec3 lightPos;
-const vec3 ambientColor = vec3(0.1, 0.1, 0.1);
-const vec3 diffuseColor = vec3(0.3, 0.3, 0.3);
-const vec3 specColor = vec3(0.6, 0.6, 0.6);
+uniform vec4 colorMask;
+uniform float alphaTestLimit;
+
+uniform vec3 ambientColor;
+uniform vec3 diffuseColor;
+uniform vec3 specularColor;
+
+uniform bool hasLighting;
+uniform bool useSpecular;
 
 void main() {
     vec4 tex_color = texture2D(texture, outTexCoord);
-    if (tex_color.a<0.01)
+    if (tex_color.a<alphaTestLimit)
         discard;
 
-    vec3 normal = normalize(normalInterp);
-    vec3 lightDir = normalize(lightPos - vertPos);
-    vec3 reflectDir = reflect(-lightDir, normal);
-    vec3 viewDir = normalize(-vertPos);
+    if (!hasLighting)
+    {
+        gl_FragColor = colorMask * tex_color;
 
-    float lambertian = max(dot(lightDir,normal), 0.0);
-    float specular = 0.0;
-
-    if(lambertian > 0.0) {
-       float specAngle = max(dot(reflectDir, viewDir), 0.0);
-       specular = pow(specAngle, 8.0);
     }
+    else
+    {
+        vec3 normal = normalize(normalInterp);
+        vec3 lightDir = normalize(lightPos - vertPos);
+        vec3 reflectDir = reflect(-lightDir, normal);
+        vec3 viewDir = normalize(-vertPos);
 
-    // attenuation
-    float d = length(lightPos - vertPos);
-    float attenuation = min(1.0, (1.0 / (0.25 + 0.015*d)) );
+        float lambertian = max(dot(lightDir,normal), 0.0);
 
-    gl_FragColor = vec4( ambientColor + vec3(attenuation*lambertian*tex_color) + attenuation*specular*specColor , tex_color.a);
+        // attenuation
+        float d = length(lightPos - vertPos);
+        float attenuation = min(1.0, (1.0 / (0.25 + 0.015*d)) );
 
+        if (useSpecular)
+        {
+            float specular = 0.0;
+            if(lambertian > 0.0) {
+               float specAngle = max(dot(reflectDir, viewDir), 0.0);
+               specular = pow(specAngle, 8.0);
+            }
+
+            gl_FragColor = vec4( ambientColor + vec3(attenuation*lambertian*tex_color) + attenuation*specular*specularColor , tex_color.a);
+        }
+        else
+        {
+            gl_FragColor = vec4( ambientColor + vec3(attenuation*lambertian*tex_color) , tex_color.a) * colorMask;
+        }
+    }
 }
