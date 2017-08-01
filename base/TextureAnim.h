@@ -4,33 +4,37 @@
 #include <QVector2D>
 #include "Material.h"
 
-class ParticleQuad;
+class Quad3D;
 
-class TextureAnim;
-typedef	SmartPtr<TextureAnim>	TextureAnimPtr;
+struct TexAnimParams {
+    QString texturePath;
+    float dt;
+    int dx, dy, maxFrame;
+};
 
 class TextureAnim : public RefCountBase
 {
 public:
-	TextureAnim();
+    TextureAnim(TexAnimParams params);
+    TextureAnim(QString textureUrl, float animDT=0.7f, int	numFramesX=5, int	numFramesY=5, int maxFrames=25);
 	virtual ~TextureAnim();
-	
-    static TextureAnimPtr Create(QString texureUrl, float animDT=0.7f, int	numFramesX=5, int	numFramesY=5, int maxFrames=25);
-
-    void	Init(QOpenGLTexture* texture, float animDT, int	numFramesX, int	numFramesY, int maxFrames);
 
     int		CalcCellIdx(float time);
-    void	CalcUVs(int cellIdx,  ParticleQuad &quad);
+    void	CalcUVs(int cellIdx,  Quad3D &quad);
 
-    Material	material;
+    MaterialPtr	material;
 	float		AnimDT;
 
 private:
-	int		MaxFrames;
+    void	Init(QString textureUrl, float animDT, int	numFramesX, int	numFramesY, int maxFrames);
+
+    int		MaxFrames;
 	int		FramesX;
 	int		FramesY;
 
 	float	cellDx, cellDy;
 };
+
+typedef	SmartPtr<TextureAnim>	TextureAnimPtr;
 
 #endif

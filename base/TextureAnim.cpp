@@ -1,37 +1,28 @@
-#include "QuadRenderer.h"
+#include "TextureAnim.h"
+#include "QuadRenderer3D.h"
 #include <math.h>
 
-TextureAnim::TextureAnim()
-	: MaxFrames(0) , FramesX(0), FramesY(0)
-	, AnimDT(0)
-	, cellDx(0) , cellDy(0)
-{}
+TextureAnim::TextureAnim(TexAnimParams params)
+{
+    Init(params.texturePath, params.dt, params.dx, params.dy, params.maxFrame);
+}
+
+TextureAnim::TextureAnim(QString textureUrl, float animDT, int numFramesX, int numFramesY, int maxFrames)
+{
+    Init( textureUrl, animDT, numFramesX, numFramesY, maxFrames);
+}
 
 TextureAnim::~TextureAnim()
 {}
 
-
-TextureAnimPtr TextureAnim::Create(QString textureUrl, float animDT, int numFramesX, int numFramesY, int maxFrames)
+void	TextureAnim::Init(QString  textureUrl, float animDT, int	numFramesX, int	numFramesY, int maxFrames)
 {
-    TextureAnimPtr ret=0;
-
-    QOpenGLTexture* tex = new QOpenGLTexture( QImage(textureUrl));
-    if (tex && tex->isCreated())
-	{
-		ret = new TextureAnim();
-		ret->Init( tex , animDT, numFramesX, numFramesY, maxFrames);
-	}
-    else
+    material = new Material( textureUrl );
+    if (!material || (!material->isTextureCreated()))
     {
         printf("failed to load '%s'\n", textureUrl.toStdString().c_str());
     }
-	return ret;
-}
 
-void	TextureAnim::Init(QOpenGLTexture* texture, float animDT, int	numFramesX, int	numFramesY, int maxFrames)
-{
-    material.texture =  texture;
-	
 	AnimDT = animDT;
 	MaxFrames = maxFrames;
 	FramesX = numFramesX;
@@ -42,14 +33,15 @@ void	TextureAnim::Init(QOpenGLTexture* texture, float animDT, int	numFramesX, in
 
 int		TextureAnim::CalcCellIdx(float time)
 {
-	float ratio = 1.0f - fabs(1.0f - time/AnimDT);
+    if (time<0.f)   return -1;
+    float ratio = time/AnimDT;
 	int idx = (int) (ratio*((float)MaxFrames));
 	if (idx<0)			idx = 0;
 	if (idx>=MaxFrames)	idx = MaxFrames-1;
 	return idx;
 }
 
-void	TextureAnim::CalcUVs(int cellIdx, ParticleQuad &quad)
+void	TextureAnim::CalcUVs(int cellIdx, Quad3D &quad)
 {
 	int idx_x = cellIdx;
 	int idx_y = 0;
@@ -63,9 +55,9 @@ void	TextureAnim::CalcUVs(int cellIdx, ParticleQuad &quad)
 
 	const float margin = 0.01f;
 
-    quad.UV1.setX( uvx + margin );			quad.UV1.setY( uvy+cellDy - margin );
-    quad.UV2.setX( uvx+cellDx - margin );	quad.UV2.setY( uvy+cellDy - margin );
-    quad.UV3.setX( uvx+cellDx - margin );	quad.UV3.setY( uvy + margin );
-    quad.UV4.setX( uvx + margin );			quad.UV4.setY( uvy + margin );
+    quad.U1= uvx + margin;          quad.V1 = uvy+cellDy - margin;
+    quad.U3 = uvx+cellDx - margin;	quad.V3 = uvy + margin;
+    quad.U2 = uvx+cellDx - margin;	quad.V2 = uvy+cellDy - margin;
+    quad.U4 = uvx + margin;			quad.V4 = uvy + margin;
 }
 

@@ -1,17 +1,16 @@
-#include "mesh.h"
-#include "EntityManager.h"
+#include "Mesh.h"
+#include "Renderer.h"
 #include <QFile>
 #include <QUrl>
 #include "assimphelpers.h"
-#include "ogl.h"
+#include "Ogl.h"
 
 Mesh::Mesh()
 {
     verticesBuffer = INVALID_OGL_VALUE;
     indicesBuffer = INVALID_OGL_VALUE;
     NumIndices  = 0;
-    Texture = 0;
-};
+}
 
 Mesh::~Mesh()
 {
@@ -26,14 +25,52 @@ Mesh::~Mesh()
     }
 }
 
-
-void Mesh::InitFromAssimp(const aiMesh* paiMesh, QOpenGLTexture* texture)
+void Mesh::Extract(const aiMesh *paiMesh)
 {
-    Texture = texture;
+    Name = QString( paiMesh->mName.C_Str() );
 
-    std::vector<Vertex> Vertices;
-    std::vector<unsigned short> Indices;
+    QVector<Vertex> Vertices;
+    ExtractVertices( paiMesh, Vertices);
+    QVector<unsigned short> Indices;
+    ExtractIndices( paiMesh, Indices, 0);
+    GenerateBuffers(Vertices, Indices);
+}
 
+void Mesh::EnableGLAttribs()
+{
+    ogl.glEnableVertexAttribArray(0);
+    ogl.glEnableVertexAttribArray(1);
+    ogl.glEnableVertexAttribArray(2);
+}
+
+void Mesh::DisableGLAttribs()
+{
+    ogl.glDisableVertexAttribArray(0);
+    ogl.glDisableVertexAttribArray(1);
+    ogl.glDisableVertexAttribArray(2);
+
+}
+
+QString Mesh::ExtractTexturePath(const aiScene* pScene, int meshIndex)
+{
+    int materialIndex = pScene->mMeshes[meshIndex]->mMaterialIndex;
+    if (materialIndex>=0 && materialIndex<pScene->mNumMaterials)
+    {
+        const aiMaterial* pMaterial = pScene->mMaterials[materialIndex];
+        if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0)
+        {
+            aiString Path;
+            if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &Path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
+            {
+                return QString().fromStdString(Path.data);
+            }
+        }
+    }
+    return QString();
+}
+
+void Mesh::ExtractVertices(const aiMesh* paiMesh, QVector<Vertex> &Vertices )
+{
     const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 
     bool hasUVs = paiMesh->HasTextureCoords(0);
@@ -48,16 +85,22 @@ void Mesh::InitFromAssimp(const aiMesh* paiMesh, QOpenGLTexture* texture)
 
         Vertices.push_back(v);
     }
+}
 
+
+void Mesh::ExtractIndices(const aiMesh* paiMesh, QVector<unsigned short> &Indices, int rebase )
+{
     for (unsigned int i = 0 ; i < paiMesh->mNumFaces ; i++) {
         const aiFace& Face = paiMesh->mFaces[i];
         assert(Face.mNumIndices == 3);
-        Indices.push_back(Face.mIndices[0]);
-        Indices.push_back(Face.mIndices[1]);
-        Indices.push_back(Face.mIndices[2]);
+        Indices.push_back(rebase + Face.mIndices[0]);
+        Indices.push_back(rebase + Face.mIndices[1]);
+        Indices.push_back(rebase + Face.mIndices[2]);
     }
+}
 
-    Name = QString( paiMesh->mName.C_Str() );
+void Mesh::GenerateBuffers(QVector<Vertex> &Vertices, QVector<unsigned short> &Indices)
+{
     NumIndices = Indices.size();
 
     ogl.glGenBuffers(1, &verticesBuffer);
@@ -71,8 +114,7 @@ void Mesh::InitFromAssimp(const aiMesh* paiMesh, QOpenGLTexture* texture)
 
 void Mesh::Render()
 {
-    if (Texture)
-        Texture->bind();
+    material.Bind();
 
     ogl.glBindBuffer(GL_ARRAY_BUFFER, verticesBuffer);
     ogl.glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);  // vertices
@@ -81,4 +123,6 @@ void Mesh::Render()
 
     ogl.glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer);
     ogl.glDrawElements(GL_TRIANGLES, NumIndices, GL_UNSIGNED_SHORT, 0);
+
+    material.Unbind();
 }

@@ -1,29 +1,10 @@
-/*
-
-	Copyright 2011 Etay Meiri
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 #ifndef MESH_H
 #define	MESH_H
 
 #include <QVector3D>
 #include <QVector2D>
 #include <assimp/scene.h>       // Output data structure
-#include <QOpenGLTexture>
-#include "Entity.h"
+#include "TextureManager.h"
 
 #define INVALID_UNIFORM_LOCATION 0xffffffff
 #define INVALID_OGL_VALUE 0xffffffff
@@ -54,21 +35,26 @@ public:
     Mesh();
     ~Mesh();
 
-    void InitFromAssimp(const aiMesh* paiMesh, QOpenGLTexture* texture);
+    void Extract(const aiMesh* paiMesh);
+    void SetTexture(TexturePtr texture)     { material.SetTexture(texture); }
 
     void Render();
 
     static void EnableGLAttribs();
     static void DisableGLAttribs();
+    static QString ExtractTexturePath(const aiScene* pScene, int meshIndex);
 
-    QString Name;
+    QString     Name;
+    Material    material;
 
 private:
     GLuint verticesBuffer;
     GLuint indicesBuffer;
     unsigned int NumIndices;
-    QOpenGLTexture* Texture;
+
+    void ExtractVertices(const aiMesh* paiMesh, QVector<Vertex> &Vertices);
+    void ExtractIndices(const aiMesh* paiMesh, QVector<unsigned short> &Indices, int rebase);
+    void GenerateBuffers(QVector<Vertex> &Vertices, QVector<unsigned short> &Indices);
 };
 
-#endif	/* MESH_H */
-
+#endif

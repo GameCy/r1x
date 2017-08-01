@@ -1,13 +1,13 @@
-#ifndef MODEL_H
-#define	MODEL_H
+#ifndef _MODEL_H
+#define	_MODEL_H
 
-#include <vector>
+#include "SmartPtr.h"
+#include <QVector>
 #include <assimp/scene.h>       // Output data structure
-#include <QOpenGLTexture>
-#include "mesh.h"
-#include "Entity.h"
+#include "TextureManager.h"
+#include "Mesh.h"
 
-class Model : public Entity
+class Model : public RefCountBase
 {
 public:
     Model();
@@ -15,24 +15,21 @@ public:
 
     bool LoadFile(QString& Filename);
 
-    virtual void	Render(Camera &camera);
-    virtual void	Update(float dt);
-    virtual bool	IsFinished();
+    virtual void	Render();
+
+    Mesh *GetMesh(int meshIndex);
+    int     GetNumMeshes();
 
 protected:
     int   findMesh(QString name);
     std::vector<Mesh> meshArray;
 
 private:
+    QString Folder;
+
     void InitFromScene(const aiScene* pScene);
-    bool InitMaterials(const aiScene* pScene, QString& folder);
-    void Clear();
-
-    QString     getFolder(QString fullpath);
-
-    std::vector<QOpenGLTexture*> textures;
 };
 
+typedef SmartPtr<Model>     ModelPtr;
 
-#endif	/* MODEL_H */
-
+#endif

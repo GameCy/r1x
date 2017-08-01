@@ -2,7 +2,8 @@
 #include <math.h>
 
 
-Camera::Camera()
+Camera::Camera(ShaderPtr shader)
+    : shader(0)
 {
 	FieldOfView = default_fov;
 	Near = default_near;
@@ -34,7 +35,10 @@ void    Camera::Setup(int width, int height, float nearZ, float farZ, float fov,
 // vectors used when particles need to face the screen
 void	Camera::UpdateViewVectors()
 {
-    QMatrix4x4 inverse = modelMatrix.inverted();
+    QMatrix4x4 inverse;
+    inverse.lookAt(Position, LookAt, UpVector );
+    inverse = inverse.inverted();
+
     // calculate dx dy dz based on camera orientation
     ScreenRight = inverse.column(0).toVector3D().normalized();
     ScreenUp    = inverse.column(1).toVector3D().normalized();
@@ -42,12 +46,22 @@ void	Camera::UpdateViewVectors()
     ScreenDownRight = ScreenRight - ScreenUp;
 }
 
+ShaderPtr Camera::getShader() const
+{
+    return shader;
+}
+
+void Camera::setShader(const ShaderPtr &value)
+{
+    shader = value;
+}
+
 void	Camera::ResetPosition()
 {
     modelMatrix.setToIdentity();
     modelMatrix.lookAt(Position, LookAt, UpVector );
 
-    phongShaders.setUniformValue("lightPos", modelMatrix*LightPos);
+    //phongShaders.setUniformValue("lightPos", modelMatrix*LightPos);
 }
 
 void	Camera::SetClippingAreaSize(float dx, float dz)
@@ -67,47 +81,15 @@ bool	Camera::InVisibleArea(QVector3D pos)
 	return true;
 }
 
-void    Camera::moveModel(QVector3D pos, QQuaternion rot)
+void    Camera::moveModel(QVector3D pos, QQuaternion rot, float scale)
 {
     ResetPosition();
     modelMatrix.translate(pos);
     modelMatrix.rotate(rot);
+    modelMatrix.scale( scale );
 
-    //  this can change to a shader pointer, once there will be many shaders
-    phongShaders.setUniformValue("u_MVPMatrix", projectionMatrix * modelMatrix );
-    phongShaders.setUniformValue("u_MVMatrix", modelMatrix);
-    phongShaders.setUniformValue("u_NormalMatrix", modelMatrix.inverted().transposed());
-}
-
-void Camera::ParticleRenderingMode(bool on)
-{
-    phongShaders.setUniformValue("isParticle", on);
-}
-
-bool Camera::InitShaders()
-{
-    // Compile vertex shader
-    if ( (!phongShaders.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/phongVertexShader.glsl")) ||
-         (!phongShaders.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/phongFragmentShader.glsl")) ||
-         (!phongShaders.link())
-         )
-        return false;
-
-    // define order of attributes to fix mixup on android
-    phongShaders.bindAttributeLocation("inputPosition", 0);
-    phongShaders.bindAttributeLocation("inputTexCoord", 1);
-    phongShaders.bindAttributeLocation("inputNormal", 2);
-
-    // Bind shader pipeline for use
-    if (!phongShaders.bind())
-        return false;
-
-//QVector3D lightPos(0, 6, 6);
-//program.setUniformValue("u_CamPos", camPos);
-//program.setUniformValue("u_LightPos", lightPos);
-    phongShaders.setUniformValue("texture", 0); // Use texture unit 0
-
-    return true;
+    if (shader)
+        shader->UpdateMatrices(projectionMatrix, modelMatrix );
 }
 
 
