@@ -40,25 +40,18 @@ void main() {
         vec3 reflectDir = reflect(-lightDir, normal);
         vec3 viewDir = normalize(-vertPos);
 
-        float lambertian = max(dot(lightDir,normal), 0.0);
-
         // attenuation
         float d = length(lightPos - vertPos);
         float attenuation = min(1.0, (1.0 / (0.25 + 0.015*d)) );
 
-        if (useSpecular)
+        float lambertian = max(dot(lightDir,normal), 0.0);
+        vec3 finalFragment = ambientColor + vec3(attenuation*lambertian*tex_color);
+        if (useSpecular && (lambertian > 0.0) )
         {
-            float specular = 0.0;
-            if(lambertian > 0.0) {
-               float specAngle = max(dot(reflectDir, viewDir), 0.0);
-               specular = pow(specAngle, 8.0);
-            }
+            float specAngle = max(dot(reflectDir, viewDir), 0.0);
+            finalFragment += attenuation*pow(specAngle, 8.0)*specularColor;
+        }
 
-            gl_FragColor = vec4( ambientColor + vec3(attenuation*lambertian*tex_color) + attenuation*specular*specularColor , tex_color.a);
-        }
-        else
-        {
-            gl_FragColor = vec4( ambientColor + vec3(attenuation*lambertian*tex_color) , tex_color.a) * colorMask;
-        }
+        gl_FragColor = vec4( finalFragment , tex_color.a) * colorMask;
     }
 }
