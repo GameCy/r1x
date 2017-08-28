@@ -11,8 +11,7 @@ public:
     bool    LoadFont(QString name, QString path);
     void    Release(QString name);
 
-    FontPtr GetFont(QString name);
-    FontRendererPtr GetRenderer(QString name);
+    FontPtr Get(QString name);
 
     void ClearAll();
 private:

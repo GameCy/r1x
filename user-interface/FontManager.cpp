@@ -18,18 +18,11 @@ bool FontManager::LoadFont(QString name, QString path)
     return true;
 }
 
-FontPtr FontManager::GetFont(QString name)
+FontPtr FontManager::Get(QString name)
 {
     if (name.isEmpty())
         return 0;
     return fonts.value(name, 0);
-}
-
-FontRendererPtr FontManager::GetRenderer(QString name)
-{
-    if (name.isEmpty())
-        return 0;
-    return new FontRenderer( fonts.value(name, 0) );
 }
 
 void FontManager::ClearAll()

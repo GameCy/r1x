@@ -7,6 +7,8 @@
 #include "Font.h"
 #include <QObject>
 #include <QtWidgets>
+#include "TextLabel.h"
+#include "TextRenderer.h"
 
 class Button : public InputArea
 {
