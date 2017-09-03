@@ -3,7 +3,6 @@ SOURCES += \
     base/AngleInterpolator.cpp \
     base/BlinkFloat.cpp \
     base/Assets.cpp \
-    base/assimphelpers.cpp \
     base/AtlasImporter.cpp \
     base/BaseView.cpp \
     base/Camera.cpp \
@@ -26,12 +25,13 @@ SOURCES += \
     base/TextureAnim.cpp \
     base/TextureAnimManager.cpp \
     base/TextureManager.cpp \
-    base/Utils.cpp
+    base/Utils.cpp \
+    $$PWD/OBJLoader.cpp \
+    $$PWD/Vertex.cpp
 
 HEADERS += \
     base/AngleInterpolator.h \
     base/Assets.h \
-    base/assimphelpers.h \
     base/AtlasImporter.h \
     base/BaseView.h \
     base/BlinkFloat.h \
@@ -56,4 +56,6 @@ HEADERS += \
     base/TextureAnim.h \
     base/TextureAnimManager.h \
     base/TextureManager.h \
-    base/Utils.h
+    base/Utils.h \
+    $$PWD/OBJLoader.h \
+    $$PWD/Vertex.h

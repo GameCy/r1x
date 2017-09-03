@@ -3,9 +3,10 @@
 
 #include "SmartPtr.h"
 #include <QVector>
-#include <assimp/scene.h>       // Output data structure
 #include "TextureManager.h"
 #include "Mesh.h"
+
+namespace  OBJLoader {class Loader; }
 
 class Model : public RefCountBase
 {
@@ -13,11 +14,13 @@ public:
     Model();
     virtual ~Model();
 
-    bool LoadFile(QString& Filename);
+    bool LoadFile(QString& filePath);
 
     virtual void	Render();
 
-    Mesh *GetMesh(int meshIndex);
+    Mesh *GetMesh(size_t meshIndex);
+    Mesh* GetMesh(QString name);
+
     int     GetNumMeshes();
 
 protected:
@@ -27,7 +30,7 @@ protected:
 private:
     QString Folder;
 
-    void InitFromScene(const aiScene* pScene);
+    void InitFromLoader(OBJLoader::Loader &loader);
 };
 
 typedef SmartPtr<Model>     ModelPtr;

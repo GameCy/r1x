@@ -1,8 +1,5 @@
 #ifndef QUADRENDERERBASE_H
 #define QUADRENDERERBASE_H
-//#include <QVector3D>
-//#include <QVector2D>
-//#include <vector>
 #include "Material.h"
 
 #define INVALID_OGL_VALUE 0xffffffff

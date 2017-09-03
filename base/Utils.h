@@ -7,6 +7,7 @@ class Utils
 public:
     Utils();
 
+    static QString     getFile(QString fullpath);
     static QString     getFolder(QString fullpath);
 
 };
