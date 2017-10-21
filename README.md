@@ -22,16 +22,18 @@ base/
 * Hermite curves
 * Loading and Rendering 3D models from OBJ files
 * Mesh Instancing
-* Texture Fonts / Text Rendering
 * ViewPort and Camera abstraction classes
 
 Audio/
 
-Playing wav files, (play, pause,resume,loop, stop)
+* Playing wav files, (play, pause,resume,loop, stop)
 
 user-interface/
 
-Buttons. TextLabels Fonts
+* Texture Fonts / color text rendering
+* Buttons. 
+* TextLabels
+* InputArea (processing tap/mouse clicks)
 
 event-system/
 
