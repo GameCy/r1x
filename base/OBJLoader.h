@@ -87,10 +87,10 @@ namespace OBJLoader
         }
 
         QString     MeshName;
-        VertArray       Vertices;
-        IndicesArray    Indices;
+        VertArray   Vertices;
+        IndicesArray Indices;
 
-        Material        material;
+        Material    material;
         QString     MaterialName;
 
         int findVertexIndex(QString tripletKey);

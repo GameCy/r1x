@@ -18,7 +18,10 @@ bool Model::LoadFile(QString& filePath)
     OBJLoader::Loader loader;
     if (loader.LoadFile(filePath))
     {
-        InitFromLoader(loader);
+        meshArray.resize(loader.LoadedMeshes.size());
+
+        InitMaterialsFromLoader(loader);
+        InitGeometryFromLoader(loader);
         return true;
     }
 
@@ -65,18 +68,24 @@ int   Model::findMesh(QString name)
     return -1;
 }
 
-void Model::InitFromLoader(OBJLoader::Loader &loader)
+void Model::InitMaterialsFromLoader(OBJLoader::Loader &loader)
 {
     size_t numMeshes = loader.LoadedMeshes.size();
-    meshArray.resize(numMeshes);
-
     for (size_t i = 0 ; i < numMeshes ; i++)
     {
         OBJLoader::Mesh &mesh = loader.LoadedMeshes[i];
-
         QString texPath = Folder + "/" + Utils::getFile( mesh.material.map_Kd );
         TexturePtr texture = Assets::Texture.Get(texPath);
         meshArray[i].material.SetTexture( texture );
+    }
+}
+
+void Model::InitGeometryFromLoader(OBJLoader::Loader &loader)
+{
+    size_t numMeshes = loader.LoadedMeshes.size();
+    for (size_t i = 0 ; i < numMeshes ; i++)
+    {
+        OBJLoader::Mesh &mesh = loader.LoadedMeshes[i];
         meshArray[i].GenerateBuffers(mesh.Vertices, mesh.Indices);
         meshArray[i].Name = mesh.MeshName;
     }

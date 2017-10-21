@@ -4,30 +4,27 @@
 
 Camera::Camera(ShaderPtr shader)
     : shader(0)
+    , FieldOfView(default_fov)
+    , Near(default_near)
+    , Far(default_far)
+    , Aspect(default_aspect)
+    , UpVector (QVector3D(0, 1, 0))
 {
-	FieldOfView = default_fov;
-	Near = default_near;
-	Far = default_far;
-	Aspect = default_aspect;
-    UpVector = QVector3D(0, 1, 0);
+    projectionMatrix.setToIdentity();
+    projectionMatrix.perspective(FieldOfView, Aspect, Near, Far);
 }
 
 Camera::~Camera()
 {
 }
 
-void    Camera::Setup(int width, int height, float nearZ, float farZ, float fov, float aspect)
+void    Camera::Setup(float nearZ, float farZ, float fov, float aspect)
 {
-    PixelWidth = width;
-    PixelHeight = height;
     FieldOfView = fov;
     Aspect = aspect;
     Near = nearZ;
     Far = farZ;
 
-    CanvasHeight = 2.0;//*tan(FieldOfView * M_PI / 360.0) * Near;
-    CanvasWidth = 2.0; //CanvasHeight*Aspect;
-    //CanvasWidth = (PixelWidth/PixelHeight);
     projectionMatrix.setToIdentity();
     projectionMatrix.perspective(FieldOfView, Aspect, Near, Far);
 }
@@ -92,14 +89,24 @@ void    Camera::moveModel(QVector3D pos, QQuaternion rot, float scale)
         shader->UpdateMatrices(projectionMatrix, modelMatrix );
 }
 
+void Camera::moveModel(QMatrix4x4 mat)
+{
+    modelMatrix.setToIdentity();
+    modelMatrix.lookAt(Position, LookAt, UpVector );
+    modelMatrix *= mat;
 
-bool Camera::ScreenPointToGround(float tapX, float tapY, QVector3D& outPoint)
+    if (shader)
+        shader->UpdateMatrices(projectionMatrix, modelMatrix );
+}
+
+
+bool Camera::ScreenPointToGround(QVector2D normalizedPos, QVector3D& outPoint)
 {
     // the vectors we need when camera is not moved
     QVector3D planeNormal(0,1,0);
 
     ResetPosition(); // ?? this not needed IF method called after cam has been reset
-    QVector3D ray = mouseToGlobalCoords(tapX, tapY);
+    QVector3D ray = mouseToGlobalCoords(normalizedPos);
 
     float D = QVector3D::dotProduct(planeNormal, ray);
     float N = QVector3D::dotProduct(planeNormal, Position);
@@ -112,10 +119,10 @@ bool Camera::ScreenPointToGround(float tapX, float tapY, QVector3D& outPoint)
     return true;
 }
 
-QVector3D Camera::mouseToGlobalCoords(float x, float y)
+QVector3D Camera::mouseToGlobalCoords(QVector2D normalizedPos)
 {
-    float px = (x/PixelWidth - 0.5f)*CanvasWidth;
-    float py = (0.5f - y/PixelHeight)*CanvasHeight;
+    float px = (normalizedPos.x() - 0.5f)*2.0f;
+    float py = (normalizedPos.y() - 0.5f)*2.0f;
 
     return (projectionMatrix*modelMatrix).inverted()*QVector3D(px, py, Near);
 }

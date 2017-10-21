@@ -1,6 +1,8 @@
 #include "Mesh.h"
 #include "Ogl.h"
 
+int Mesh::TotalFacesRendered=0;
+
 Mesh::Mesh()
 {
     verticesBuffer = INVALID_OGL_VALUE;
@@ -51,14 +53,29 @@ void Mesh::GenerateBuffers(VertArray& vertices, IndicesArray& indices)
 
 void Mesh::Render()
 {
+    BeginDrawCall();
+    DrawCall();
+    EndDrawCall();
+}
+
+void Mesh::BeginDrawCall()
+{
     material.Bind();
     ogl.glBindBuffer(GL_ARRAY_BUFFER, verticesBuffer);
     ogl.glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);  // vertices
     ogl.glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)12); // UV's
     ogl.glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)20); // Normals
+}
 
+void Mesh::DrawCall()
+{
     ogl.glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer);
     ogl.glDrawElements(GL_TRIANGLES, NumIndices, GL_UNSIGNED_SHORT, 0);
 
+    TotalFacesRendered += NumIndices/3;
+}
+
+void Mesh::EndDrawCall()
+{
     material.Unbind();
 }

@@ -17,25 +17,24 @@ public:
     Camera(ShaderPtr shader);
 	virtual ~Camera();
 
-    void    Setup(int width, int height, float nearZ= default_near, float farZ= default_far, float fov= default_fov, float aspect= default_aspect);
+    void    Setup(float nearZ= default_near, float farZ= default_far, float fov= default_fov, float aspect= default_aspect);
     void	ResetPosition();
     void    moveModel(QVector3D pos, QQuaternion rot, float scale=1.0f);
+    void    moveModel(QMatrix4x4 mat);
 
 	void	SetClippingAreaSize(float dx, float dz);
 	//  IClipper interface
     virtual bool	InVisibleArea(QVector3D pos);
 
-    QVector3D mouseToGlobalCoords(float x, float y);
-    bool    ScreenPointToGround(float tapX, float tapY, QVector3D& outPoint);
+    QVector3D mouseToGlobalCoords(QVector2D normalizedPos);
+    bool    ScreenPointToGround(QVector2D normalizedPos, QVector3D& outPoint);
     void	UpdateViewVectors();
 
     QVector3D	Position;
     QVector3D	LookAt;
     QVector3D	UpVector;	// camera up vector
 
-	float	FieldOfView, Near, Far, Aspect;
-    float   PixelWidth, PixelHeight; // viewport in pixels
-    float   CanvasWidth, CanvasHeight;  // viewport in units
+    float       FieldOfView, Near, Far, Aspect;
 
     QMatrix4x4	projectionMatrix; // projection
     QMatrix4x4	modelMatrix; // model view

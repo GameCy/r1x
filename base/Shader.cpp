@@ -55,14 +55,14 @@ void Shader::UseSpecular(bool hasSpecular)
     phongShaders.setUniformValue("useSpecular", hasSpecular);
 }
 
-void Shader::RasterMode(float width, float height)
+void Shader::RasterMode(ViewPort viewport)
 {
     phongShaders.setUniformValue("isParticle", true);
     phongShaders.setUniformValue("hasLighting", false);
 
     QMatrix4x4 modelMatrix;
     QMatrix4x4 ortho;
-    ortho.ortho(0, width, 0, height, 0, 256);
+    ortho.ortho(viewport.X1, viewport.X2, viewport.Y1, viewport.Y2, 0, 256);
     phongShaders.setUniformValue("u_MVPMatrix", ortho * modelMatrix );
     phongShaders.setUniformValue("u_MVMatrix", modelMatrix);
     phongShaders.setUniformValue("u_NormalMatrix", modelMatrix.inverted().transposed());

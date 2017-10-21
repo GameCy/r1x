@@ -3,21 +3,19 @@
 #include "SmartPtr.h"
 #include "EntityCollection.h"
 #include "Camera.h"
+#include "ViewPort.h"
 
 class BaseView : public EntityCollection, public RefCountBase
 {
 public:
-    BaseView();
+    BaseView(CameraPtr cam);
 
     virtual void Render();
     virtual void Update(float dt);
     virtual void Resize(float width, float height);
 
-    CameraPtr getCamera() const;
-    void setCamera(const CameraPtr &value);
-
 private:
-    CameraPtr camPtr;
+    CameraPtr camera;
 };
 
 typedef SmartPtr<BaseView>  BaseViewPtr;

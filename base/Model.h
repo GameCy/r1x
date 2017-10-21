@@ -30,7 +30,8 @@ protected:
 private:
     QString Folder;
 
-    void InitFromLoader(OBJLoader::Loader &loader);
+    void InitMaterialsFromLoader(OBJLoader::Loader &loader);
+    void InitGeometryFromLoader(OBJLoader::Loader &loader);
 };
 
 typedef SmartPtr<Model>     ModelPtr;

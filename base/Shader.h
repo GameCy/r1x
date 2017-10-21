@@ -3,7 +3,7 @@
 #include <QMatrix4x4>
 #include <QVector3D>
 #include <QOpenGLShaderProgram>
-
+#include "ViewPort.h"
 
 class Shader
 {
@@ -15,7 +15,7 @@ public:
 
     void    ParticleRenderingMode(bool on);
     void    UseSpecular(bool hasSpecular);
-    void    RasterMode(float width, float height);
+    void    RasterMode(ViewPort viewport);
 
     void    ClearColorMask();
     void    SetColorMask(QVector4D mask);

@@ -18,13 +18,22 @@ public:
 
     static void EnableGLAttribs();
     void Render();
+
     static void DisableGLAttribs();
+
 
     void GenerateBuffers(VertArray &vertices, IndicesArray &indices);
 
     QString     Name;
     Material    material;
 
+    static int TotalFacesRendered;
+
+protected:
+    friend class InstanceRenderer;
+    void BeginDrawCall();
+    void DrawCall();
+    void EndDrawCall();
 private:
     GLuint verticesBuffer;
     GLuint indicesBuffer;
