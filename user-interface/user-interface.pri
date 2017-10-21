@@ -1,3 +1,4 @@
+INCLUDEPATH += user-interface
 
 SOURCES += \
     user-interface/TextLabel.cpp \
