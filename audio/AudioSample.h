@@ -25,7 +25,7 @@ public:
     void Loop(bool value);
     bool isLooping() const;
 
-    void    SetVolume(qreal volume);
+    void    SetVolume(qreal vol);
     qreal   GetVolume();
 
     QAudioDeviceInfo getDevice() const;
@@ -39,11 +39,13 @@ private:
 
     qint64      bytePosition;
     bool        looping;
+    qreal       volume;
 
     void    extractFormatFromWav(QAudioFormat &format, WavBufferPtr wav);
 
 private slots:
     void AudioStateChanged(QAudio::State newState);
+    void slideVolume();
 };
 
 typedef AudioSample*    AudioSamplePtr;

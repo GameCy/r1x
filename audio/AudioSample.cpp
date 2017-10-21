@@ -9,6 +9,7 @@ AudioSample::AudioSample(QObject *parent, WavBufferPtr wavBuffer)
     , audioOutput(0)
     , bytePosition(0)
     , looping(false)
+    , volume(0.8)
     , device(QAudioDeviceInfo::defaultOutputDevice())
 {
     extractFormatFromWav( format, buffer );
@@ -22,7 +23,7 @@ AudioSample::AudioSample(QObject *parent, WavBufferPtr wavBuffer)
     audioOutput = new QAudioOutput(device, format, this);
     connect(audioOutput, &QAudioOutput::stateChanged, this, &AudioSample::AudioStateChanged);
     open(QIODevice::ReadOnly);
-    SetVolume(1.0);
+//    SetVolume(0);
 }
 
 AudioSample::~AudioSample()
@@ -31,8 +32,7 @@ AudioSample::~AudioSample()
         audioOutput->disconnect(this);
     if (this->isOpen())
         close();
-    if (audioOutput)
-        delete audioOutput;
+    audioOutput->deleteLater();
 }
 
 void AudioSample::Pause()
@@ -60,12 +60,15 @@ bool AudioSample::isLooping() const      { return looping; }
 
 
 void AudioSample::Start()
-{    
+{
     if (isOpen())
     {
         bytePosition=0;
         audioOutput->reset();
+        audioOutput->setVolume(0.0);
         audioOutput->start(this);
+        audioOutput->setNotifyInterval(1);
+        connect(audioOutput, &QAudioOutput::notify, this, &AudioSample::slideVolume);
     }
 }
 
@@ -110,9 +113,10 @@ qint64 AudioSample::bytesAvailable() const
     return buffer->size() + QIODevice::bytesAvailable();
 }
 
-void AudioSample::SetVolume(qreal volume)
+void AudioSample::SetVolume(qreal vol)
 {
-    audioOutput->setVolume(volume);
+    volume = vol;
+    audioOutput->setNotifyInterval(1);
 }
 
 qreal AudioSample::GetVolume()
@@ -142,11 +146,29 @@ void AudioSample::extractFormatFromWav(QAudioFormat &format, WavBufferPtr wav)
 
 void AudioSample::AudioStateChanged(QAudio::State newState)
 {
-    //qDebug() << "audio state " << newState;
+    qDebug() << "audio state " << newState;
     if ( (newState==QAudio::IdleState)
          && bytePosition>=buffer->size()
          && (!looping) )
     {
         Stop();
+    }
+}
+
+void AudioSample::slideVolume()
+{
+    qreal current = audioOutput->volume();
+    qreal diff = current - volume;
+    if (diff>0.02)
+    {
+        audioOutput->setVolume( current - 0.02);
+    }
+    else if (diff<-0.02)
+    {
+        audioOutput->setVolume( current + 0.02);
+    }
+    else
+    {
+        audioOutput->setNotifyInterval(50);
     }
 }
