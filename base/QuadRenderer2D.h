@@ -4,6 +4,7 @@
 #include <QVector2D>
 #include <vector>
 #include "QuadRendererBase.h"
+#include "AtlasImporter.h"
 
 #define INVALID_OGL_VALUE 0xffffffff
 
@@ -16,6 +17,7 @@ struct Quad2D
 
     void    SetGeometry(float x, float y, float w, float h);
     void    SetUVs(float u1, float v1, float uvWidth, float uvHeight);
+    void    SetUVRect(UVRect& uvs);
 };
 
 

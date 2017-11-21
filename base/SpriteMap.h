@@ -14,12 +14,14 @@ class SpriteMap : public Entity
 public:
     SpriteMap(int maxQuads, QString atlasPath);
 
-    SpritePtr   CreateSprite(QString spriteName, float width, float height);
+    Sprite*   CreateSprite(QString spriteName, float width, float height);
+    bool        DestroySprite(Sprite* sprite);
+
     MaterialPtr GetMaterial();
     bool GetUVRect(QString spriteName, UVRect &uvRect);
 
 private:
-    QVector<SpritePtr>  sprites;
+    QVector<Sprite*>    sprites;
     QuadRenderer2D      renderer;
     AtlasImporter       atlas;
 

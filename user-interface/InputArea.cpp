@@ -1,4 +1,5 @@
 #include "InputArea.h"
+#include "ButtonManager.h"
 
 InputArea::InputArea()
     : state(Normal)
@@ -36,3 +37,6 @@ bool InputArea::IsSameEventId(int id)
 {
     return (activeEventID==id);
 }
+
+void InputArea::Enable()     { ButtonManager::Instance().Add(this); }
+void InputArea::Disable()    { ButtonManager::Instance().Remove(this); }

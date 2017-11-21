@@ -23,6 +23,14 @@ void Quad2D::SetUVs(float u1, float v1, float uvWidth, float uvHeight)
     V4 += uvHeight;
 }
 
+void Quad2D::SetUVRect(UVRect &uvs)
+{
+    U1 = uvs.U1;    V1 = uvs.V1;
+    U2 = uvs.U2;    V2 = uvs.V1;
+    U3 = uvs.U2;    V3 = uvs.V2;
+    U4 = uvs.U1;    V4 = uvs.V2;
+}
+
 //------------------------------------------------
 
 QuadRenderer2D::QuadRenderer2D()

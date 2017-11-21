@@ -6,7 +6,8 @@ class AngleInterpolator
 public:
     AngleInterpolator(bool degrees=false);
 
-    bool Init(float start, float end, float speed);
+    void Init(float start, float end, float speed);
+    void StopAndSet(float value);
 
     float GetCurrent();
     bool IsPositive();

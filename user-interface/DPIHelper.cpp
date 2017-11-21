@@ -1,29 +1,32 @@
 #include "DPIHelper.h"
 #include <QApplication>
 #include <QScreen>
-//#include <QDebug>
+#include <QDebug>
 
-//DPIHelper::DPIHelper()
-//{
-    //qreal pxDPI = screen->physicalDotsPerInchX();
-    //qreal pyDPI = screen->physicalDotsPerInchY();
-    //QRect localGeometry = screen->geometry();
-//}
 
-float DPIHelper::GetPhysicalAspectRatio()
+void DPIHelper::Update()
 {
-    float aspect=1.0f;
+    ASPECT_RATIO=1.0f;
     QScreen *screen = QApplication::screens().at(0);
     if (screen)
     {
-        qreal pxDPI = screen->physicalDotsPerInchX();
-        qreal pyDPI = screen->physicalDotsPerInchY();
+        DPI_X = screen->physicalDotsPerInchX();
+        DPI_Y = screen->physicalDotsPerInchY();
+        DPI_average = (DPI_X + DPI_Y)/2.f;
 
-        //QSizeF physicalSize = screen->physicalSize();
-        if (pyDPI>0) //physicalSize.height()>0)
-            aspect =  pxDPI/pyDPI; //(physicalSize.width() / physicalSize.height());
+        QSizeF physicalSize = screen->physicalSize();
+        float sizeX = physicalSize.width()/ DPI_X;
+        float sizeY = physicalSize.height()/ DPI_Y;
+        bool portrait = (sizeX<sizeY);
+        if (portrait)
+        {
+            if (sizeY>0)   ASPECT_RATIO =  sizeX / sizeY;
+        }
+        else
+        {
+            if (sizeX>0)    ASPECT_RATIO =  sizeY / sizeX;
+        }
 
-        //qDebug() << "DPI x y aspect : " << pxDPI << pyDPI << aspect;
+        qDebug() << "DPI x y aspect : " << DPI_X << DPI_Y << ASPECT_RATIO;
     }
-    return aspect;
 }

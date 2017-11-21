@@ -15,10 +15,11 @@ public:
     void    SetPos(QVector2D pos);
     void    SetSize(QVector2D size);
 
-    void    Enable();
-    void    Disable();
+    void    Hide();
+    void    Show();
+
 private:
-    SpritePtr   Background;
+    Sprite*     Background;
     UVRect      TexUVArea ;
 
     void UpdateInternals();

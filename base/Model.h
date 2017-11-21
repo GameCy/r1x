@@ -21,10 +21,10 @@ public:
     Mesh *GetMesh(size_t meshIndex);
     Mesh* GetMesh(QString name);
 
-    int     GetNumMeshes();
+    int   GetNumMeshes();
 
-protected:
     int   findMesh(QString name);
+protected:
     std::vector<Mesh> meshArray;
 
 private:

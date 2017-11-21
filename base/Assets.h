@@ -3,7 +3,6 @@
 #include "ModelManager.h"
 #include "TextureManager.h"
 #include "FontManager.h"
-#include "TextureAnimManager.h"
 #include "AudioManager.h"
 #include "Shader.h"
 #include <QMap>
@@ -15,7 +14,6 @@ class Assets
 public:
     static ModelManager     Model;
     static TextureManager   Texture;
-    static TexAnimManager   TexAnim;
     static FontManager      Font;
     static AudioManager     Audio;
     static ShaderPtr        phongShader;
@@ -37,7 +35,6 @@ public:
 
         Model.ClearAll();
         Texture.ClearAll();
-        TexAnim.ClearAll();
         Font.ClearAll();
         Audio.ClearAll();
     }

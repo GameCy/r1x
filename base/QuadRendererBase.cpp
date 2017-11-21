@@ -47,12 +47,13 @@ void QuadRendererBase::InitIndices(int numQuads)
     indices.reserve(numQuads*6);
     for(int i=0; i<numQuads; ++i)
     {
-        indices.push_back( i*4 + 3);
-        indices.push_back( i*4 + 0);
-        indices.push_back( i*4 + 1);
-        indices.push_back( i*4 + 1);
-        indices.push_back( i*4 + 2);
-        indices.push_back( i*4 + 3);
+        int quadBase = i*4;
+        indices.push_back( quadBase + 3);
+        indices.push_back( quadBase + 0);
+        indices.push_back( quadBase + 1);
+        indices.push_back( quadBase + 1);
+        indices.push_back( quadBase + 2);
+        indices.push_back( quadBase + 3);
     }
 }
 

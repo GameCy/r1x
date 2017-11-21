@@ -13,7 +13,7 @@ MaterialPtr SpriteMap::GetMaterial()
     return renderer.GetMaterial();
 }
 
-SpritePtr SpriteMap::CreateSprite(QString spriteName, float width, float height)
+Sprite* SpriteMap::CreateSprite(QString spriteName, float width, float height)
 {
     UVRect uvRect;
     if (!atlas.GetUVRect(spriteName, uvRect))
@@ -21,6 +21,13 @@ SpritePtr SpriteMap::CreateSprite(QString spriteName, float width, float height)
     Sprite* sprite = new Sprite(width, height, uvRect);
     sprites.push_back(sprite);
     return sprite;
+}
+
+bool SpriteMap::DestroySprite(Sprite *sprite)
+{
+    int removed = sprites.removeAll(sprite);
+    delete sprite;
+    return (removed>0);
 }
 
 bool SpriteMap::GetUVRect(QString spriteName, UVRect &uvRect)
@@ -41,14 +48,14 @@ void SpriteMap::BuildQuads()
     int quadCount=0;
     for(int i=0; i<numSprites; ++i)
     {
-        SpritePtr spr = sprites[i];
+        Sprite* spr = sprites[i];
         if (!spr->IsVisible())
             continue;
         Quad2D &quad = renderer.getQuad(quadCount);
         quadCount++;
 
         quad.SetGeometry(spr->Pos.x(), spr->Pos.y(), spr->Size.x(), spr->Size.y());
-        quad.SetUVs(spr->UVstart.x(), spr->UVstart.y(), spr->UVsize.x(), spr->UVsize.y());
+        quad.SetUVRect( spr->getUVRect() );
         spr->ClearChangedFlag();
     }
     renderer.UpdateQuadsBuffer();

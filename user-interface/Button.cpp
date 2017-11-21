@@ -1,14 +1,15 @@
 #include "Button.h"
-#include "ButtonManager.h"
 #include <QDebug>
+#include "ButtonManager.h"
 
 Button::Button(QString txt, QVector2D pos, FontRendererPtr fontRenderer, SpriteMapPtr uiMap, UVRect uvRect)
 {
     TexUVArea = uvRect;
     Label = fontRenderer->CreateLabel(txt, pos);
     Background = uiMap->CreateSprite("button.png", 0,0);
-    Background->setUVsize( QVector2D(uvRect.U2-uvRect.U1, (uvRect.V2-uvRect.V1)/3.0f) );
+    Background->setUVRect( uvRect );
     Background->setSize( QVector2D(Label->PixelWidth, Label->PixelHeight) *1.1f );
+    ChangeVisuals(Normal, Normal);
 
     UpdateInternals();
     connect( this, &InputArea::StateChanged, this, &Button::ChangeVisuals);
@@ -45,10 +46,6 @@ void Button::SetTextScale(float scale)
     UpdateInternals();
 }
 
-void Button::Enable()       { ButtonManager::Instance().Add(this); }
-
-void Button::Disable()      { ButtonManager::Instance().Remove(this); }
-
 void Button::UpdateInternals()
 {
     Background->setPos(Pos);
@@ -61,13 +58,16 @@ void Button::UpdateInternals()
 
 void Button::ChangeVisuals(InputArea::State newState, InputArea::State oldState)
 {
-    float U = TexUVArea.U1;
-    float V = TexUVArea.V1;
     float Vheight = TexUVArea.V2 - TexUVArea.V1;
 
-    if (newState==InputArea::Pressed)       V += 0.33333f*Vheight;
-    else if (newState==InputArea::Hover)    V += 0.66666f*Vheight;
-    Background->setUVstart( QVector2D(U,V) );
+    float deltaV = 0;
+    if (newState==InputArea::Pressed)       deltaV += 0.33333f*Vheight;
+    else if (newState==InputArea::Hover)    deltaV += 0.66666f*Vheight;
+
+    UVRect newRect = TexUVArea;
+    newRect.V1 += deltaV;
+    newRect.V2 = newRect.V1+0.33333f*Vheight;
+    Background->setUVRect( newRect );
 }
 
 

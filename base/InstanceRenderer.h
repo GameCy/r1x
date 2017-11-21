@@ -22,13 +22,14 @@ struct Instance {
 class InstanceRenderer
 {
 public:
-    InstanceRenderer(ModelPtr model);
+    InstanceRenderer(ModelPtr _model);
+    //~InstanceRenderer();
 
     void AddInstance(int meshIndex, QVector3D pos, QQuaternion rot);
     void Render(CameraPtr cam);
 
+    ModelPtr model;
 private:
-    ModelPtr _model;
 
     typedef QVector<Instance>   InstanceArray;
     QVector<InstanceArray> meshInstances;

@@ -2,10 +2,11 @@
 #define TEXTUREMANAGER_H
 #include "Texture.h"
 #include <QMap>
-#include "TextureAnim.h"
+#include "UVAnim.h"
 
 const QString Tex_Shadow(":/textures/fakeshadow.png");
 const QString Tex_Smoke(":/textures/smokeAnim.png");
+const QString Tex_SparkleVertical(":/textures/SparkleVertical.png");
 
 class TextureManager
 {

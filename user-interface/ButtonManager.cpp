@@ -20,8 +20,14 @@ void ButtonManager::Add(InputAreaPtr area)
 
 void ButtonManager::Remove(InputAreaPtr area)
 {
-    areas.removeOne(area);
-    activeAreas.removeOne(area);
+    toRemove.append(area);
+}
+
+void ButtonManager::ExecuteRemovals()
+{
+    foreach(InputAreaPtr area, toRemove)
+        areas.removeAll(area);
+    toRemove.clear();
 }
 
 void ButtonManager::TapBeginHandler(int id, QVector2D pos)

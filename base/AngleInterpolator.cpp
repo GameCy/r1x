@@ -19,11 +19,16 @@ AngleInterpolator::AngleInterpolator(bool degrees)
     }
 }
 
-bool AngleInterpolator::Init(float start, float end, float speed)
+void AngleInterpolator::Init(float start, float end, float speed)
 {
     this->speed = speed;
     current = start;
     target = end;
+}
+
+void AngleInterpolator::StopAndSet(float value)
+{
+    current = target = value;
 }
 
 float AngleInterpolator::GetCurrent()
@@ -61,5 +66,4 @@ void AngleInterpolator::Update(float dt)
     while(current<0.f)        current += FullCircle;
     if (positiveDirection!=IsPositive())
         current = target;
-
 }

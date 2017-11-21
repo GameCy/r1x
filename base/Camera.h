@@ -34,8 +34,6 @@ public:
     QVector3D	LookAt;
     QVector3D	UpVector;	// camera up vector
 
-    float       FieldOfView, Near, Far, Aspect;
-
     QMatrix4x4	projectionMatrix; // projection
     QMatrix4x4	modelMatrix; // model view
 
@@ -48,6 +46,7 @@ public:
     void setShader(const ShaderPtr &value);
 
 private:
+    float       FieldOfView, Near, Far, Aspect;
     float	clipHalfX, clipHalfZ;
     ShaderPtr   shader;
 };

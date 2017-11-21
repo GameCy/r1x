@@ -19,8 +19,8 @@ struct UVRect
 
     void Normalize(float nx, float ny)
     {
-        U1 /= nx;   U2/=nx;
-        V1/=ny;     V2/=ny;
+        U1/= nx;  U2/=nx;
+        V1/=ny;   V2/=ny;
     }
 
     float U1,V1,U2,V2;

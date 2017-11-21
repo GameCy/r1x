@@ -19,6 +19,8 @@ public:
     void SetState(State newState, int eventID=0);
     void ClearActiveID();
     bool IsSameEventId(int id);
+    void Enable();
+    void Disable();
 
     QVector2D   Pos;
     QVector2D   Size;

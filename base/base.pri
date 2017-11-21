@@ -22,13 +22,13 @@ SOURCES += \
     $$PWD/Sprite.cpp \
     $$PWD/SpriteMap.cpp \
     $$PWD/Texture.cpp \
-    $$PWD/TextureAnim.cpp \
-    $$PWD/TextureAnimManager.cpp \
     $$PWD/TextureManager.cpp \
     $$PWD/Utils.cpp \
     $$PWD/OBJLoader.cpp \
     $$PWD/Vertex.cpp \
-    $$PWD/InstanceRender.cpp
+    $$PWD/InstanceRender.cpp \
+    $$PWD/Interpolator.cpp \
+    $$PWD/UVAnim.cpp
 
 HEADERS += \
     $$PWD/AngleInterpolator.h \
@@ -54,11 +54,11 @@ HEADERS += \
     $$PWD/Sprite.h \
     $$PWD/SpriteMap.h \
     $$PWD/Texture.h \
-    $$PWD/TextureAnim.h \
-    $$PWD/TextureAnimManager.h \
     $$PWD/TextureManager.h \
     $$PWD/Utils.h \
     $$PWD/OBJLoader.h \
     $$PWD/Vertex.h \
     $$PWD/InstanceRenderer.h \
-    $$PWD/ViewPort.h
+    $$PWD/ViewPort.h \
+    $$PWD/Interpolator.h \
+    $$PWD/UVAnim.h

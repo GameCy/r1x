@@ -9,6 +9,7 @@ public:
 
     void Add(InputAreaPtr area);
     void Remove(InputAreaPtr area);
+    void ExecuteRemovals();
 
     void TapBeginHandler(int id, QVector2D pos);
     void TapEndHandler(int id, QVector2D pos);
@@ -17,6 +18,8 @@ public:
 private:
     QList<InputAreaPtr>  areas;
     QList<InputAreaPtr>  activeAreas;
+
+    QList<InputAreaPtr>  toRemove;
 
     ButtonManager() {}
 

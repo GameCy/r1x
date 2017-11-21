@@ -54,4 +54,5 @@ void ModelManager::BuildResourcePaths()
     resource_paths.push_back(":/groundMarks/teamControls.obj");
     resource_paths.push_back(":/groundMarks/healthMarks.obj");
     resource_paths.push_back(":/theme1/theme1.obj");
+    resource_paths.push_back(":/environment/environment.obj");
 }

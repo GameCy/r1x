@@ -7,11 +7,10 @@
 #include "QuadRenderer2D.h"
 #include "AtlasImporter.h"
 
-class Sprite// : public RefCountBase
+class Sprite
 {
 public:
-    Sprite(float width, float height, float u1, float v1, float u2, float v2);
-    Sprite(float width, float height, UVRect uvs);
+    Sprite(float width, float height, UVRect _uvRect);
 
     void    SetVisible(bool visible);
     bool    IsVisible();
@@ -22,11 +21,8 @@ public:
     QVector2D getSize() const;
     void setSize(const QVector2D &value);
 
-    QVector2D getUVstart() const;
-    void setUVstart(const QVector2D &value);
-
-    QVector2D getUVsize() const;
-    void setUVsize(const QVector2D &value);
+    UVRect &getUVRect();
+    void setUVRect(const UVRect &value);
 
     void ClearChangedFlag();
 
@@ -34,13 +30,9 @@ public:
 private:
     QVector2D   Pos;
     QVector2D   Size;
-    QVector2D   UVstart;
-    QVector2D   UVsize;
+    UVRect      uvRect;
     bool        isVisible;
     bool        hasChanged;
 };
-
-//typedef SmartPtr<Sprite>    SpritePtr;
-typedef Sprite*    SpritePtr;
 
 #endif // _SPRITE_H

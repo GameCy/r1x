@@ -5,7 +5,10 @@
 class DPIHelper
 {
 public:
-    static float GetPhysicalAspectRatio();
+    float DPI_X, DPI_Y, DPI_average;
+    float ASPECT_RATIO;
+
+    void Update();
 };
 
 #endif // DPIHELPER_H

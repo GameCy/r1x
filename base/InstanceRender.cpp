@@ -1,10 +1,19 @@
 #include "InstanceRenderer.h"
 
-InstanceRenderer::InstanceRenderer(ModelPtr model)
-    : _model(model)
+InstanceRenderer::InstanceRenderer(ModelPtr _model)
+    : model(_model)
 {
-    meshInstances.resize(model->GetNumMeshes());
+    meshInstances.resize(_model->GetNumMeshes());
 }
+
+//InstanceRenderer::~InstanceRenderer()
+//{
+//    for(int i=0; i<meshInstances.size(); ++i)
+//    {
+//        meshInstances[i].clear();
+//    }
+//    meshInstances.clear();
+//}
 
 void InstanceRenderer::AddInstance(int meshIndex, QVector3D pos, QQuaternion rot)
 {
@@ -13,11 +22,11 @@ void InstanceRenderer::AddInstance(int meshIndex, QVector3D pos, QQuaternion rot
 
 void InstanceRenderer::Render(CameraPtr cam)
 {
-    int numMeshes = _model->GetNumMeshes();
+    int numMeshes = model->GetNumMeshes();
     Mesh::EnableGLAttribs();
     for(int i=0; i<numMeshes; ++i)
     {
-        RenderArray(cam, _model->GetMesh(i), meshInstances[i]);
+        RenderArray(cam, model->GetMesh(i), meshInstances[i]);
     }
     Mesh::DisableGLAttribs();
 }

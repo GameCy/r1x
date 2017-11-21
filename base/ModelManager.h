@@ -12,6 +12,7 @@ enum ModelNames {
     Model_NavigationMarks,
     Model_HealthMarks,
     Model_Theme1,
+    Model_Environment,
     Model_MAX_ID
 };
 

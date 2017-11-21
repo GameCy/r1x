@@ -22,11 +22,9 @@ public:
     void    SetSize(QVector2D size);
     void    SetTextScale(float scale);
 
-    void    Enable();
-    void    Disable();
 private:
     TextLabelPtr Label;
-    SpritePtr   Background;
+    Sprite*     Background;
     UVRect      TexUVArea ;
 
     void UpdateInternals();

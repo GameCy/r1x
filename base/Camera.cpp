@@ -116,6 +116,7 @@ bool Camera::ScreenPointToGround(QVector2D normalizedPos, QVector3D& outPoint)
     //if (factor<0)   return false;
 
     outPoint =   Position + factor*ray;
+    outPoint.setY(0);
     return true;
 }
 

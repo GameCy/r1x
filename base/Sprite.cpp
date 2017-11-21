@@ -1,22 +1,10 @@
 #include "Sprite.h"
 
 
-Sprite::Sprite(float width, float height, float u1, float v1, float u2, float v2)
+Sprite::Sprite(float width, float height, UVRect _uvRect)
     : isVisible(true)
+    , uvRect(_uvRect)
 {
-    UVstart = QVector2D(u1,v1);
-    UVsize = QVector2D(u2,v2);
-
-    Size = QVector2D(width, height);
-    hasChanged = true;
-}
-
-Sprite::Sprite(float width, float height, UVRect uvs)
-    : isVisible(true)
-{
-    UVstart = QVector2D(uvs.U1, uvs.V1);
-    UVsize = QVector2D(uvs.U2- uvs.U1, uvs.V2- uvs.V1);
-
     Size = QVector2D(width, height);
     hasChanged = true;
 }
@@ -57,30 +45,19 @@ void Sprite::setSize(const QVector2D &value)
     hasChanged = true;
 }
 
-QVector2D Sprite::getUVstart() const
-{
-    return UVstart;
-}
-
-void Sprite::setUVstart(const QVector2D &value)
-{
-    UVstart = value;
-    hasChanged = true;
-}
-
-QVector2D Sprite::getUVsize() const
-{
-    return UVsize;
-}
-
-void Sprite::setUVsize(const QVector2D &value)
-{
-    UVsize = value;
-    hasChanged = true;
-}
-
 void Sprite::ClearChangedFlag()
 {
     hasChanged = false;
+}
+
+UVRect& Sprite::getUVRect()
+{
+    return uvRect;
+}
+
+void Sprite::setUVRect(const UVRect &value)
+{
+    uvRect = value;
+    hasChanged = true;
 }
 

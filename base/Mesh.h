@@ -2,6 +2,7 @@
 #define	MESH_H
 #include "Vertex.h"
 #include "TextureManager.h"
+#include "Material.h"
 
 #define INVALID_UNIFORM_LOCATION 0xffffffff
 #define INVALID_OGL_VALUE 0xffffffff

@@ -1,7 +1,7 @@
 #include "Globals.h"
 
 ViewPort            Globals::Screen;
-float               Globals::PhysicalAspectRatio=1.0f;
+DPIHelper           Globals::DPI;
 
 Timer               Globals::Clock;
 DelegateDispatcher  Globals::CoreDelegates( &Globals::Clock);

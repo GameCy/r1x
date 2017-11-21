@@ -5,12 +5,14 @@
 #include "DelegateDispatcher.h"
 #include "Randomizer.h"
 #include "Shader.h"
+#include "DPIHelper.h"
 
 class Globals
 {
 public:
     static ViewPort         Screen;
-    static float            PhysicalAspectRatio;
+    static DPIHelper        DPI;
+
     static Timer            Clock;
     static EventDispatcher  CoreEvents;
     static DelegateDispatcher CoreDelegates;
