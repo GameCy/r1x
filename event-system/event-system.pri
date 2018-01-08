@@ -5,7 +5,7 @@ SOURCES += \
     $$PWD/Events.cpp \
     $$PWD/EventArgs.cpp \
     $$PWD/EventDispatcher.cpp \
-    $$PWD/Globals.cpp \
+    $$PWD/Core.cpp \
     $$PWD/Randomizer.cpp \
     $$PWD/Timer.cpp
 
@@ -15,7 +15,7 @@ HEADERS += \
     $$PWD/Events.h \
     $$PWD/EventDispatcher.h \
     $$PWD/EventArgs.h \
-    $$PWD/Globals.h \
+    $$PWD/Core.h \
     $$PWD/Randomizer.h \
     $$PWD/SmartPtr.h \
     $$PWD/Timer.h

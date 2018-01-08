@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>textures/backgroung.png</file>
+        <file>textures/energy1.png</file>
+        <file>textures/Label.png</file>
+        <file>textures/Popup.png</file>
+        <file>textures/slot.png</file>
+        <file>textures/star_particle.png</file>
+    </qresource>
+</RCC>

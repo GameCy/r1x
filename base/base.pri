@@ -1,3 +1,8 @@
+INCLUDEPATH += $$PWD/../event-system
+include($$PWD/../event-system/event-system.pri)
+
+RESOURCES += \
+    $$PWD/shaders/shaders.qrc
 
 SOURCES += \
     $$PWD/AngleInterpolator.cpp \

@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>fonts/pipe.json</file>
+        <file>fonts/pipe48.json</file>
+        <file>fonts/pipe48.PNG</file>
+        <file>fonts/pipe_dream_regular_14.PNG</file>
+    </qresource>
+</RCC>
