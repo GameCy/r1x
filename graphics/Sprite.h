@@ -1,6 +1,5 @@
 #ifndef _SPRITE_H
 #define _SPRITE_H
-#include "Entity.h"
 #include <QVector2D>
 #include <vector>
 #include "Material.h"

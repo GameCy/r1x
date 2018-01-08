@@ -1,6 +1,5 @@
 #ifndef SPRITEMAP_H
 #define SPRITEMAP_H
-#include "Entity.h"
 #include "Sprite.h"
 #include "AtlasImporter.h"
 #include <QVector2D>
@@ -8,17 +7,19 @@
 #include "Material.h"
 #include "QuadRenderer2D.h"
 
-
-class SpriteMap : public Entity
+class SpriteMap
 {
 public:
     SpriteMap(int maxQuads, QString atlasPath);
 
-    Sprite*   CreateSprite(QString spriteName, float width, float height);
+    Sprite*     CreateSprite(QString spriteName, float width, float height);
     bool        DestroySprite(Sprite* sprite);
 
     MaterialPtr GetMaterial();
-    bool GetUVRect(QString spriteName, UVRect &uvRect);
+    bool        GetUVRect(QString spriteName, UVRect &uvRect);
+
+    void Render();
+    void Update();
 
 private:
     QVector<Sprite*>    sprites;
@@ -26,10 +27,7 @@ private:
     AtlasImporter       atlas;
 
     void    BuildQuads();
-public: // Entity interface
-    void Render(CameraPtr camera);
-    void Update(float dt);
-    bool IsFinished();
+
 };
 
 typedef SmartPtr<SpriteMap>     SpriteMapPtr;

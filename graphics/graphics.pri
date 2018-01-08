@@ -7,9 +7,8 @@ RESOURCES += \
 SOURCES += \
     $$PWD/AngleInterpolator.cpp \
     $$PWD/BlinkFloat.cpp \
-    $$PWD/Assets.cpp \
+    $$PWD/Graphics.cpp \
     $$PWD/AtlasImporter.cpp \
-    $$PWD/BaseView.cpp \
     $$PWD/Camera.cpp \
     $$PWD/CellMap.cpp \
     $$PWD/FrameRate.cpp \
@@ -22,7 +21,6 @@ SOURCES += \
     $$PWD/QuadRenderer3D.cpp \
     $$PWD/QuadRenderer2D.cpp \
     $$PWD/QuadRendererBase.cpp \
-    $$PWD/Renderer.cpp \
     $$PWD/Shader.cpp \
     $$PWD/Sprite.cpp \
     $$PWD/SpriteMap.cpp \
@@ -37,9 +35,8 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/AngleInterpolator.h \
-    $$PWD/Assets.h \
+    $$PWD/Graphics.h \
     $$PWD/AtlasImporter.h \
-    $$PWD/BaseView.h \
     $$PWD/BlinkFloat.h \
     $$PWD/Camera.h \
     $$PWD/CellMap.h \
@@ -54,7 +51,6 @@ HEADERS += \
     $$PWD/QuadRenderer3D.h \
     $$PWD/QuadRenderer2D.h \
     $$PWD/QuadRendererBase.h \
-    $$PWD/Renderer.h \
     $$PWD/Shader.h \
     $$PWD/Sprite.h \
     $$PWD/SpriteMap.h \

@@ -1,5 +1,5 @@
 #include "Model.h"
-#include "Assets.h"
+#include "Graphics.h"
 #include "Utils.h"
 #include "OBJLoader.h"
 
@@ -75,7 +75,7 @@ void Model::InitMaterialsFromLoader(OBJLoader::Loader &loader)
     {
         OBJLoader::Mesh &mesh = loader.LoadedMeshes[i];
         QString texPath = Folder + "/" + Utils::getFile( mesh.material.map_Kd );
-        TexturePtr texture = Assets::Texture.Get(texPath);
+        TexturePtr texture = Graphics::Texture.Get(texPath);
         meshArray[i].material.SetTexture( texture );
     }
 }

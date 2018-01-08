@@ -4,9 +4,9 @@ TARGET = Examples
 
 QT += core gui widgets multimedia
 
-INCLUDEPATH += base
+INCLUDEPATH += graphics
 
-include($$PWD/../base/base.pri)
+include($$PWD/../graphics/graphics.pri)
 
 SOURCES += \
     InputTracker.cpp \

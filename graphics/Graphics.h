@@ -1,21 +1,17 @@
 #ifndef ASSETS_H
-#define ASSETS_H
+#define GRAPHICS_H
 #include "ModelManager.h"
 #include "TextureManager.h"
-#include "FontManager.h"
-#include "AudioManager.h"
 #include "Shader.h"
 #include <QMap>
 #include "Randomizer.h"
 #include <time.h>
 
-class Assets
+class Graphics
 {
 public:
     static ModelManager     Model;
     static TextureManager   Texture;
-    static FontManager      Font;
-    static AudioManager     Audio;
     static ShaderPtr        phongShader;
 
     static bool Init()
@@ -35,12 +31,10 @@ public:
 
         Model.ClearAll();
         Texture.ClearAll();
-        Font.ClearAll();
-        Audio.ClearAll();
     }
 
 private:
-    Assets();
+    Graphics();
 };
 
-#endif // ASSETS_H
+#endif // GRAPHICS_H

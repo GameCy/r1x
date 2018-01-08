@@ -1,5 +1,5 @@
-#ifndef GLOBALS_H
-#define GLOBALS_H
+#ifndef COREGLOBALS_H
+#define COREGLOBALS_H
 #include "Timer.h"
 #include "EventDispatcher.h"
 #include "DelegateDispatcher.h"
@@ -18,4 +18,4 @@ private:
 };
 
 
-#endif // GLOBALS_H
+#endif // COREGLOBALS_H

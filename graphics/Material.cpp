@@ -1,6 +1,6 @@
 #include "Material.h"
 #include "Ogl.h"
-#include "Assets.h"
+#include "Graphics.h"
 
 Material::Material()
     : texture(0)
@@ -21,7 +21,7 @@ Material::Material(QString texturePath)
 
 bool Material::LoadTexture(QString texturePath)
 {
-    texture = Assets::Texture.Get(texturePath);
+    texture = Graphics::Texture.Get(texturePath);
     return isTextureCreated();
 }
 
@@ -42,7 +42,7 @@ void Material::SetTexture(TexturePtr tex)
 
 void Material::Bind()
 {
-//    Assets::phongShader->SetColorMask(color);
+//    Graphics::phongShader->SetColorMask(color);
 
     if (!DepthTesting)
         ogl.glDisable(GL_DEPTH_TEST);

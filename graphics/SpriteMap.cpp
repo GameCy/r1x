@@ -1,4 +1,4 @@
-#include "base/SpriteMap.h"
+#include "SpriteMap.h"
 #include "Utils.h"
 
 SpriteMap::SpriteMap(int maxQuads, QString atlasPath)
@@ -61,12 +61,12 @@ void SpriteMap::BuildQuads()
     renderer.UpdateQuadsBuffer();
 }
 
-void SpriteMap::Render(CameraPtr camera)
+void SpriteMap::Render()
 {
     renderer.RenderQuads();
 }
 
-void SpriteMap::Update(float dt)
+void SpriteMap::Update()
 {
     for(int i=0; i<sprites.size(); ++i)
     {
@@ -77,7 +77,4 @@ void SpriteMap::Update(float dt)
         }
     }
 }
-
-bool SpriteMap::IsFinished()    { return false; }
-
 
