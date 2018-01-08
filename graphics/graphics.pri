@@ -1,5 +1,5 @@
-INCLUDEPATH += $$PWD/../event-system
-include($$PWD/../event-system/event-system.pri)
+INCLUDEPATH += $$PWD/../core
+include($$PWD/../core/core.pri)
 
 RESOURCES += \
     $$PWD/shaders/shaders.qrc
