@@ -13,7 +13,7 @@ Features
 
 ---------------
 
-base/
+graphics/
 
 * Loading Textures
 * Texture Atlases (from Cheetah Texture Packer, json format)
@@ -24,7 +24,7 @@ base/
 * Mesh Instancing
 * ViewPort and Camera abstraction classes
 
-Audio/
+audio/
 
 * Playing wav files, (play, pause,resume,loop, stop)
 
@@ -35,7 +35,7 @@ user-interface/
 * TextLabels
 * InputArea (processing tap/mouse clicks)
 
-event-system/
+core/
 
 * events 
 * delegates
