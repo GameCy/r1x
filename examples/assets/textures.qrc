@@ -6,5 +6,7 @@
         <file>textures/Popup.png</file>
         <file>textures/slot.png</file>
         <file>textures/star_particle.png</file>
+        <file>textures/atlas1.atlas</file>
+        <file>textures/atlas1.png</file>
     </qresource>
 </RCC>

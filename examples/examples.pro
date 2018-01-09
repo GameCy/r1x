@@ -6,20 +6,25 @@ QT += core gui widgets multimedia
 
 INCLUDEPATH += $$PWD/../graphics
 INCLUDEPATH += $$PWD/../user-interface
+INCLUDEPATH += $$PWD/../components
 
 include($$PWD/../graphics/graphics.pri)
 include($$PWD/../user-interface/user-interface.pri)
+include($$PWD/../components/components.pri)
 
 SOURCES += \
     InputTracker.cpp \
     main.cpp \
     mainwidget.cpp \
-    UIFactory.cpp
+    UIFactory.cpp \
+    SpritesFromAtlas.cpp
 
 HEADERS += \
     InputTracker.h \
     mainwidget.h \
-    UIFactory.h
+    UIFactory.h \
+    ExampleBase.h \
+    SpritesFromAtlas.h
 
 RESOURCES += \
     assets/textures.qrc \

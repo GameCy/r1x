@@ -4,13 +4,15 @@
 #include <QMatrix4x4>
 #include "Core.h"
 #include "Graphics.h"
+#include "UI.h"
 #include "InputTracker.h"
-//#include "Ogl.h"
-
+#include "Ogl.h"
+#include "SpritesFromAtlas.h"
 
 MainWidget::MainWidget(QWidget *parent) :
     QOpenGLWidget(parent)
   , firstTime(true)
+  , example(0)
 {
     //== Disable VSync, get more than 60FPS
     QSurfaceFormat format = QSurfaceFormat::defaultFormat();
@@ -44,16 +46,10 @@ void MainWidget::initializeGL()
     if (!Graphics::Init())
         close();
 
-    //QString fontPath = ":/fonts/pipe48.json";
-    //UI::Font.LoadFont("Pipe", fontPath);
+    UI::Fonts.LoadFont("Pipe", ":/fonts/pipe48.json");
 
     Core::Random.ReSeed( time(0) );
     Core::Clock.ResetTimer();
-}
-
-void MainWidget::InitViews()
-{
-
 }
 
 void MainWidget::resizeGL(int w, int h)
@@ -80,12 +76,12 @@ void MainWidget::paintGL()
     Core::CoreDelegates.Process();
     //Core::CoreEvents.Process();
 
-//    if (activeView)
-//    {
-//        activeView->Update( frameDt );
-//        ogl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//        activeView->Render();
-//    }
+    if (example)
+    {
+        example->Update( frameDt );
+        ogl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        example->Render();
+    }
     update();
 }
 
@@ -159,13 +155,21 @@ bool MainWidget::event(QEvent *event)
     return QWidget::event(event);
 }
 
-void MainWidget::playButtonClicked()
+void MainWidget::nextButtonClicked()
 {
-    //mainView->DisableButtons();
+}
 
+void MainWidget::previousButtonClicked()
+{
 }
 
 void MainWidget::quitButtonClicked()
 {
     emit exitGame();
 }
+
+void MainWidget::InitViews()
+{
+    example = new SpritesFromAtlas();
+}
+

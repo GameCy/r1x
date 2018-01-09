@@ -2,6 +2,7 @@
 #define MAINWIDGET_H
 
 #include <QOpenGLWidget>
+#include "ExampleBase.h"
 
 class MainWidget : public QOpenGLWidget
 {
@@ -28,10 +29,13 @@ protected:
     void paintGL() Q_DECL_OVERRIDE;
 
 protected slots:
-    void playButtonClicked();
+    void nextButtonClicked();
+    void previousButtonClicked();
     void quitButtonClicked();
 signals:
     void exitGame();
+private:
+    ExampleBase*    example;
 };
 
 #endif // MAINWIDGET_H
