@@ -5,11 +5,15 @@
 #include "Shader.h"
 #include <QMap>
 #include "Randomizer.h"
+#include "DPIHelper.h"
 #include <time.h>
 
 class Graphics
 {
 public:
+    static ViewPort         Screen;
+    static DPIHelper        DPI;
+
     static ModelManager     Model;
     static TextureManager   Texture;
     static ShaderPtr        phongShader;

@@ -9,7 +9,7 @@ SOURCES += \
     $$PWD/FontManager.cpp \
     $$PWD/Icon.cpp \
     $$PWD/InputArea.cpp \
-    $$PWD/DPIHelper.cpp
+    $$PWD/UI.cpp
 
 HEADERS += \
     $$PWD/TextLabel.h \
@@ -21,4 +21,5 @@ HEADERS += \
     $$PWD/FontManager.h \
     $$PWD/Icon.h \
     $$PWD/InputArea.h \
-    $$PWD/DPIHelper.h
+    $$PWD/UI.h
+

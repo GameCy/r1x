@@ -1,10 +1,9 @@
 #ifndef FONTRENDERER_H
 #define FONTRENDERER_H
-#include "Entity.h"
+#include "SmartPtr.h"
 #include "TextLabel.h"
 
-
-class TextRenderer : public Entity
+class TextRenderer : public RefCountBase
 {
 public:
     TextRenderer(FontPtr font);
@@ -15,9 +14,8 @@ public:
 
     void    BuildQuads();
 
-    virtual void	Render(CameraPtr camera);
-    virtual void	Update(float dt);
-    virtual bool	IsFinished();
+    virtual void	Render();
+    virtual void	Update();
 
 private:
     QList<TextLabelPtr> labels;

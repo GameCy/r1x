@@ -58,13 +58,12 @@ void    TextRenderer::BuildQuads()
     quadRenderer->UpdateQuadsBuffer(character);
 }
 
-void    TextRenderer::Render(CameraPtr camera)
+void    TextRenderer::Render()
 {
-    //camera.RasterMode(); // rasterMode called for all fonts once, from inside EntityManager
     quadRenderer->RenderQuads();
 }
 
-void	TextRenderer::Update(float dt)
+void	TextRenderer::Update()
 {
     foreach (TextLabelPtr label,  labels)
     {
@@ -75,5 +74,3 @@ void	TextRenderer::Update(float dt)
         }
     }
 }
-
-bool	TextRenderer::IsFinished()  { return false; }

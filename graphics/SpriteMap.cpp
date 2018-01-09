@@ -8,6 +8,14 @@ SpriteMap::SpriteMap(int maxQuads, QString atlasPath)
     renderer.Init(maxQuads, texturePath);
 }
 
+SpriteMap::~SpriteMap()
+{
+    foreach (auto sprite, sprites)
+    {
+        delete sprite;
+    }
+}
+
 MaterialPtr SpriteMap::GetMaterial()
 {
     return renderer.GetMaterial();

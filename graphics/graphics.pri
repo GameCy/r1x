@@ -11,6 +11,7 @@ SOURCES += \
     $$PWD/AtlasImporter.cpp \
     $$PWD/Camera.cpp \
     $$PWD/CellMap.cpp \
+    $$PWD/DPIHelper.cpp \
     $$PWD/FrameRate.cpp \
     $$PWD/Hermite.cpp \
     $$PWD/Material.cpp \
@@ -35,12 +36,13 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/AngleInterpolator.h \
-    $$PWD/Graphics.h \
     $$PWD/AtlasImporter.h \
     $$PWD/BlinkFloat.h \
     $$PWD/Camera.h \
     $$PWD/CellMap.h \
+    $$PWD/DPIHelper.h \
     $$PWD/FrameRate.h \
+    $$PWD/Graphics.h \
     $$PWD/Hermite.h \
     $$PWD/IClipper.h \
     $$PWD/Material.h \

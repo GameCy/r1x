@@ -1,5 +1,6 @@
 #ifndef SPRITEMAP_H
 #define SPRITEMAP_H
+#include "SmartPtr.h"
 #include "Sprite.h"
 #include "AtlasImporter.h"
 #include <QVector2D>
@@ -7,10 +8,11 @@
 #include "Material.h"
 #include "QuadRenderer2D.h"
 
-class SpriteMap
+class SpriteMap : public RefCountBase
 {
 public:
     SpriteMap(int maxQuads, QString atlasPath);
+    ~SpriteMap();
 
     Sprite*     CreateSprite(QString spriteName, float width, float height);
     bool        DestroySprite(Sprite* sprite);
