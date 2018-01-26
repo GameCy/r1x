@@ -11,14 +11,17 @@ public:
     UVAnim();
     UVAnim(float animDT, int numFramesX, int numFramesY, int maxFrames, UVRect *atlasUVRect=0);
 
-    void	Init(float animDT, int	numFramesX, int	numFramesY, int maxFrames, UVRect *atlasUVRect=0);
+    void	Init(float animDuration, int	numFramesX, int	numFramesY, int maxFrames, UVRect *atlasUVRect=0);
 
-    UVRect  getCellUVs(float time);
+    void    Update(float dt);
+    UVRect  GetCellUVs();
 
+    UVRect  GetCellUVs(float time);
     int		CalcCellIdx(float time);
     void	CalcUVs(int cellIdx,  Quad3D &quad);
 
-	float		AnimDT;
+    float		Time;
+    float       Duration;
 
 private:
     int		MaxFrames;

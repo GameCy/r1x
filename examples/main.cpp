@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 #endif
     if (mainWidget)
     {
-        mainWidget->resize(480,800);      mainWidget->show();
+        mainWidget->resize(500,500);      mainWidget->show();
         //mainWidget->showFullScreen();
     }
     else

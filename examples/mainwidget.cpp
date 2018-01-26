@@ -30,6 +30,7 @@ MainWidget::~MainWidget()
 void MainWidget::closeEvent(QCloseEvent *event)
 {
     Graphics::DestroyAll();
+    UI::Fonts.ClearAll();
 }
 
 void MainWidget::initializeGL()

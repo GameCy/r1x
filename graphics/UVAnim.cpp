@@ -3,7 +3,8 @@
 #include <math.h>
 
 UVAnim::UVAnim()
- : AnimDT(0)
+ : Time(0)
+ , Duration(1.f)
  , MaxFrames(0)
  , FramesX(0)
  , FramesY(0)
@@ -12,18 +13,18 @@ UVAnim::UVAnim()
 {
 }
 
-UVAnim::UVAnim(float animDT, int numFramesX, int numFramesY, int maxFrames, UVRect *atlasUVRect)
+UVAnim::UVAnim(float animDuration, int numFramesX, int numFramesY, int maxFrames, UVRect *atlasUVRect)
 {
-    Init( animDT, numFramesX, numFramesY, maxFrames, atlasUVRect);
+    Init( animDuration, numFramesX, numFramesY, maxFrames, atlasUVRect);
 }
 
-void	UVAnim::Init( float animDT, int	numFramesX, int	numFramesY, int maxFrames, UVRect* atlasUVRect)
+void	UVAnim::Init(float animDuration, int	numFramesX, int	numFramesY, int maxFrames, UVRect* atlasUVRect)
 {
     if (atlasUVRect)
         uvRect = *atlasUVRect;
     else
         uvRect =  UVRect(0,0,1,1);
-	AnimDT = animDT;
+    Duration = animDuration;
 	MaxFrames = maxFrames;
 	FramesX = numFramesX;
 	FramesY = numFramesY;
@@ -31,7 +32,19 @@ void	UVAnim::Init( float animDT, int	numFramesX, int	numFramesY, int maxFrames, 
     cellDy = (uvRect.V2 - uvRect.V1)/float(numFramesY);
 }
 
-UVRect UVAnim::getCellUVs(float time)
+void UVAnim::Update(float dt)
+{
+    Time += dt;
+    while (Time>Duration)
+        Time -= Duration;
+}
+
+UVRect UVAnim::GetCellUVs()
+{
+    return GetCellUVs(Time);
+}
+
+UVRect UVAnim::GetCellUVs(float time)
 {
     int idx =  CalcCellIdx(time);
     UVRect cellUVs;
@@ -46,16 +59,17 @@ UVRect UVAnim::getCellUVs(float time)
     float uvx = uvRect.U1 + float(idx_x)*cellDx;
     float uvy = uvRect.V1 + float(idx_y)*cellDy;
 
-    const float margin = 0.01f;
+    const float margin = 0.0001f;
     cellUVs.U1= uvx + margin;          cellUVs.V1 = uvy + margin;
-    cellUVs.U2= uvx + cellDx - margin; cellUVs.V1 = uvy + cellDy - margin;
+    cellUVs.U2= uvx + cellDx - margin; cellUVs.V2 = uvy + cellDy - margin;
     return cellUVs;
 }
 
 int		UVAnim::CalcCellIdx(float time)
 {
-    if (time<0.f)   return -1;
-    float ratio = time/AnimDT;
+    if (time<0.f)   return 0;
+    if (time>Duration) return MaxFrames-1;
+    float ratio = time/Duration;
 	int idx = (int) (ratio*((float)MaxFrames));
 	if (idx<0)			idx = 0;
 	if (idx>=MaxFrames)	idx = MaxFrames-1;

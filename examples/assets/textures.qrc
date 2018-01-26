@@ -1,12 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>textures/backgroung.png</file>
-        <file>textures/energy1.png</file>
-        <file>textures/Label.png</file>
-        <file>textures/Popup.png</file>
-        <file>textures/slot.png</file>
-        <file>textures/star_particle.png</file>
-        <file>textures/atlas1.atlas</file>
-        <file>textures/atlas1.png</file>
+        <file>textures/textures.atlas</file>
+        <file>textures/textures.png</file>
     </qresource>
 </RCC>
