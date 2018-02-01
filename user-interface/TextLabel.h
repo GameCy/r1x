@@ -20,7 +20,7 @@ public:
     friend class TextRenderer;
 
 private:
-    TextLabel(FontPtr font, QString txt, QVector2D pos);
+    TextLabel(FontPtr font, QString txt);
     QString     Text;
     QVector2D   Position;
     float       Scale;

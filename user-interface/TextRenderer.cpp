@@ -13,9 +13,9 @@ void    TextRenderer::ClearAllLabels()
     quadRenderer->ClearQuads();
 }
 
-TextLabelPtr    TextRenderer::CreateLabel(QString text, QVector2D pos)
+TextLabelPtr    TextRenderer::CreateLabel(QString text)
 {
-    TextLabelPtr label= new TextLabel(fontRef, text, pos);
+    TextLabelPtr label= new TextLabel(fontRef, text);
     labels.push_back(label);
     return label;
 }

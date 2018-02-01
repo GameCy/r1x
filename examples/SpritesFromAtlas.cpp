@@ -10,20 +10,18 @@ SpritesFromAtlas::SpritesFromAtlas()
     screenHeight= Graphics::Screen.Height();
 
     ring = atlas.CreateSprite("slot.png", 0,0);
-    ring->setSize( rectSize(0.2f) );
 
     star = atlas.CreateSprite("star_particle.png", 0,0);
-    star->setSize( rectSize(0.1f) );
 
     spark = atlas.CreateSprite("energy1.png", 0,0);
-    spark->setSize( rectSize(0.3f) );
     sparkAnim.Init(.8f, 1, 6, 6, &spark->getUVRect() );
 
     runner = atlas.CreateSprite("Runner.png", 0,0);
-    runner->setSize( rectSize(0.3f, 0.6f) );
     runnerAnim.Init(.35f, 4, 1, 4, &runner->getUVRect() );
 
     atlas.GetMaterial()->Blending = true;
+
+    Resize(screenWidth, screenHeight);
 }
 
 SpritesFromAtlas::~SpritesFromAtlas()
@@ -51,6 +49,16 @@ void SpritesFromAtlas::Update(float dt)
     runner->setUVRect( runnerAnim.GetCellUVs() );
 
     atlas.Update();
+}
+
+void SpritesFromAtlas::Resize(float w, float h)
+{
+    screenWidth = w;
+    screenHeight = h;
+    ring->setSize( rectSize(0.2f) );
+    star->setSize( rectSize(0.1f) );
+    spark->setSize( rectSize(0.3f) );
+    runner->setSize( rectSize(0.3f, 0.6f) );
 }
 
 QVector2D SpritesFromAtlas::rectSize(float size)

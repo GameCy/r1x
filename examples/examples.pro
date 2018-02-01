@@ -17,14 +17,16 @@ SOURCES += \
     main.cpp \
     mainwidget.cpp \
     UIFactory.cpp \
-    SpritesFromAtlas.cpp
+    SpritesFromAtlas.cpp \
+    UserInterface.cpp
 
 HEADERS += \
     InputTracker.h \
     mainwidget.h \
     UIFactory.h \
     ExampleBase.h \
-    SpritesFromAtlas.h
+    SpritesFromAtlas.h \
+    UserInterface.h
 
 RESOURCES += \
     assets/textures.qrc \

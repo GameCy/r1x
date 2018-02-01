@@ -1,9 +1,8 @@
 #include "TextLabel.h"
 #include "Font.h"
 
-TextLabel::TextLabel(FontPtr font, QString txt, QVector2D pos)
+TextLabel::TextLabel(FontPtr font, QString txt)
     : Text(txt)
-    , Position(pos)
     , FontRef(font)
     , Scale(1.0f)
 {

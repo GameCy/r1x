@@ -13,7 +13,7 @@ public:
     ButtonPtr CreateButton(QString text);
     IconPtr   CreateIcon(QString iconSpriteName);
     Sprite*   CreateSprite(QString spriteName);
-    TextLabelPtr CreateLabel(QString text, QVector2D pos);
+    TextLabelPtr CreateLabel(QString text);
 
     SpriteMapPtr    UITexureMap;
     FontRendererPtr textRenderer;

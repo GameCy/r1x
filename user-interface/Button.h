@@ -14,7 +14,7 @@ class Button : public InputArea
 {
     Q_OBJECT
 public:
-    Button(QString txt, QVector2D pos, FontRendererPtr fontRenderer, SpriteMapPtr uiMap, UVRect uvRect);
+    Button(QString txt, FontRendererPtr fontRenderer, Sprite *backgroundsSprite, UVRect uvRect);
     ~Button();
 
     void    SetText(QString text);
@@ -26,8 +26,9 @@ private:
     TextLabelPtr Label;
     Sprite*     Background;
     UVRect      TexUVArea ;
+    float       textScale;
 
-    void UpdateInternals();
+    void UpdateGeometry();
 
 private slots:
     void ChangeVisuals(InputArea::State newState, InputArea::State oldState);

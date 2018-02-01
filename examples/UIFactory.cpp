@@ -17,9 +17,9 @@ UIFactory::UIFactory(QString atlasPath, int maxSprites, QString fontName)
 ButtonPtr UIFactory::CreateButton(QString text)
 {
     UVRect uvRect;
-    if (!UITexureMap->GetUVRect("button.png", uvRect))
+    if (!UITexureMap->GetUVRect("ButtonStates.png", uvRect))
         return 0;
-    ButtonPtr btn = new Button(text, QVector2D(1,1), textRenderer, UITexureMap, uvRect);
+    ButtonPtr btn = new Button(text, textRenderer, UITexureMap->CreateSprite("ButtonStates.png",1,1), uvRect);
     return btn;
 }
 
@@ -37,9 +37,9 @@ Sprite *UIFactory::CreateSprite(QString spriteName)
     return UITexureMap->CreateSprite(spriteName, 32, 32);
 }
 
-TextLabelPtr UIFactory::CreateLabel(QString text, QVector2D pos)
+TextLabelPtr UIFactory::CreateLabel(QString text)
 {
-    return textRenderer->CreateLabel(text, pos);
+    return textRenderer->CreateLabel(text);
 }
 
 void UIFactory::Render()

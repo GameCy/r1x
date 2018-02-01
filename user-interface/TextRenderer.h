@@ -9,7 +9,7 @@ public:
     TextRenderer(FontPtr font);
 
     void    ClearAllLabels();
-    TextLabelPtr CreateLabel(QString text, QVector2D pos);
+    TextLabelPtr CreateLabel(QString text);
     void    RemoveLabel(TextLabelPtr label);
 
     void    BuildQuads();

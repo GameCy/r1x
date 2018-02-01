@@ -14,6 +14,7 @@ public:
 public:
     virtual void Render();
     virtual void Update(float dt);
+    virtual void Resize(float w, float h);
 
 private:
     SpriteMap   atlas;
@@ -31,7 +32,7 @@ private:
     QVector2D   screenPos(float x, float y);
     float       screenWidth;
     float       screenHeight;
-    float       t;
+    float       t;    
 };
 
 #endif // SPRITESFROMTEXTURE_H

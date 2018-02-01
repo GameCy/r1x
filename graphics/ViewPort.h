@@ -30,6 +30,11 @@ struct ViewPort {
         ogl.glViewport( X1, Y1, X2-X1, Y2-Y1);
     }
 
+    QVector2D Normalized(float x, float y)
+    {
+        return QVector2D( X1 + x*(X2-X1), Y1 + y*(Y2-Y1) );
+    }
+
     int X1; int Y1; int X2; int Y2;
 };
 

@@ -3,6 +3,7 @@
 
 #include <QOpenGLWidget>
 #include "ExampleBase.h"
+#include "UserInterface.h"
 
 class MainWidget : public QOpenGLWidget
 {
@@ -12,7 +13,6 @@ public:
     explicit MainWidget(QWidget *parent = 0);
     ~MainWidget();
 
-    void InitViews();
     bool firstTime;
 
 protected:
@@ -36,6 +36,7 @@ signals:
     void exitGame();
 private:
     ExampleBase*    example;
+    UserInterface*  userInterface;
 };
 
 #endif // MAINWIDGET_H

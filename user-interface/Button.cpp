@@ -2,16 +2,16 @@
 #include <QDebug>
 #include "ButtonManager.h"
 
-Button::Button(QString txt, QVector2D pos, FontRendererPtr fontRenderer, SpriteMapPtr uiMap, UVRect uvRect)
+Button::Button(QString txt, FontRendererPtr fontRenderer, Sprite* backgroundsSprite, UVRect uvRect)
 {
+    textScale = 1.f;
     TexUVArea = uvRect;
-    Label = fontRenderer->CreateLabel(txt, pos);
-    Background = uiMap->CreateSprite("button.png", 0,0);
-    Background->setUVRect( uvRect );
-    Background->setSize( QVector2D(Label->PixelWidth, Label->PixelHeight) *1.1f );
+    Label = fontRenderer->CreateLabel(txt);
+    Background = backgroundsSprite;
+    SetSize( QVector2D(Label->PixelWidth*1.2f, Label->PixelHeight) *1.2f );
+    UpdateGeometry();
     ChangeVisuals(Normal, Normal);
 
-    UpdateInternals();
     connect( this, &InputArea::StateChanged, this, &Button::ChangeVisuals);
     ButtonManager::Instance().Add(this);
 }
@@ -25,35 +25,39 @@ Button::~Button()
 void Button::SetText(QString text)
 {
     Label->SetText(text);
-    UpdateInternals();
+    UpdateGeometry();
 }
 
 void Button::SetPos(QVector2D pos)
 {
     Pos = pos;
-    UpdateInternals();
+    UpdateGeometry();
 }
 
 void Button::SetSize(QVector2D size)
 {
     Size = size;
-    UpdateInternals();
+    UpdateGeometry();
 }
 
 void Button::SetTextScale(float scale)
 {
-    Label->setScale(scale);
-    UpdateInternals();
+    textScale = scale;
+    //Label->setScale(textScale);
+    UpdateGeometry();
 }
 
-void Button::UpdateInternals()
+void Button::UpdateGeometry()
 {
     Background->setPos(Pos);
     Background->setSize(Size);
 
+    float scale = textScale * (Size.x() / Label->PixelWidth);
+    Label->setScale( scale );
     float xOffset = (Size.x() - Label->PixelWidth)/2.f;
     float yOffset = (Size.y() - Label->PixelHeight)/2.f;
     Label->SetPos(Pos + QVector2D(xOffset, yOffset) );
+
 }
 
 void Button::ChangeVisuals(InputArea::State newState, InputArea::State oldState)
@@ -69,6 +73,3 @@ void Button::ChangeVisuals(InputArea::State newState, InputArea::State oldState)
     newRect.V2 = newRect.V1+0.33333f*Vheight;
     Background->setUVRect( newRect );
 }
-
-
-

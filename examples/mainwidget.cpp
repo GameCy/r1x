@@ -5,6 +5,7 @@
 #include "Core.h"
 #include "Graphics.h"
 #include "UI.h"
+#include "ButtonManager.h"
 #include "InputTracker.h"
 #include "Ogl.h"
 #include "SpritesFromAtlas.h"
@@ -13,6 +14,7 @@ MainWidget::MainWidget(QWidget *parent) :
     QOpenGLWidget(parent)
   , firstTime(true)
   , example(0)
+  , userInterface(0)
 {
     //== Disable VSync, get more than 60FPS
     QSurfaceFormat format = QSurfaceFormat::defaultFormat();
@@ -47,29 +49,41 @@ void MainWidget::initializeGL()
     if (!Graphics::Init())
         close();
 
-    UI::Fonts.LoadFont("Pipe", ":/fonts/pipe48.json");
+    //UI::Fonts.LoadFont("Pipe", ":/fonts/pipe.json");
+    UI::Fonts.LoadFont("Pipe48", ":/fonts/pipe48.json");
 
     Core::Random.ReSeed( time(0) );
     Core::Clock.ResetTimer();
+
+    connect(this, &MainWidget::exitGame, this, &MainWidget::close);
 }
+
 
 void MainWidget::resizeGL(int w, int h)
 {
     Graphics::Screen.SetHighPoint(w,h);
     Graphics::DPI.Update();
 
-    //if (!!mainView)         mainView->Resize(w,h);
+    if (userInterface)  userInterface->Resize(w,h);
+    if (example)        example->Resize(w,h);
 }
+
 
 void MainWidget::paintGL()
 {
     if (firstTime)
     {
-        InitViews();
+        float w = Graphics::Screen.Width();
+        float h = Graphics::Screen.Height();
+        userInterface = new UserInterface();
+        userInterface->Resize(w, h);
+        example = new SpritesFromAtlas();
+        example->Resize(w, h);
         firstTime = false;
+        return;
     }
 
-    //ButtonManager::Instance().ExecuteRemovals();
+    ButtonManager::Instance().ExecuteRemovals();
     Core::Clock.UpdateTimer();
     float frameDt = Core::Clock.Ellapsed;
     if (frameDt>0.5f)   frameDt = 0.5f;
@@ -77,12 +91,15 @@ void MainWidget::paintGL()
     Core::CoreDelegates.Process();
     //Core::CoreEvents.Process();
 
+    ogl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     if (example)
     {
         example->Update( frameDt );
-        ogl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         example->Render();
     }
+    userInterface->Update(frameDt);
+    userInterface->Render();
+
     update();
 }
 
@@ -91,7 +108,7 @@ void MainWidget::mousePressEvent(QMouseEvent *e)
     if (e->button()==Qt::LeftButton)
     {
         QVector2D invpos(e->localPos().x(), Graphics::Screen.Height() - e->localPos().y());
-        //ButtonManager::Instance().TapBeginHandler(123456, invpos);
+        ButtonManager::Instance().TapBeginHandler(123456, invpos);
 
         //QVector2D pos(e->localPos().x(), e->localPos().y());
         InputTracker::Instance().feedTapBegin( invpos );
@@ -105,7 +122,7 @@ void MainWidget::mouseMoveEvent(QMouseEvent *e)
     if (e->buttons()==Qt::LeftButton)
     {
         QVector2D invpos(e->localPos().x(), Graphics::Screen.Height() - e->localPos().y());
-        //ButtonManager::Instance().TapMoveHandler(123456, invpos);
+        ButtonManager::Instance().TapMoveHandler(123456, invpos);
 
         //QVector2D pos(e->localPos().x(), e->localPos().y());
         InputTracker::Instance().feedTapMove( invpos );
@@ -117,28 +134,20 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e)
     if (e->button()==Qt::LeftButton)
     {
         QVector2D invpos(e->localPos().x(), Graphics::Screen.Height() - e->localPos().y());
-        //ButtonManager::Instance().TapEndHandler(123456, invpos);
+        ButtonManager::Instance().TapEndHandler(123456, invpos);
 
         //QVector2D pos(e->localPos().x(), e->localPos().y());
         InputTracker::Instance().feedTapEnd( invpos );
     }
 }
 
-
-static unsigned int someSeed = 1;
 void MainWidget::keyReleaseEvent(QKeyEvent *ev)
 {
     switch(ev->key())
     {
     case Qt::Key_Escape :
-    case Qt::Key_Back :
-        ev->accept();
-        emit exitGame();
+    case Qt::Key_Back :    { ev->accept();    emit exitGame(); }
         break;
-
-    case Qt::Key_Left:        break;
-    case Qt::Key_Right:       break;
-    case Qt::Key_Space:       break;
     }
 }
 
@@ -167,10 +176,5 @@ void MainWidget::previousButtonClicked()
 void MainWidget::quitButtonClicked()
 {
     emit exitGame();
-}
-
-void MainWidget::InitViews()
-{
-    example = new SpritesFromAtlas();
 }
 
