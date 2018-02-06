@@ -1,4 +1,4 @@
-#ifndef ASSETS_H
+#ifndef GRAPHICS_H
 #define GRAPHICS_H
 #include "ModelManager.h"
 #include "TextureManager.h"

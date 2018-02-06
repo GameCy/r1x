@@ -9,6 +9,7 @@
 #include "InputTracker.h"
 #include "Ogl.h"
 #include "SpritesFromAtlas.h"
+#include "Viewd3dModels.h"
 
 MainWidget::MainWidget(QWidget *parent) :
     QOpenGLWidget(parent)
@@ -77,7 +78,7 @@ void MainWidget::paintGL()
         float h = Graphics::Screen.Height();
         userInterface = new UserInterface();
         userInterface->Resize(w, h);
-        example = new SpritesFromAtlas();
+        example = new Viewd3DModels; //SpritesFromAtlas();
         example->Resize(w, h);
         firstTime = false;
         return;

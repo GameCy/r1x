@@ -12,6 +12,8 @@ UserInterface::UserInterface()
 
 void UserInterface::Render()
 {
+    Graphics::phongShader->RasterMode( Graphics::Screen );
+
     uiFactory->Render();
 }
 

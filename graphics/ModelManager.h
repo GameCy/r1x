@@ -1,20 +1,9 @@
 #ifndef MODELMANAGER_H
 #define MODELMANAGER_H
-#include <QVector>
+#include <QMap>
 #include <QString>
 #include "Model.h"
 
-enum ModelNames {
-    Model_Warrior,
-    Model_Warrior2,
-    Model_Circle,
-    Model_Arrows,
-    Model_NavigationMarks,
-    Model_HealthMarks,
-    Model_Theme1,
-    Model_Environment,
-    Model_MAX_ID
-};
 
 class ModelManager
 {
@@ -22,15 +11,13 @@ public:
     ModelManager();
     ~ModelManager();
 
-    ModelPtr Get(ModelNames name);
-    void    Release(ModelNames name);
+    ModelPtr Get(QString modelUrl);
+    void    Release(ModelPtr model);
 
     void ClearAll();
 
 private:
-    QVector<ModelPtr>   models;
-    QVector<QString>    resource_paths;
-    void    BuildResourcePaths();
+    QMap<QString, ModelPtr>   models;
 };
 
 #endif // MODELMANAGER_H

@@ -3,7 +3,7 @@
 
 
 Camera::Camera(ShaderPtr shader)
-    : shader(0)
+    : shader(shader)
     , FieldOfView(default_fov)
     , Near(default_near)
     , Far(default_far)

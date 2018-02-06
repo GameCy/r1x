@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>models/head.mtl</file>
+        <file>models/head.obj</file>
+        <file>models/head.png</file>
+        <file>models/groundpatch.png</file>
+        <file>models/groundPatch.mtl</file>
+        <file>models/groundPatch.obj</file>
+    </qresource>
+</RCC>

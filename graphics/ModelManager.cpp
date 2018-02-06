@@ -1,15 +1,9 @@
 #include "ModelManager.h"
 
 
-
 ModelManager::ModelManager()
 {
     models.clear();
-    for(int i=0; i<Model_MAX_ID; ++i)
-    {
-        models.push_back(0);
-    }
-    BuildResourcePaths();
 }
 
 ModelManager::~ModelManager()
@@ -17,42 +11,36 @@ ModelManager::~ModelManager()
     models.clear();
 }
 
-ModelPtr ModelManager::Get(ModelNames name)
+ModelPtr ModelManager::Get(QString modelUrl)
 {
-    if (name<0 || name>=Model_MAX_ID)
+    if (modelUrl.isEmpty())
         return 0;
-    if (models[name]==0)
-    {
-        ModelPtr model = new Model();
-        if (model->LoadFile( resource_paths[name] ))
-            models[name] = model;
-    }
-    return models[name];
+    if (models.contains(modelUrl))
+        return models[modelUrl];
+
+    ModelPtr model = new Model();
+    if (model->LoadFile( modelUrl))
+        models.insert(modelUrl,  model);
+    else
+        model = 0;
+
+    return model;
+
 }
 
-void ModelManager::Release(ModelNames name)
+void ModelManager::Release(ModelPtr model)
 {
-    if (name>=0 && name<Model_MAX_ID && (models[name]!=0) )
+    if (!!model)
     {
-        models[name] = 0;
+        for (auto it = models.begin(); it != models.end(); )
+            if (it.value() == model)
+                it = models.erase(it);
+            else
+                ++it;
     }
 }
 
 void ModelManager::ClearAll()
 {
     models.clear();
-}
-
-void ModelManager::BuildResourcePaths()
-{
-    resource_paths.clear();
-
-    resource_paths.push_back(":/fattyDefender/fattyDefender.obj");
-    resource_paths.push_back(":/hornsavatar/hornsAvatar.obj");
-    resource_paths.push_back(":/groundMarks/circle.obj");
-    resource_paths.push_back(":/groundMarks/arrows.obj");
-    resource_paths.push_back(":/groundMarks/teamControls.obj");
-    resource_paths.push_back(":/groundMarks/healthMarks.obj");
-    resource_paths.push_back(":/theme1/theme1.obj");
-    resource_paths.push_back(":/environment/environment.obj");
 }

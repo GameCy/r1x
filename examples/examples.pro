@@ -18,7 +18,8 @@ SOURCES += \
     mainwidget.cpp \
     UIFactory.cpp \
     SpritesFromAtlas.cpp \
-    UserInterface.cpp
+    UserInterface.cpp \
+    Viewd3dModels.cpp
 
 HEADERS += \
     InputTracker.h \
@@ -26,11 +27,13 @@ HEADERS += \
     UIFactory.h \
     ExampleBase.h \
     SpritesFromAtlas.h \
-    UserInterface.h
+    UserInterface.h \
+    Viewd3dModels.h
 
 RESOURCES += \
     assets/textures.qrc \
-    assets/fonts.qrc
+    assets/fonts.qrc \
+    assets/models.qrc
 
 # add files to  APK
 DISTFILES += \
