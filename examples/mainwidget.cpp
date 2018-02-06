@@ -15,6 +15,7 @@ MainWidget::MainWidget(QWidget *parent) :
     QOpenGLWidget(parent)
   , firstTime(true)
   , example(0)
+  , exampleIndex(0)
   , userInterface(0)
 {
     //== Disable VSync, get more than 60FPS
@@ -78,7 +79,9 @@ void MainWidget::paintGL()
         float h = Graphics::Screen.Height();
         userInterface = new UserInterface();
         userInterface->Resize(w, h);
-        example = new Viewd3DModels; //SpritesFromAtlas();
+        connect(userInterface->buttonNext, &Button::Clicked, this, &MainWidget::nextButtonClicked);
+        connect(userInterface->buttonPrev, &Button::Clicked, this, &MainWidget::previousButtonClicked);
+        InstantiateExample(0);
         example->Resize(w, h);
         firstTime = false;
         return;
@@ -168,14 +171,33 @@ bool MainWidget::event(QEvent *event)
 
 void MainWidget::nextButtonClicked()
 {
+    InstantiateExample(+1);
 }
 
 void MainWidget::previousButtonClicked()
 {
+    InstantiateExample(-1);
 }
 
 void MainWidget::quitButtonClicked()
 {
     emit exitGame();
+}
+
+void MainWidget::InstantiateExample(int idxChange)
+{
+    exampleIndex += idxChange;
+    if (exampleIndex<0) exampleIndex = 0;
+    if (exampleIndex>1) exampleIndex = 1;
+    if (example)
+    {
+        delete example;
+        example = 0;
+    }
+    switch(exampleIndex)
+    {
+        case 0 : example = new SpritesFromAtlas();  break;
+        case 1 : example = new Viewd3DModels();  break;
+    }
 }
 

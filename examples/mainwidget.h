@@ -37,6 +37,10 @@ signals:
 private:
     ExampleBase*    example;
     UserInterface*  userInterface;
+
+    int exampleIndex;
+
+    void InstantiateExample(int idxChange);
 };
 
 #endif // MAINWIDGET_H

@@ -14,11 +14,12 @@ public:
     void Update(float dt);
     void Resize(float w, float h);
 
+    ButtonPtr buttonPrev;
+    ButtonPtr buttonNext;
+
 private:
     UIFactory*  uiFactory;
 
-    ButtonPtr buttonPrev;
-    ButtonPtr buttonNext;
 };
 
 #endif // USERINTERFACE_H
