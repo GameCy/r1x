@@ -4,9 +4,10 @@ r1x is intended to become an OpenGL ES 2.0 rendering / game engine.
 
 It is in early stage. 
 
-A Simple example with some animated sprites from a texture atlas
+Simple examples with some animated sprites from a texture atlas and rendering 3d mmodels (obj) can be found in the examples folder
 
-[![Watch the video](https://github.com/GameCy/r1x/blob/master/examples/assets/textures/ScreenshotExample1.png)](http://youtu.be/zQRBOOUaWpo)
+![alt text](https://github.com/GameCy/r1x/blob/master/examples/screenshots/ScreenshotExample1.png)
+![alt text](https://github.com/GameCy/r1x/blob/master/examples/screenshots/ScreenshotExample2.png)
 
 Tested on Ubuntu and Android.
 
