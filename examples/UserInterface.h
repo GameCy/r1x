@@ -2,6 +2,7 @@
 #define USERINTERFACE_H
 #include "ExampleBase.h"
 #include "UIFactory.h"
+#include "FrameRate.h"
 
 class UserInterface : public ExampleBase
 {
@@ -19,6 +20,9 @@ public:
 
 private:
     UIFactory*  uiFactory;
+
+    TextLabelPtr    fpsLabel;
+    FrameRate       fpsCounter;
 
 };
 
