@@ -1,6 +1,6 @@
 
 TEMPLATE = app
-TARGET = Examples
+TARGET = R1X-Examples
 
 QT += core gui widgets multimedia
 
