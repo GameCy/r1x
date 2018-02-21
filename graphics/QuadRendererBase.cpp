@@ -12,10 +12,11 @@ QuadRendererBase::QuadRendererBase()
 {
 }
 
-void QuadRendererBase::Init(int quadByteSize, int uvByteOffset, int numVertexComponents, int maxQuads,  MaterialPtr mat)
+void QuadRendererBase::Init(int quadByteSize, GLuint uvByteOffset, GLuint colorByteOffset, int numVertexComponents, int maxQuads,  MaterialPtr mat)
 {
     this->quadByteSize = quadByteSize;
     this->uvByteOffset = uvByteOffset;
+    this->colorByteOffset = colorByteOffset;
     this->numVertexComponents = numVertexComponents;
 
     material = mat;
@@ -78,7 +79,8 @@ void	QuadRendererBase::RenderQuads()
 
     ogl.glBindBuffer(GL_ARRAY_BUFFER, quadsBuffer);
     ogl.glVertexAttribPointer(0, numVertexComponents, GL_FLOAT, GL_FALSE, quadByteSize/4, 0);  // vertices
-    ogl.glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, quadByteSize/4, (const void*)uvByteOffset); // UV's
+    ogl.glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, quadByteSize/4, (const void*)uvByteOffset); // UVs
+    ogl.glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, quadByteSize/4, (const void*)colorByteOffset); // colors
 
     ogl.glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer);
     ogl.glDrawElements(GL_TRIANGLES, ActiveQuads*6, GL_UNSIGNED_SHORT, 0);

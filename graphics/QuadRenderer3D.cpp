@@ -4,7 +4,7 @@
 
 QuadRenderer3D::QuadRenderer3D(int maxQuads,  MaterialPtr mat)
 {
-    QuadRendererBase::Init( sizeof(Quad3D), 12, 3, maxQuads, mat);
+    QuadRendererBase::Init( sizeof(Quad3D), 12, -1, 3, maxQuads, mat);
 
     quads.clear();
     quads.reserve(maxQuads);

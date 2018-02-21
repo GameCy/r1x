@@ -17,13 +17,15 @@ public:
 
 
 protected:
-    void    Init(int quadByteSize, int uvByteOffset, int numVertexComponents, int maxQuads, MaterialPtr mat);
+    void    Init(int quadByteSize, GLuint uvByteOffset, GLuint colorByteOffset
+                 , int numVertexComponents, int maxQuads, MaterialPtr mat);
     void    UpdateQuadsBuffer(const void* quadsData);
     GLuint  ActiveQuads;
 
 private:
     GLuint  quadByteSize;
     GLuint  uvByteOffset;
+    GLuint  colorByteOffset;
     GLuint  numVertexComponents;
     GLuint  quadsBuffer;
     std::vector<unsigned short>  indices;

@@ -32,7 +32,8 @@ SOURCES += \
     $$PWD/Vertex.cpp \
     $$PWD/InstanceRender.cpp \
     $$PWD/Interpolator.cpp \
-    $$PWD/UVAnim.cpp
+    $$PWD/UVAnim.cpp \
+    $$PWD/QuadRenderer2DX.cpp
 
 HEADERS += \
     $$PWD/AngleInterpolator.h \
@@ -64,4 +65,5 @@ HEADERS += \
     $$PWD/InstanceRenderer.h \
     $$PWD/ViewPort.h \
     $$PWD/Interpolator.h \
-    $$PWD/UVAnim.h
+    $$PWD/UVAnim.h \
+    $$PWD/QuadRenderer2DX.h

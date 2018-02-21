@@ -1,7 +1,7 @@
-#include "QuadRenderer2D.h"
+#include "QuadRenderer2DX.h"
 #include "Ogl.h"
 
-void Quad2D::SetGeometry(float x, float y, float w, float h)
+void Quad2DX::SetGeometry(float x, float y, float w, float h)
 {
     X1 = X2 = X3 = X4 = x;
     X2 += w;
@@ -12,7 +12,7 @@ void Quad2D::SetGeometry(float x, float y, float w, float h)
     Y2 += h;
 }
 
-void Quad2D::SetUVs(float u1, float v1, float uvWidth, float uvHeight)
+void Quad2DX::SetUVs(float u1, float v1, float uvWidth, float uvHeight)
 {
     U1 = U2 = U3 = U4 = u1;
     U2 += uvWidth;
@@ -23,7 +23,7 @@ void Quad2D::SetUVs(float u1, float v1, float uvWidth, float uvHeight)
     V4 += uvHeight;
 }
 
-void Quad2D::SetUVRect(UVRect &uvs)
+void Quad2DX::SetUVRect(UVRect &uvs)
 {
     U1 = uvs.U1;    V1 = uvs.V1;
     U2 = uvs.U2;    V2 = uvs.V1;
@@ -31,35 +31,43 @@ void Quad2D::SetUVRect(UVRect &uvs)
     U4 = uvs.U1;    V4 = uvs.V2;
 }
 
+void Quad2DX::SetAllColors(QColor color)
+{
+    R1=R2=R3=color.redF();
+    G1=G2=G3=color.greenF();
+    B1=B2=B3=color.blueF();
+    A1=A2=A3=color.alphaF();
+}
+
 //------------------------------------------------
 
-QuadRenderer2D::QuadRenderer2D()
+QuadRenderer2DX::QuadRenderer2DX()
 {
 }
 
-QuadRenderer2D::~QuadRenderer2D()
+QuadRenderer2DX::~QuadRenderer2DX()
 {
 }
 
-void QuadRenderer2D::Init(int maxQuads, QString textureFileName)
+void QuadRenderer2DX::Init(int maxQuads, QString textureFileName)
 {
     MaterialPtr mat = new Material(textureFileName);
-    QuadRendererBase::Init(sizeof(Quad2D), 8, -1, 2, maxQuads, mat);
+    QuadRendererBase::Init(sizeof(Quad2DX), 8, 16, 2, maxQuads, mat);
     quads.clear();
     quads.reserve(maxQuads);
 }
 
-Quad2D& QuadRenderer2D::getQuad(int idx)
+Quad2DX& QuadRenderer2DX::getQuad(int idx)
 {
     return quads[idx];
 }
 
-void QuadRenderer2D::UpdateQuadsBuffer()
+void QuadRenderer2DX::UpdateQuadsBuffer()
 {
     QuadRendererBase::UpdateQuadsBuffer(&quads[0]);
 }
 
-void QuadRenderer2D::ReserveActiveQuads(int numQuads)
+void QuadRenderer2DX::ReserveActiveQuads(int numQuads)
 {
     ActiveQuads = numQuads;
     quads.resize(numQuads);
