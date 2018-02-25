@@ -22,6 +22,7 @@ bool Shader::InitShaders()
     phongShaders.bindAttributeLocation("inputPosition", 0);
     phongShaders.bindAttributeLocation("inputTexCoord", 1);
     phongShaders.bindAttributeLocation("inputNormal", 2);
+    phongShaders.bindAttributeLocation("inputColor", 3);
 
     // Bind shader pipeline for use
     if (!phongShaders.bind())
@@ -32,6 +33,7 @@ bool Shader::InitShaders()
     phongShaders.setUniformValue("specularColor", colorSpecular);
     phongShaders.setUniformValue("diffuseColor", colorDiffuse);
     phongShaders.setUniformValue("useSpecular", false);
+    phongShaders.setUniformValue("hasColorPerVertex", false);
     ColorMask = QVector4D(1,1,1,1);
     SetColorMask( ColorMask );
     SetAlphaTesting(0.005f);
@@ -48,6 +50,11 @@ void Shader::ParticleRenderingMode(bool on)
 {
     phongShaders.setUniformValue("isParticle", on);
     phongShaders.setUniformValue("hasLighting", !on);
+}
+
+void Shader::UseColorPerVertex(bool colorPerVertex)
+{
+    phongShaders.setUniformValue("hasColorPerVetex", colorPerVertex);
 }
 
 void Shader::UseSpecular(bool hasSpecular)

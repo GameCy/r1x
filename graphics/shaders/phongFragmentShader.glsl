@@ -11,6 +11,7 @@ uniform sampler2D texture;
 varying vec3 vertPos;
 varying vec2 outTexCoord;
 varying vec3 normalInterp;
+varying vec4 colorInterp;
 
 uniform vec3 lightPos;
 uniform vec4 colorMask;
@@ -24,7 +25,7 @@ uniform bool hasLighting;
 uniform bool useSpecular;
 
 void main() {
-    vec4 tex_color = texture2D(texture, outTexCoord);
+    vec4 tex_color = texture2D(texture, outTexCoord) * colorInterp;
     if (tex_color.a<alphaTestLimit)
         discard;
 

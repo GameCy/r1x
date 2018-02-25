@@ -13,13 +13,15 @@ uniform mat4 u_NormalMatrix;
 attribute vec4 inputPosition;
 attribute vec2 inputTexCoord;
 attribute vec3 inputNormal;
-
+attribute vec4 inputColor;
 
 varying vec3 vertPos;
 varying vec2 outTexCoord;
 varying vec3 normalInterp;
+varying vec4 colorInterp;
 
 uniform bool isParticle;
+uniform bool hasColorPerVertex;
 
 void main(){
     gl_Position = u_MVPMatrix * inputPosition;
@@ -27,6 +29,14 @@ void main(){
     vertPos = vec3(vertPos4) / vertPos4.w;
 
     outTexCoord = inputTexCoord;
+    if (hasColorPerVertex)
+    {
+        colorInterp = inputColor;
+    }
+    else
+    {
+        colorInterp = vec4(1,1,1,1);
+    }
     if (isParticle)
     {
         normalInterp = vec3(0.0, 0.0, 1.0);

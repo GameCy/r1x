@@ -14,6 +14,7 @@ public:
     void    Destroy();
 
     void    ParticleRenderingMode(bool on);
+    void    UseColorPerVertex(bool colorPerVertex);
     void    UseSpecular(bool hasSpecular);
     void    RasterMode(ViewPort viewport);
 
