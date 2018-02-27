@@ -1,11 +1,11 @@
 #include "Sprite.h"
 
 
-Sprite::Sprite(float width, float height, UVRect _uvRect)
+Sprite::Sprite(UVRect _uvRect)
     : isVisible(true)
     , uvRect(_uvRect)
 {
-    Size = QVector2D(width, height);
+    Size = QVector2D(0,0);
     hasChanged = true;
 }
 
@@ -61,3 +61,10 @@ void Sprite::setUVRect(const UVRect &value)
     hasChanged = true;
 }
 
+//-------------------------------------
+
+Sprite2::Sprite2(UVRect _uvRect)
+    : Sprite(_uvRect)
+    , Color(255,255,255,255)
+{
+}

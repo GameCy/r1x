@@ -2,6 +2,7 @@
 #define FONTRENDERER_H
 #include "SmartPtr.h"
 #include "TextLabel.h"
+#include "QuadRenderers.h"
 
 class TextRenderer : public RefCountBase
 {

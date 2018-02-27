@@ -6,15 +6,15 @@
 #include <QVector2D>
 #include <vector>
 #include "Material.h"
-#include "QuadRenderer2D.h"
+#include "QuadRenderers.h"
 
 class SpriteMap : public RefCountBase
 {
 public:
-    SpriteMap(int maxQuads, QString atlasPath);
+    SpriteMap(int maxQuads, bool perVertexColor, QString atlasPath);
     ~SpriteMap();
 
-    Sprite*     CreateSprite(QString spriteName, float width, float height);
+    Sprite*     CreateSprite(QString spriteName);
     bool        DestroySprite(Sprite* sprite);
 
     MaterialPtr GetMaterial();
@@ -24,11 +24,14 @@ public:
     void Update();
 
 private:
+    bool                usePerVertexColor;
     QVector<Sprite*>    sprites;
     QuadRenderer2D      renderer;
     AtlasImporter       atlas;
 
-    void    BuildQuads();
+    void    BuildQuads2D();
+    void    BuildQuads2DX();
+    int     CountVisibleSprites();
 
 };
 

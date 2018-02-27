@@ -3,20 +3,20 @@
 #include <math.h>
 
 SpritesFromAtlas::SpritesFromAtlas()
-    : atlas(50, ":/textures/textures.atlas")
+    : atlas(50, false, ":/textures/textures.atlas")
     , t(0)
 {
     screenWidth = Graphics::Screen.Width();
     screenHeight= Graphics::Screen.Height();
 
-    ring = atlas.CreateSprite("slot.png", 0,0);
+    ring = atlas.CreateSprite("slot.png");
 
-    star = atlas.CreateSprite("star_particle.png", 0,0);
+    star = atlas.CreateSprite("star_particle.png");
 
-    spark = atlas.CreateSprite("energy1.png", 0,0);
+    spark = atlas.CreateSprite("energy1.png");
     sparkAnim.Init(.8f, 1, 6, 6, &spark->getUVRect() );
 
-    runner = atlas.CreateSprite("Runner.png", 0,0);
+    runner = atlas.CreateSprite("Runner.png");
     runnerAnim.Init(.35f, 4, 1, 4, &runner->getUVRect() );
 
     atlas.GetMaterial()->Blending = true;

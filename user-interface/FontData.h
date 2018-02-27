@@ -2,7 +2,7 @@
 #define FONTDATA_H
 #include <QJsonObject>
 #include <QHash>
-#include "QuadRenderer3D.h"
+#include "QuadRenderers.h"
 
 class JSonParser
 {

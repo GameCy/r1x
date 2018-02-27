@@ -3,13 +3,13 @@
 #include <QVector2D>
 #include <vector>
 #include "Material.h"
-#include "QuadRenderer2D.h"
+#include "QuadRenderers.h"
 #include "AtlasImporter.h"
 
 class Sprite
 {
 public:
-    Sprite(float width, float height, UVRect _uvRect);
+    Sprite(UVRect _uvRect);
 
     void    SetVisible(bool visible);
     bool    IsVisible();
@@ -32,6 +32,15 @@ private:
     UVRect      uvRect;
     bool        isVisible;
     bool        hasChanged;
+};
+
+class Sprite2 : public Sprite
+{
+public:
+    Sprite2(UVRect _uvRect);
+
+    QColor Color;
+
 };
 
 #endif // _SPRITE_H

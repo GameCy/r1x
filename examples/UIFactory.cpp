@@ -3,7 +3,7 @@
 
 UIFactory::UIFactory(QString atlasPath, int maxSprites, QString fontName)
 {
-    UITexureMap = new SpriteMap(maxSprites, atlasPath);
+    UITexureMap = new SpriteMap(maxSprites, false, atlasPath);
 
     FontPtr font = UI::Fonts.Get(fontName);
     textRenderer = new TextRenderer( font );
@@ -19,7 +19,7 @@ ButtonPtr UIFactory::CreateButton(QString text)
     UVRect uvRect;
     if (!UITexureMap->GetUVRect("ButtonStates.png", uvRect))
         return 0;
-    ButtonPtr btn = new Button(text, textRenderer, UITexureMap->CreateSprite("ButtonStates.png",1,1), uvRect);
+    ButtonPtr btn = new Button(text, textRenderer, UITexureMap->CreateSprite("ButtonStates.png"), uvRect);
     return btn;
 }
 
@@ -34,7 +34,7 @@ IconPtr UIFactory::CreateIcon(QString iconSpriteName)
 
 Sprite *UIFactory::CreateSprite(QString spriteName)
 {
-    return UITexureMap->CreateSprite(spriteName, 32, 32);
+    return UITexureMap->CreateSprite(spriteName);
 }
 
 TextLabelPtr UIFactory::CreateLabel(QString text)

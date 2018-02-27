@@ -19,8 +19,6 @@ SOURCES += \
     $$PWD/Model.cpp \
     $$PWD/ModelManager.cpp \
     $$PWD/Ogl.cpp \
-    $$PWD/QuadRenderer3D.cpp \
-    $$PWD/QuadRenderer2D.cpp \
     $$PWD/QuadRendererBase.cpp \
     $$PWD/Shader.cpp \
     $$PWD/Sprite.cpp \
@@ -33,7 +31,8 @@ SOURCES += \
     $$PWD/InstanceRender.cpp \
     $$PWD/Interpolator.cpp \
     $$PWD/UVAnim.cpp \
-    $$PWD/QuadRenderer2DX.cpp
+    $$PWD/QuadTypes.cpp \
+    $$PWD/QuadRenderers.cpp
 
 HEADERS += \
     $$PWD/AngleInterpolator.h \
@@ -51,8 +50,6 @@ HEADERS += \
     $$PWD/Model.h \
     $$PWD/ModelManager.h \
     $$PWD/Ogl.h \
-    $$PWD/QuadRenderer3D.h \
-    $$PWD/QuadRenderer2D.h \
     $$PWD/QuadRendererBase.h \
     $$PWD/Shader.h \
     $$PWD/Sprite.h \
@@ -66,4 +63,5 @@ HEADERS += \
     $$PWD/ViewPort.h \
     $$PWD/Interpolator.h \
     $$PWD/UVAnim.h \
-    $$PWD/QuadRenderer2DX.h
+    $$PWD/QuadTypes.h \
+    $$PWD/QuadRenderers.h

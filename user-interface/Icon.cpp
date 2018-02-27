@@ -5,7 +5,7 @@
 Icon::Icon(QString iconSpriteName, QVector2D pos, QVector2D iconSize, SpriteMapPtr uiMap, UVRect uvRect)
 {
     TexUVArea = uvRect;
-    Background = uiMap->CreateSprite(iconSpriteName, 0,0);
+    Background = uiMap->CreateSprite(iconSpriteName);
     Background->setUVRect( uvRect );
     Background->setSize(iconSize);
     ChangeVisuals(Normal, Normal);
