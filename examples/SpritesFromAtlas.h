@@ -8,7 +8,7 @@ class SpritesFromAtlas : public ExampleBase
 {
 public:
     SpritesFromAtlas();
-    ~SpritesFromAtlas();
+    virtual ~SpritesFromAtlas();
 
     // ExampleBase interface
 public:

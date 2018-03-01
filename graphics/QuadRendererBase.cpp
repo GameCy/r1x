@@ -12,7 +12,7 @@ QuadRendererBase::QuadRendererBase()
 {
 }
 
-void QuadRendererBase::Init(int quadByteSize, GLuint uvByteOffset, GLuint colorByteOffset, int numVertexComponents, int maxQuads,  MaterialPtr mat)
+void QuadRendererBase::InitBase(size_t quadByteSize, GLuint uvByteOffset, GLuint colorByteOffset, int numVertexComponents, int maxQuads,  MaterialPtr mat)
 {
     this->quadByteSize = quadByteSize;
     this->uvByteOffset = uvByteOffset;

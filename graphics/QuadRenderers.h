@@ -12,13 +12,13 @@ template<typename QuadType, typename InitSettings>
 class Renderer : public QuadRendererBase
 {
 public:
-    void    Init(int maxQuads, MaterialPtr mat)
+    Renderer(int maxQuads, MaterialPtr mat)
     {
-        QuadRendererBase::Init(sizeof(QuadType)
-                               , InitSettings:: uvByteOffset
-                               , InitSettings:: colorByteOffset
-                               , InitSettings:: vertComponents
-                               , maxQuads, mat);
+        InitBase(sizeof(QuadType)
+               , InitSettings:: uvByteOffset
+               , InitSettings:: colorByteOffset
+               , InitSettings:: vertComponents
+               , maxQuads, mat);
 
         quads.clear();
         quads.reserve(maxQuads);
@@ -26,9 +26,12 @@ public:
 
     QuadType& getQuad(int idx)  { return quads[idx]; }
 
-    void    UpdateQuadsBuffer() { QuadRendererBase::UpdateQuadsBuffer(&quads[0]); }
+    virtual void UpdateQuadsBuffer()
+    {
+        QuadRendererBase::UpdateQuadsBuffer(&quads[0]);
+    }
 
-    void    ReserveActiveQuads(int numQuads)
+    virtual void ReserveActiveQuads(int numQuads)
     {
         ActiveQuads = numQuads;
         quads.resize(numQuads);

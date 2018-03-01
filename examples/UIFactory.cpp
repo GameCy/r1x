@@ -3,7 +3,7 @@
 
 UIFactory::UIFactory(QString atlasPath, int maxSprites, QString fontName)
 {
-    UITexureMap = new SpriteMap(maxSprites, false, atlasPath);
+    UITexureMap = new SpriteMap(maxSprites, atlasPath);
 
     FontPtr font = UI::Fonts.Get(fontName);
     textRenderer = new TextRenderer( font );

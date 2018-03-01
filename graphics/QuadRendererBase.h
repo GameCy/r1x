@@ -10,14 +10,17 @@ public:
     QuadRendererBase();
     ~QuadRendererBase();
 
+    virtual void ReserveActiveQuads(int numQuads)=0;
+    virtual void UpdateQuadsBuffer()=0;
+
     void    ClearQuads();
     void	RenderQuads();
+
     MaterialPtr GetMaterial();
     void    SetMaterial(MaterialPtr mat);
 
-
 protected:
-    void    Init(int quadByteSize, GLuint uvByteOffset, GLuint colorByteOffset
+    void    InitBase(size_t quadByteSize, GLuint uvByteOffset, GLuint colorByteOffset
                  , int numVertexComponents, int maxQuads, MaterialPtr mat);
     void    UpdateQuadsBuffer(const void* quadsData);
     GLuint  ActiveQuads;

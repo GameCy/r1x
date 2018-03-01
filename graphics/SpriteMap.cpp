@@ -1,12 +1,11 @@
 #include "SpriteMap.h"
 #include "Utils.h"
 
-SpriteMap::SpriteMap(int maxQuads, bool perVertexColor, QString atlasPath)
+SpriteMap::SpriteMap(int maxQuads, QString atlasPath)
     : atlas(atlasPath, true)
-    , usePerVertexColor(perVertexColor)
 {
     QString texturePath = Utils::getFolder(atlasPath) + "/" + atlas.TexFileName;
-    renderer.Init(maxQuads, new Material(texturePath) );
+    renderer = new QuadRenderer2D(maxQuads, new Material(texturePath) );
 }
 
 SpriteMap::~SpriteMap()
@@ -15,11 +14,13 @@ SpriteMap::~SpriteMap()
     {
         delete sprite;
     }
+    if (renderer)
+        delete renderer;
 }
 
 MaterialPtr SpriteMap::GetMaterial()
 {
-    return renderer.GetMaterial();
+    return renderer->GetMaterial();
 }
 
 Sprite* SpriteMap::CreateSprite(QString spriteName)
@@ -27,7 +28,7 @@ Sprite* SpriteMap::CreateSprite(QString spriteName)
     UVRect uvRect;
     if (!atlas.GetUVRect(spriteName, uvRect))
         return 0;
-    Sprite* sprite = usePerVertexColor ?  new Sprite2(uvRect) : new Sprite(uvRect);
+    Sprite* sprite = new Sprite(uvRect);
     sprites.push_back(sprite);
     return sprite;
 }
@@ -44,9 +45,9 @@ bool SpriteMap::GetUVRect(QString spriteName, UVRect &uvRect)
     return atlas.GetUVRect(spriteName, uvRect);
 }
 
-void SpriteMap::BuildQuads2D()
+void SpriteMap::BuildQuads()
 {
-    renderer.ReserveActiveQuads( CountVisibleSprites() );
+    renderer->ReserveActiveQuads( CountVisibleSprites() );
 
     int numSprites = sprites.size();
     int quadCount=0;
@@ -56,36 +57,14 @@ void SpriteMap::BuildQuads2D()
         if (!spr->IsVisible())
             continue;
 
-        Quad2D &quad = renderer.getQuad(quadCount);
+        Quad2D &quad = ((QuadRenderer2D*)renderer)->getQuad(quadCount);
         quadCount++;
 
         quad.SetGeometry(spr->Pos.x(), spr->Pos.y(), spr->Size.x(), spr->Size.y());
         quad.SetUVRect( spr->getUVRect() );
         spr->ClearChangedFlag();
     }
-    renderer.UpdateQuadsBuffer();
-}
-
-void SpriteMap::BuildQuads2DX()
-{
-    renderer.ReserveActiveQuads( CountVisibleSprites() );
-
-    int numSprites = sprites.size();
-    int quadCount=0;
-    for(int i=0; i<numSprites; ++i)
-    {
-        Sprite* spr = sprites[i];
-        if (!spr->IsVisible())
-            continue;
-
-        Quad2D &quad = renderer.getQuad(quadCount);
-        quadCount++;
-
-        quad.SetGeometry(spr->Pos.x(), spr->Pos.y(), spr->Size.x(), spr->Size.y());
-        quad.SetUVRect( spr->getUVRect() );
-        spr->ClearChangedFlag();
-    }
-    renderer.UpdateQuadsBuffer();
+    renderer->UpdateQuadsBuffer();
 }
 
 int SpriteMap::CountVisibleSprites()
@@ -102,7 +81,7 @@ int SpriteMap::CountVisibleSprites()
 
 void SpriteMap::Render()
 {
-    renderer.RenderQuads();
+    renderer->RenderQuads();
 }
 
 void SpriteMap::Update()
@@ -111,7 +90,7 @@ void SpriteMap::Update()
     {
         if (sprites[i]->hasChanged)
         {
-            usePerVertexColor ? BuildQuads2D() : BuildQuads2DX();
+            BuildQuads();
             break;
         }
     }

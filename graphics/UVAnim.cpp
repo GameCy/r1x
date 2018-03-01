@@ -1,5 +1,5 @@
 #include "UVAnim.h"
-#include "QuadRenderer3D.h"
+#include "QuadTypes.h"
 #include <math.h>
 
 UVAnim::UVAnim()

@@ -3,7 +3,7 @@
 #include <math.h>
 
 SpritesFromAtlas::SpritesFromAtlas()
-    : atlas(50, false, ":/textures/textures.atlas")
+    : atlas(50, ":/textures/textures.atlas")
     , t(0)
 {
     screenWidth = Graphics::Screen.Width();

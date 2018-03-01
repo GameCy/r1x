@@ -11,7 +11,7 @@
 class SpriteMap : public RefCountBase
 {
 public:
-    SpriteMap(int maxQuads, bool perVertexColor, QString atlasPath);
+    SpriteMap(int maxQuads, QString atlasPath);
     ~SpriteMap();
 
     Sprite*     CreateSprite(QString spriteName);
@@ -24,15 +24,12 @@ public:
     void Update();
 
 private:
-    bool                usePerVertexColor;
     QVector<Sprite*>    sprites;
-    QuadRenderer2D      renderer;
+    QuadRendererBase*   renderer;
     AtlasImporter       atlas;
 
-    void    BuildQuads2D();
-    void    BuildQuads2DX();
+    void    BuildQuads();
     int     CountVisibleSprites();
-
 };
 
 typedef SmartPtr<SpriteMap>     SpriteMapPtr;

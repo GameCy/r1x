@@ -5,6 +5,8 @@
 class ExampleBase
 {
 public:
+    virtual ~ExampleBase() {}
+
     virtual void Render()=0;
     virtual void Update(float dt)=0;
     virtual void Resize(float w, float h)=0;

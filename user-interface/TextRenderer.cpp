@@ -4,8 +4,7 @@
 TextRenderer::TextRenderer(FontPtr font)
     : fontRef(font)
 {
-    quadRenderer = new QuadRenderer3D;
-    quadRenderer->Init(2000, font->RasterMap);
+    quadRenderer = new QuadRenderer3D(2000, font->RasterMap);
 }
 
 void    TextRenderer::ClearAllLabels()
