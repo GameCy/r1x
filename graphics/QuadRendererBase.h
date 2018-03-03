@@ -8,7 +8,7 @@ class QuadRendererBase
 {
 public:
     QuadRendererBase();
-    ~QuadRendererBase();
+    virtual ~QuadRendererBase();
 
     virtual void ReserveActiveQuads(int numQuads)=0;
     virtual void UpdateQuadsBuffer()=0;

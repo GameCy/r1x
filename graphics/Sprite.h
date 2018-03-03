@@ -10,6 +10,7 @@ class Sprite
 {
 public:
     Sprite(UVRect _uvRect);
+    virtual ~Sprite() {}
 
     void    SetVisible(bool visible);
     bool    IsVisible();
@@ -20,6 +21,9 @@ public:
     QVector2D getSize() const;
     void setSize(const QVector2D &value);
 
+    QColor getColor() const;
+    void setColor(const QColor &value);
+
     UVRect &getUVRect();
     void setUVRect(const UVRect &value);
 
@@ -29,18 +33,10 @@ public:
 private:
     QVector2D   Pos;
     QVector2D   Size;
+    QColor      Color;
     UVRect      uvRect;
     bool        isVisible;
     bool        hasChanged;
-};
-
-class Sprite2 : public Sprite
-{
-public:
-    Sprite2(UVRect _uvRect);
-
-    QColor Color;
-
 };
 
 #endif // _SPRITE_H

@@ -23,6 +23,7 @@ public:
         quads.clear();
         quads.reserve(maxQuads);
     }
+    virtual ~Renderer() {}
 
     QuadType& getQuad(int idx)  { return quads[idx]; }
 

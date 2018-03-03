@@ -12,7 +12,12 @@ QuadRendererBase::QuadRendererBase()
 {
 }
 
-void QuadRendererBase::InitBase(size_t quadByteSize, GLuint uvByteOffset, GLuint colorByteOffset, int numVertexComponents, int maxQuads,  MaterialPtr mat)
+void QuadRendererBase::InitBase(size_t quadByteSize
+                                , GLuint uvByteOffset
+                                , GLuint colorByteOffset
+                                , int numVertexComponents
+                                , int maxQuads
+                                , MaterialPtr mat)
 {
     this->quadByteSize = quadByteSize;
     this->uvByteOffset = uvByteOffset;
@@ -76,6 +81,7 @@ void	QuadRendererBase::RenderQuads()
 
     ogl.glEnableVertexAttribArray(0);
     ogl.glEnableVertexAttribArray(1);
+    ogl.glEnableVertexAttribArray(2);
 
     ogl.glBindBuffer(GL_ARRAY_BUFFER, quadsBuffer);
     ogl.glVertexAttribPointer(0, numVertexComponents, GL_FLOAT, GL_FALSE, quadByteSize/4, 0);  // vertices
@@ -87,6 +93,7 @@ void	QuadRendererBase::RenderQuads()
 
     ogl.glDisableVertexAttribArray(0);
     ogl.glDisableVertexAttribArray(1);
+    ogl.glDisableVertexAttribArray(2);
 
     if (!!material)
         material->Unbind();

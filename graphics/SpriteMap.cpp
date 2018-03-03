@@ -1,11 +1,16 @@
 #include "SpriteMap.h"
 #include "Utils.h"
 
-SpriteMap::SpriteMap(int maxQuads, QString atlasPath)
+SpriteMap::SpriteMap(int maxQuads, QString atlasPath, bool useColorPerSprite)
     : atlas(atlasPath, true)
+    , colorPerSprite(useColorPerSprite)
 {
     QString texturePath = Utils::getFolder(atlasPath) + "/" + atlas.TexFileName;
-    renderer = new QuadRenderer2D(maxQuads, new Material(texturePath) );
+    MaterialPtr mat = new Material(texturePath);
+    if (useColorPerSprite)
+        renderer = new QuadRenderer2DX(maxQuads, mat );
+    else
+        renderer = new QuadRenderer2D(maxQuads, mat );
 }
 
 SpriteMap::~SpriteMap()
@@ -45,6 +50,21 @@ bool SpriteMap::GetUVRect(QString spriteName, UVRect &uvRect)
     return atlas.GetUVRect(spriteName, uvRect);
 }
 
+void SpriteMap::SetQuad2D(Sprite* spr, int quadIndex)
+{
+    Quad2D &quad = ((QuadRenderer2D*)renderer)->getQuad(quadIndex);
+    quad.SetGeometry(spr->Pos.x(), spr->Pos.y(), spr->Size.x(), spr->Size.y());
+    quad.SetUVRect( spr->getUVRect() );
+}
+
+void SpriteMap::SetQuad2DX(Sprite* spr, int quadIndex)
+{
+    Quad2DX &quad = ((QuadRenderer2DX*)renderer)->getQuad(quadIndex);
+    quad.SetGeometry(spr->Pos.x(), spr->Pos.y(), spr->Size.x(), spr->Size.y());
+    quad.SetUVRect( spr->uvRect );
+    quad.SetAllColors( spr->Color );
+}
+
 void SpriteMap::BuildQuads()
 {
     renderer->ReserveActiveQuads( CountVisibleSprites() );
@@ -57,12 +77,12 @@ void SpriteMap::BuildQuads()
         if (!spr->IsVisible())
             continue;
 
-        Quad2D &quad = ((QuadRenderer2D*)renderer)->getQuad(quadCount);
-        quadCount++;
+        if (colorPerSprite) SetQuad2DX(spr, quadCount);
+        else                SetQuad2D(spr, quadCount);
 
-        quad.SetGeometry(spr->Pos.x(), spr->Pos.y(), spr->Size.x(), spr->Size.y());
-        quad.SetUVRect( spr->getUVRect() );
         spr->ClearChangedFlag();
+
+        quadCount++;
     }
     renderer->UpdateQuadsBuffer();
 }

@@ -3,6 +3,7 @@
 
 Sprite::Sprite(UVRect _uvRect)
     : isVisible(true)
+    , Color(255,255,255,255)
     , uvRect(_uvRect)
 {
     Size = QVector2D(0,0);
@@ -45,6 +46,17 @@ void Sprite::setSize(const QVector2D &value)
     hasChanged = true;
 }
 
+QColor Sprite::getColor() const
+{
+    return Color;
+}
+
+void Sprite::setColor(const QColor &value)
+{
+    Color = value;
+    hasChanged = true;
+}
+
 void Sprite::ClearChangedFlag()
 {
     hasChanged = false;
@@ -59,12 +71,4 @@ void Sprite::setUVRect(const UVRect &value)
 {
     uvRect = value;
     hasChanged = true;
-}
-
-//-------------------------------------
-
-Sprite2::Sprite2(UVRect _uvRect)
-    : Sprite(_uvRect)
-    , Color(255,255,255,255)
-{
 }

@@ -3,7 +3,7 @@
 #include <math.h>
 
 SpritesFromAtlas::SpritesFromAtlas()
-    : atlas(50, ":/textures/textures.atlas")
+    : atlas(50, ":/textures/textures.atlas", true)
     , t(0)
 {
     screenWidth = Graphics::Screen.Width();
@@ -31,17 +31,26 @@ SpritesFromAtlas::~SpritesFromAtlas()
 void SpritesFromAtlas::Render()
 {
     Graphics::phongShader->RasterMode( Graphics::Screen );
+
+    Graphics::phongShader->UseColorPerVertex(true);
+    atlas.GetMaterial()->Blending = true;
+
     atlas.Render();
 }
 
 void SpritesFromAtlas::Update(float dt)
 {
     t+=dt;
+    static float alpha=0;
+    alpha +=dt*4.f;
+    while(alpha>255)    alpha-=255.f;
+
     ring->setPos( screenPos(0.5f*sin(t*2.4), 0.5f*cos(t)) );
     star->setPos( screenPos(0.5f*cos(t*1.6), 0.5f*sin(t)) );
     //spark->setPos( screenPos(0.4f*cos(t*1.2), 0.4f*sin(t*2.f)) );
     spark->setPos( screenPos(0.f, -0.6f) );
     runner->setPos(screenPos(-0.2f, 0.0f) );
+    runner->setColor( QColor(255,255, 80, alpha) );
 
     sparkAnim.Update(dt);
     spark->setUVRect( sparkAnim.GetCellUVs() );
