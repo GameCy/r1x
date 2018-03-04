@@ -16,7 +16,6 @@ public:
     TexturePtr GetTexture();
     void    SetTexture(TexturePtr tex);
 
-    //QVector4D       color;
     GLuint          blendSourceMode;
     GLuint          blendDestMode;
     bool            Blending;

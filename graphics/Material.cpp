@@ -4,7 +4,6 @@
 
 Material::Material()
     : texture(0)
-    //, color(1,1,1,1)
     , blendSourceMode( GL_SRC_ALPHA)
     , blendDestMode(GL_ONE_MINUS_SRC_ALPHA)
     , Blending(false)
@@ -42,8 +41,6 @@ void Material::SetTexture(TexturePtr tex)
 
 void Material::Bind()
 {
-//    Graphics::phongShader->SetColorMask(color);
-
     if (!DepthTesting)
         ogl.glDisable(GL_DEPTH_TEST);
     if (!DepthWriting)

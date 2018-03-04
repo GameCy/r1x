@@ -54,7 +54,7 @@ void Shader::ParticleRenderingMode(bool on)
 
 void Shader::UseColorPerVertex(bool colorPerVertex)
 {
-    phongShaders.setUniformValue("hasColorPerVetex", colorPerVertex);
+    phongShaders.setUniformValue("hasColorPerVertex", colorPerVertex);
 }
 
 void Shader::UseSpecular(bool hasSpecular)

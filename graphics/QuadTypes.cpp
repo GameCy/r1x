@@ -65,8 +65,8 @@ void Quad2DX::SetUVRect(UVRect &uvs)
 
 void Quad2DX::SetAllColors(QColor color)
 {
-    R1=R2=R3=color.redF();
-    G1=G2=G3=color.greenF();
-    B1=B2=B3=color.blueF();
-    A1=A2=A3=color.alphaF();
+    R1=R2=R3=R4=color.redF();
+    G1=G2=G3=G4=color.greenF();
+    B1=B2=B3=B4=color.blueF();
+    A1=A2=A3=A4=color.alphaF();
 }

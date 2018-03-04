@@ -32,7 +32,6 @@ void main() {
     if (!hasLighting)
     {
         gl_FragColor = colorMask * tex_color;
-
     }
     else
     {
