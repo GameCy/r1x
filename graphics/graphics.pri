@@ -18,9 +18,10 @@ SOURCES += \
     $$PWD/Mesh.cpp \
     $$PWD/Model.cpp \
     $$PWD/ModelManager.cpp \
+    $$PWD/PhongShader.cpp \
     $$PWD/Ogl.cpp \
     $$PWD/QuadRendererBase.cpp \
-    $$PWD/Shader.cpp \
+    $$PWD/RasterShader.cpp \
     $$PWD/Sprite.cpp \
     $$PWD/SpriteMap.cpp \
     $$PWD/Texture.cpp \
@@ -50,8 +51,9 @@ HEADERS += \
     $$PWD/Model.h \
     $$PWD/ModelManager.h \
     $$PWD/Ogl.h \
+    $$PWD/PhongShader.h \
     $$PWD/QuadRendererBase.h \
-    $$PWD/Shader.h \
+    $$PWD/RasterShader.h \
     $$PWD/Sprite.h \
     $$PWD/SpriteMap.h \
     $$PWD/Texture.h \

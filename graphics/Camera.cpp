@@ -2,7 +2,7 @@
 #include <math.h>
 
 
-Camera::Camera(ShaderPtr shader)
+Camera::Camera(PhongShader *shader)
     : shader(shader)
     , FieldOfView(default_fov)
     , Near(default_near)
@@ -43,12 +43,12 @@ void	Camera::UpdateViewVectors()
     ScreenDownRight = ScreenRight - ScreenUp;
 }
 
-ShaderPtr Camera::getShader() const
+PhongShader *Camera::getShader() const
 {
     return shader;
 }
 
-void Camera::setShader(const ShaderPtr &value)
+void Camera::setShader(PhongShader *value)
 {
     shader = value;
 }

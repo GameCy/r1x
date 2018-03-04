@@ -2,7 +2,8 @@
 #define GRAPHICS_H
 #include "ModelManager.h"
 #include "TextureManager.h"
-#include "Shader.h"
+#include "PhongShader.h"
+#include "RasterShader.h"
 #include <QMap>
 #include "Randomizer.h"
 #include "DPIHelper.h"
@@ -16,12 +17,14 @@ public:
 
     static ModelManager     Model;
     static TextureManager   Texture;
-    static ShaderPtr        phongShader;
+    static PhongShader*     phongShader;
+    static RasterShader*    rasterShader;
 
     static bool Init()
     {
-        phongShader = new Shader();
-        return phongShader->InitShaders();
+        phongShader = new PhongShader();
+        rasterShader = new RasterShader();
+        return phongShader->InitShaders() && rasterShader->InitShaders();
     }
 
     static void DestroyAll()

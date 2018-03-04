@@ -3,6 +3,7 @@
 #include "ExampleBase.h"
 #include "SpriteMap.h"
 #include "UVAnim.h"
+#include "BlinkFloat.h"
 
 class SpritesFromAtlas : public ExampleBase
 {
@@ -26,6 +27,7 @@ private:
 
     Sprite*     runner;
     UVAnim      runnerAnim;
+    BlinkFloat  alphaAnim;
 
     QVector2D   rectSize(float size);
     QVector2D   rectSize(float sx, float sy);

@@ -4,6 +4,7 @@
 
 SpritesFromAtlas::SpritesFromAtlas()
     : atlas(50, ":/textures/textures.atlas", true)
+    , alphaAnim(10,255, 1.f)
     , t(0)
 {
     screenWidth = Graphics::Screen.Width();
@@ -18,6 +19,7 @@ SpritesFromAtlas::SpritesFromAtlas()
 
     runner = atlas.CreateSprite("Runner.png");
     runnerAnim.Init(.35f, 4, 1, 4, &runner->getUVRect() );
+    alphaAnim.Repeat(2000); // repeat blinking 2000 times
 
     atlas.GetMaterial()->Blending = true;
 
@@ -30,17 +32,20 @@ SpritesFromAtlas::~SpritesFromAtlas()
 
 void SpritesFromAtlas::Render()
 {
-    Graphics::phongShader->RasterMode( Graphics::Screen );
+    if (!Graphics::rasterShader->Bind())
+        return;
 
-    Graphics::phongShader->UseColorPerVertex(true);
+
+    Graphics::rasterShader->UseColorPerVertex(true);
         atlas.GetMaterial()->Blending = true;
         atlas.Render();
-    Graphics::phongShader->UseColorPerVertex(false);
+    Graphics::rasterShader->UseColorPerVertex(false);
 }
 
 void SpritesFromAtlas::Update(float dt)
 {
     t+=dt;
+    alphaAnim.Update(dt);
 
     ring->setPos( screenPos(0.5f*sin(t*2.4), 0.5f*cos(t)) );
     star->setPos( screenPos(0.5f*cos(t*1.6), 0.5f*sin(t)) );
@@ -48,9 +53,9 @@ void SpritesFromAtlas::Update(float dt)
     runner->setPos(screenPos(-0.2f, 0.0f) );
 
     static float alpha=0;
-    alpha +=dt*4.f;
+    alpha +=dt*124.f;
     while(alpha>255)    alpha-=255.f;
-    runner->setColor( QColor(255, alpha, 255, 255) );
+    runner->setColor( QColor(255, 255, 255, alphaAnim.Value()) );
 
     sparkAnim.Update(dt);
     spark->setUVRect( sparkAnim.GetCellUVs() );
@@ -62,6 +67,8 @@ void SpritesFromAtlas::Update(float dt)
 
 void SpritesFromAtlas::Resize(float w, float h)
 {
+    Graphics::rasterShader->UpdateViewport( Graphics::Screen );
+
     screenWidth = w;
     screenHeight = h;
     ring->setSize( rectSize(0.2f) );

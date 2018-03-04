@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>phongFragmentShader.glsl</file>
         <file>phongVertexShader.glsl</file>
+        <file>rasterVertexShader.glsl</file>
+        <file>rasterFragmentShader.glsl</file>
     </qresource>
 </RCC>

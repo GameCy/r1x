@@ -5,7 +5,8 @@ DPIHelper      Graphics::DPI;
 
 ModelManager   Graphics::Model;
 TextureManager Graphics::Texture;
-ShaderPtr      Graphics::phongShader=0;
+PhongShader*   Graphics::phongShader=0;
+RasterShader*  Graphics::rasterShader=0;
 
 Graphics::Graphics()
 {

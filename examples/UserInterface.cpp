@@ -14,8 +14,8 @@ UserInterface::UserInterface()
 
 void UserInterface::Render()
 {
-    Graphics::phongShader->RasterMode( Graphics::Screen );
-
+    if (!Graphics::rasterShader->Bind())
+        return;
     uiFactory->Render();
 }
 
@@ -28,6 +28,8 @@ void UserInterface::Update(float dt)
 
 void UserInterface::Resize(float w, float h)
 {
+    Graphics::rasterShader->UpdateViewport( Graphics::Screen );
+
     float textScale = Graphics::Screen.Width()/1000.f;
     fpsLabel->setScale(textScale);
     fpsLabel->SetPos( Graphics::Screen.Normalized(0.05f, 1.f - 0.15f*textScale) );

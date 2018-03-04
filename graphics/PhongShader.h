@@ -1,22 +1,20 @@
-#ifndef _SHADER_HEADER_
-#define _SHADER_HEADER_
+#ifndef _PHONGSHADER_HEADER_
+#define _PHONGSHADER_HEADER_
 #include <QMatrix4x4>
 #include <QVector3D>
 #include <QOpenGLShaderProgram>
 #include "ViewPort.h"
 
-class Shader
+class PhongShader
 {
 public:
-    Shader();
+    PhongShader();
 
     bool    InitShaders();
     void    Destroy();
 
-    void    ParticleRenderingMode(bool on);
-    void    UseColorPerVertex(bool colorPerVertex);
+    bool    Bind();
     void    UseSpecular(bool hasSpecular);
-    void    RasterMode(ViewPort viewport);
 
     void    ClearColorMask();
     void    SetColorMask(QVector4D mask);
@@ -32,7 +30,7 @@ public:
     void setColorSpecular(const QVector3D &value);
 
 private:
-    QOpenGLShaderProgram phongShaders;
+    QOpenGLShaderProgram shaders;
     QVector3D LightPos;
     QVector4D ColorMask;
 
@@ -40,7 +38,5 @@ private:
     QVector3D colorDiffuse;
     QVector3D colorSpecular;
 };
-
-typedef Shader*    ShaderPtr;
 
 #endif

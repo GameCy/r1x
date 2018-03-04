@@ -4,7 +4,7 @@
 #include <QVector3D>
 #include <QQuaternion>
 #include "IClipper.h"
-#include "Shader.h"
+#include "PhongShader.h"
 
 #define default_fov 50.0f
 #define default_near 1.0f
@@ -14,7 +14,7 @@
 class Camera
 {
 public:
-    Camera(ShaderPtr shader);
+    Camera(PhongShader* shader);
 	virtual ~Camera();
 
     void    Setup(float nearZ= default_near, float farZ= default_far, float fov= default_fov, float aspect= default_aspect);
@@ -42,13 +42,13 @@ public:
     QVector3D ScreenUpRight;
     QVector3D ScreenDownRight;
 
-    ShaderPtr getShader() const;
-    void setShader(const ShaderPtr &value);
+    PhongShader* getShader() const;
+    void setShader(PhongShader* value);
 
 private:
-    float       FieldOfView, Near, Far, Aspect;
-    float	clipHalfX, clipHalfZ;
-    ShaderPtr   shader;
+    float          FieldOfView, Near, Far, Aspect;
+    float          clipHalfX, clipHalfZ;
+    PhongShader*   shader;
 };
 
 typedef Camera* CameraPtr;

@@ -19,7 +19,8 @@ Viewd3DModels::Viewd3DModels()
 
 void Viewd3DModels::Render()
 {
-    Graphics::phongShader->ParticleRenderingMode(false);
+    if (!Graphics::phongShader->Bind())
+        return;
 
     // 1st method, using the Model class
     QMatrix4x4 matrix;
