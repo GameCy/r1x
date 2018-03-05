@@ -3,8 +3,11 @@
 
 QuadRendererBase::QuadRendererBase()
     : quadByteSize(0)
-    , uvByteOffset(0)
-    , numVertexComponents(0)
+    , offset2(0)
+    , offset3(0)
+    , attrib1Components(0)
+    , attrib2Components(0)
+    , attrib3Components(0)
     , quadsBuffer(INVALID_OGL_VALUE)
     , indicesBuffer(INVALID_OGL_VALUE)
     , ActiveQuads(0)
@@ -13,16 +16,20 @@ QuadRendererBase::QuadRendererBase()
 }
 
 void QuadRendererBase::InitBase(size_t quadByteSize
-                                , GLuint uvByteOffset
-                                , GLuint colorByteOffset
-                                , int numVertexComponents
+                                , GLuint ByteOffset2
+                                , GLuint ByteOffset3
+                                , int glAttrib1Components
+                                , int glAttrib2Components
+                                , int glAttrib3Components
                                 , int maxQuads
                                 , MaterialPtr mat)
 {
     this->quadByteSize = quadByteSize;
-    this->uvByteOffset = uvByteOffset;
-    this->colorByteOffset = colorByteOffset;
-    this->numVertexComponents = numVertexComponents;
+    offset2 = ByteOffset2;
+    offset3 = ByteOffset3;
+    attrib1Components = glAttrib1Components;
+    attrib2Components = glAttrib2Components;
+    attrib3Components = glAttrib3Components;
 
     material = mat;
 
@@ -81,12 +88,16 @@ void	QuadRendererBase::RenderQuads()
 
     ogl.glEnableVertexAttribArray(0);
     ogl.glEnableVertexAttribArray(1);
-    ogl.glEnableVertexAttribArray(2);
 
     ogl.glBindBuffer(GL_ARRAY_BUFFER, quadsBuffer);
-    ogl.glVertexAttribPointer(0, numVertexComponents, GL_FLOAT, GL_FALSE, quadByteSize/4, 0);  // vertices
-    ogl.glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, quadByteSize/4, (const void*)uvByteOffset); // UVs
-    ogl.glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, quadByteSize/4, (const void*)colorByteOffset); // colors
+    ogl.glVertexAttribPointer(0, attrib1Components, GL_FLOAT, GL_FALSE, quadByteSize/4, 0);  // vertices
+    ogl.glVertexAttribPointer(1, attrib2Components, GL_FLOAT, GL_FALSE, quadByteSize/4, (const void*)offset2); // UVs
+
+    if (attrib3Components>0)
+    {
+        ogl.glEnableVertexAttribArray(2);
+        ogl.glVertexAttribPointer(2, attrib3Components, GL_FLOAT, GL_FALSE, quadByteSize/4, (const void*)offset3); // colors/normals
+    }
 
     ogl.glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer);
     ogl.glDrawElements(GL_TRIANGLES, ActiveQuads*6, GL_UNSIGNED_SHORT, 0);

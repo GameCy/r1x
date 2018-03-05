@@ -46,22 +46,28 @@ struct Quad3D
 
 struct QuadBufferSettings2D
 {
-    static const int vertComponents= 2;
-    static const int uvByteOffset = 8;
-    static const int colorByteOffset = -1;
+    static const int attrib1Components= 2;
+    static const int attrib2Components= 2;
+    static const int attrib3Components= 0;
+    static const int attrib2ByteOffset = 8;
+    static const int attrib3ByteOffset = -1;
 };
 
 struct QuadBufferSettings2DX
 {
-    static const int vertComponents= 2;
-    static const int uvByteOffset = 8;
-    static const int colorByteOffset = 16;
+    static const int attrib1Components= 2;
+    static const int attrib2Components= 2;
+    static const int attrib3Components= 4;
+    static const int attrib2ByteOffset = 8;
+    static const int attrib3ByteOffset = 16;
 };
 struct QuadBufferSettings3D
 {
-    static const int vertComponents= 3;
-    static const int uvByteOffset = 12;
-    static const int colorByteOffset = -1;
+    static const int attrib1Components= 3;
+    static const int attrib2Components= 2;
+    static const int attrib3Components= 3;
+    static const int attrib2ByteOffset = 12;
+    static const int attrib3ByteOffset = 20;
 };
 
 

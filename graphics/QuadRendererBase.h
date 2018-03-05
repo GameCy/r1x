@@ -20,16 +20,19 @@ public:
     void    SetMaterial(MaterialPtr mat);
 
 protected:
-    void    InitBase(size_t quadByteSize, GLuint uvByteOffset, GLuint colorByteOffset
-                 , int numVertexComponents, int maxQuads, MaterialPtr mat);
+    void    InitBase(size_t quadByteSize, GLuint ByteOffset2, GLuint ByteOffset3
+                    , int glAttrib1Components, int glAttrib2Components, int glAttrib3Components
+                    , int maxQuads, MaterialPtr mat);
     void    UpdateQuadsBuffer(const void* quadsData);
     GLuint  ActiveQuads;
 
 private:
     GLuint  quadByteSize;
-    GLuint  uvByteOffset;
-    GLuint  colorByteOffset;
-    GLuint  numVertexComponents;
+    GLuint  offset2;
+    GLuint  offset3;
+    GLuint  attrib1Components;
+    GLuint  attrib2Components;
+    GLuint  attrib3Components;
     GLuint  quadsBuffer;
     std::vector<unsigned short>  indices;
     GLuint  indicesBuffer;

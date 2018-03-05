@@ -15,9 +15,11 @@ public:
     Renderer(int maxQuads, MaterialPtr mat)
     {
         InitBase(sizeof(QuadType)
-               , InitSettings:: uvByteOffset
-               , InitSettings:: colorByteOffset
-               , InitSettings:: vertComponents
+               , InitSettings:: attrib2ByteOffset
+               , InitSettings:: attrib3ByteOffset
+                 , InitSettings:: attrib1Components
+                 , InitSettings:: attrib2Components
+                 , InitSettings:: attrib3Components
                , maxQuads, mat);
 
         quads.clear();
