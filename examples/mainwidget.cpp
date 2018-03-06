@@ -10,6 +10,7 @@
 #include "Ogl.h"
 #include "SpritesFromAtlas.h"
 #include "Viewd3dModels.h"
+#include "SpriteParticleFade.h"
 
 MainWidget::MainWidget(QWidget *parent) :
     QOpenGLWidget(parent)
@@ -188,7 +189,7 @@ void MainWidget::InstantiateExample(int idxChange)
 {
     exampleIndex += idxChange;
     if (exampleIndex<0) exampleIndex = 0;
-    if (exampleIndex>1) exampleIndex = 1;
+    if (exampleIndex>2) exampleIndex = 2;
     if (example)
     {
         delete example;
@@ -196,8 +197,9 @@ void MainWidget::InstantiateExample(int idxChange)
     }
     switch(exampleIndex)
     {
-        case 0 : example = new SpritesFromAtlas();  break;
-        case 1 : example = new Viewd3DModels();  break;
+        case 0 : example = new SpriteParticleFade(); break;
+        case 1 : example = new SpritesFromAtlas();  break;
+        case 2 : example = new Viewd3DModels();  break;
     }
 }
 

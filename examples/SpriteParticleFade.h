@@ -1,14 +1,14 @@
-#ifndef SPRITESFROMTEXTURE_H
-#define SPRITESFROMTEXTURE_H
+#ifndef SPRITEPARTICLEFADE_H
+#define SPRITEPARTICLEFADE_H
 #include "ExampleBase.h"
 #include "SpriteMap.h"
-#include "UVAnim.h"
+#include "BlinkFloat.h"
 
-class SpritesFromAtlas : public ExampleBase
+class SpriteParticleFade : public ExampleBase
 {
 public:
-    SpritesFromAtlas();
-    virtual ~SpritesFromAtlas();
+    SpriteParticleFade();
+    virtual ~SpriteParticleFade();
 
     // ExampleBase interface
 public:
@@ -18,13 +18,10 @@ public:
 
 private:
     SpriteMap   atlas;
-    Sprite*     ring;
+    Sprite*     star[50];
+    float       starTime[50];
 
-    Sprite*     spark;
-    UVAnim      sparkAnim;
-
-    Sprite*     runner;
-    UVAnim      runnerAnim;
+    BlinkFloat  trigonometricParameter;
 
     QVector2D   rectSize(float size);
     QVector2D   rectSize(float sx, float sy);
@@ -34,4 +31,4 @@ private:
     float       t;    
 };
 
-#endif // SPRITESFROMTEXTURE_H
+#endif // SPRITEPARTICLEFADE_H

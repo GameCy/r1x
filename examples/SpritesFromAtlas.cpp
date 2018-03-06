@@ -3,8 +3,7 @@
 #include <math.h>
 
 SpritesFromAtlas::SpritesFromAtlas()
-    : atlas(50, ":/textures/textures.atlas", true)
-    , alphaAnim(10,255, 1.f)
+    : atlas(50, ":/textures/textures.atlas")
     , t(0)
 {
     screenWidth = Graphics::Screen.Width();
@@ -12,16 +11,11 @@ SpritesFromAtlas::SpritesFromAtlas()
 
     ring = atlas.CreateSprite("slot.png");
 
-    star = atlas.CreateSprite("star_particle.png");
-
     spark = atlas.CreateSprite("energy1.png");
     sparkAnim.Init(.8f, 1, 6, 6, &spark->getUVRect() );
 
     runner = atlas.CreateSprite("Runner.png");
     runnerAnim.Init(.35f, 4, 1, 4, &runner->getUVRect() );
-    alphaAnim.Repeat(2000); // repeat blinking 2000 times
-
-    atlas.GetMaterial()->Blending = true;
 
     Resize(screenWidth, screenHeight);
 }
@@ -35,27 +29,16 @@ void SpritesFromAtlas::Render()
     if (!Graphics::rasterShader->Bind())
         return;
 
-
-    Graphics::rasterShader->UseColorPerVertex(true);
-        atlas.GetMaterial()->Blending = true;
-        atlas.Render();
-    Graphics::rasterShader->UseColorPerVertex(false);
+    atlas.Render();
 }
 
 void SpritesFromAtlas::Update(float dt)
 {
     t+=dt;
-    alphaAnim.Update(dt);
 
-    ring->setPos( screenPos(0.5f*sin(t*2.4), 0.5f*cos(t)) );
-    star->setPos( screenPos(0.5f*cos(t*1.6), 0.5f*sin(t)) );
+    ring->setPos( screenPos( sin(t), 0.7f) );
     spark->setPos( screenPos(0.f, -0.6f) );
-    runner->setPos(screenPos(-0.2f, 0.0f) );
-
-    static float alpha=0;
-    alpha +=dt*124.f;
-    while(alpha>255)    alpha-=255.f;
-    runner->setColor( QColor(255, 255, 255, alphaAnim.Value()) );
+    runner->setPos(screenPos(-sin(t), 0.0f) );
 
     sparkAnim.Update(dt);
     spark->setUVRect( sparkAnim.GetCellUVs() );
@@ -71,8 +54,7 @@ void SpritesFromAtlas::Resize(float w, float h)
 
     screenWidth = w;
     screenHeight = h;
-    ring->setSize( rectSize(0.2f) );
-    star->setSize( rectSize(0.1f) );
+    ring->setSize( rectSize(0.15f) );
     spark->setSize( rectSize(0.3f) );
     runner->setSize( rectSize(0.3f, 0.6f) );
 }

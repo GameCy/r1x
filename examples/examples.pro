@@ -19,7 +19,8 @@ SOURCES += \
     UIFactory.cpp \
     SpritesFromAtlas.cpp \
     UserInterface.cpp \
-    Viewd3dModels.cpp
+    Viewd3dModels.cpp \
+    SpriteParticleFade.cpp
 
 HEADERS += \
     InputTracker.h \
@@ -28,7 +29,8 @@ HEADERS += \
     ExampleBase.h \
     SpritesFromAtlas.h \
     UserInterface.h \
-    Viewd3dModels.h
+    Viewd3dModels.h \
+    SpriteParticleFade.h
 
 RESOURCES += \
     assets/textures.qrc \
