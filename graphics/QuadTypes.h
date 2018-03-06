@@ -41,6 +41,9 @@ struct Quad3D
     float       U3, V3;
     QVector3D   pos4;
     float       U4, V4;
+
+    void    SetUVs(float u1, float v1, float uvWidth, float uvHeight);
+    void    SetUVRect(UVRect& uvs);
 };
 
 

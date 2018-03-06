@@ -17,8 +17,9 @@ public:
     UVRect  GetCellUVs();
 
     UVRect  GetCellUVs(float time);
+    UVRect  GetCellUVs(int cellIndex);
+
     int		CalcCellIdx(float time);
-    void	CalcUVs(int cellIdx,  Quad3D &quad);
 
     float		Time;
     float       Duration;

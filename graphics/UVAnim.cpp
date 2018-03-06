@@ -47,9 +47,14 @@ UVRect UVAnim::GetCellUVs()
 UVRect UVAnim::GetCellUVs(float time)
 {
     int idx =  CalcCellIdx(time);
+    return GetCellUVs(idx);
+}
+
+UVRect UVAnim::GetCellUVs(int cellIndex)
+{
     UVRect cellUVs;
 
-    int idx_x = idx;
+    int idx_x = cellIndex;
     int idx_y = 0;
     while(idx_x>=FramesX)
     {
@@ -74,25 +79,5 @@ int		UVAnim::CalcCellIdx(float time)
 	if (idx<0)			idx = 0;
 	if (idx>=MaxFrames)	idx = MaxFrames-1;
 	return idx;
-}
-
-void	UVAnim::CalcUVs(int cellIdx, Quad3D &quad)
-{
-	int idx_x = cellIdx;
-	int idx_y = 0;
-	while(idx_x>=FramesX)
-	{
-		idx_x -= FramesX;
-		idx_y++;
-	}
-    float uvx = uvRect.U1 + float(idx_x)*cellDx;
-    float uvy = uvRect.V1 + float(idx_y)*cellDy;
-
-	const float margin = 0.01f;
-
-    quad.U1= uvx + margin;          quad.V1 = uvy+cellDy - margin;
-    quad.U3 = uvx+cellDx - margin;	quad.V3 = uvy + margin;
-    quad.U2 = uvx+cellDx - margin;	quad.V2 = uvy+cellDy - margin;
-    quad.U4 = uvx + margin;			quad.V4 = uvy + margin;
 }
 

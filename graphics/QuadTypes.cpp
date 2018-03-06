@@ -70,3 +70,24 @@ void Quad2DX::SetAllColors(QColor color)
     B1=B2=B3=B4=color.blueF();
     A1=A2=A3=A4=color.alphaF();
 }
+
+// --------------------------------------------------
+
+void Quad3D::SetUVs(float u1, float v1, float uvWidth, float uvHeight)
+{
+    U1 = U2 = U3 = U4 = u1;
+    U2 += uvWidth;
+    U3 += uvWidth;
+
+    V1 = V2 = V3 = V4 = v1;
+    V3 += uvHeight;
+    V4 += uvHeight;
+}
+
+void Quad3D::SetUVRect(UVRect &uvs)
+{
+    U1 = uvs.U1;    V1 = uvs.V1;
+    U2 = uvs.U2;    V2 = uvs.V1;
+    U3 = uvs.U2;    V3 = uvs.V2;
+    U4 = uvs.U1;    V4 = uvs.V2;
+}
