@@ -1,16 +1,14 @@
 #include "SpriteMap.h"
 #include "Utils.h"
 
-SpriteMap::SpriteMap(int maxQuads, QString atlasPath, bool useColorPerSprite)
-    : atlas(atlasPath, true)
-    , colorPerSprite(useColorPerSprite)
+SpriteMap::SpriteMap(int maxQuads, QString path, bool useColorPerSprite)
+    : colorPerSprite(useColorPerSprite)
+    , renderer(0)
 {
-    QString texturePath = Utils::getFolder(atlasPath) + "/" + atlas.TexFileName;
-    MaterialPtr mat = new Material(texturePath);
-    if (useColorPerSprite)
-        renderer = new QuadRenderer2DX(maxQuads, mat );
-    else
-        renderer = new QuadRenderer2D(maxQuads, mat );
+    MaterialPtr mat = LoadMaterial(path);
+
+    if (useColorPerSprite)  renderer = new QuadRenderer2DX(maxQuads, mat );
+    else                    renderer = new QuadRenderer2D(maxQuads, mat );
 }
 
 SpriteMap::~SpriteMap()
@@ -26,6 +24,14 @@ SpriteMap::~SpriteMap()
 MaterialPtr SpriteMap::GetMaterial()
 {
     return renderer->GetMaterial();
+}
+
+MaterialPtr SpriteMap::LoadMaterial(QString path)
+{
+    if (!atlas.Load(path, true))
+        return new Material(path); // load as simple texture
+
+    return new Material( Utils::getFolder(path) + "/" + atlas.TexFileName );
 }
 
 Sprite* SpriteMap::CreateSprite(QString spriteName)

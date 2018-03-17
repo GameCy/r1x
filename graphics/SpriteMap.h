@@ -11,13 +11,15 @@
 class SpriteMap : public RefCountBase
 {
 public:
-    SpriteMap(int maxQuads, QString atlasPath, bool useColorPerSprite=false);
+    // path = path to atlas or texture
+    SpriteMap(int maxQuads, QString path, bool useColorPerSprite=false);
     ~SpriteMap();
 
     Sprite*     CreateSprite(QString spriteName);
     bool        DestroySprite(Sprite* sprite);
 
     MaterialPtr GetMaterial();
+    MaterialPtr LoadMaterial(QString path);
     bool        GetUVRect(QString spriteName, UVRect &uvRect);
 
     void Render();

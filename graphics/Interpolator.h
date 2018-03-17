@@ -15,7 +15,7 @@ public:
     {
         t = 0;
         endValue = end;
-        change = endValue - (*target);
+        speed = endValue - (*target);
         duration = _duration;
     }
 
@@ -31,15 +31,15 @@ public:
 
         t += dt;
         if (t<duration)
-            *target += (dt/duration)*change;
+            (*target) += (dt/duration)*speed;
         else
-            *target = endValue;
+            (*target) = endValue;
     }
 
 private:
     T*      target;
     T       endValue;
-    T       change;
+    T       speed;
 
     float   duration;
     float   t;

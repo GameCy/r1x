@@ -14,7 +14,7 @@ struct Quad2D
 
     void    SetGeometry(float x, float y, float w, float h);
     void    SetUVs(float u1, float v1, float uvWidth, float uvHeight);
-    void    SetUVRect(UVRect& uvs);
+    void    SetUVRect(const UVRect &uvs);
 };
 
 struct Quad2DX
@@ -26,7 +26,7 @@ struct Quad2DX
 
     void    SetGeometry(float x, float y, float w, float h);
     void    SetUVs(float u1, float v1, float uvWidth, float uvHeight);
-    void    SetUVRect(UVRect& uvs);
+    void    SetUVRect(const UVRect &uvs);
     void    SetAllColors(QColor color);
 };
 
@@ -43,7 +43,7 @@ struct Quad3D
     float       U4, V4;
 
     void    SetUVs(float u1, float v1, float uvWidth, float uvHeight);
-    void    SetUVRect(UVRect& uvs);
+    void    SetUVRect(const UVRect &uvs);
 };
 
 

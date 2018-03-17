@@ -23,7 +23,7 @@ void Quad2D::SetUVs(float u1, float v1, float uvWidth, float uvHeight)
     V4 += uvHeight;
 }
 
-void Quad2D::SetUVRect(UVRect &uvs)
+void Quad2D::SetUVRect(const UVRect &uvs)
 {
     U1 = uvs.U1;    V1 = uvs.V1;
     U2 = uvs.U2;    V2 = uvs.V1;
@@ -55,7 +55,7 @@ void Quad2DX::SetUVs(float u1, float v1, float uvWidth, float uvHeight)
     V4 += uvHeight;
 }
 
-void Quad2DX::SetUVRect(UVRect &uvs)
+void Quad2DX::SetUVRect(const UVRect &uvs)
 {
     U1 = uvs.U1;    V1 = uvs.V1;
     U2 = uvs.U2;    V2 = uvs.V1;
@@ -84,7 +84,7 @@ void Quad3D::SetUVs(float u1, float v1, float uvWidth, float uvHeight)
     V4 += uvHeight;
 }
 
-void Quad3D::SetUVRect(UVRect &uvs)
+void Quad3D::SetUVRect(const UVRect &uvs)
 {
     U1 = uvs.U1;    V1 = uvs.V1;
     U2 = uvs.U2;    V2 = uvs.V1;

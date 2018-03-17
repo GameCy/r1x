@@ -29,7 +29,10 @@ struct UVRect
 class AtlasImporter
 {
 public:
+    AtlasImporter();
     AtlasImporter(QString path, bool normalized);
+
+    bool Load(QString path, bool normalized);
     bool IsValid();
 
     bool GetUVRect(QString spriteName, UVRect &uvRect);

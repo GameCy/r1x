@@ -2,11 +2,23 @@
 #include <QFile>
 #include <QTextStream>
 
+AtlasImporter::AtlasImporter()
+    : PixelWidth(0)
+    , PixelHeight(0)
+    , normalizedCoords(false)
+{
+}
+
 AtlasImporter::AtlasImporter(QString path, bool normalized)
     : PixelWidth(0)
     , PixelHeight(0)
-    , normalizedCoords(normalized)
 {
+    Load(path, normalized);
+}
+
+bool AtlasImporter::Load(QString path, bool normalized)
+{
+    normalizedCoords = normalized;
     QFile file(path);
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -20,8 +32,9 @@ AtlasImporter::AtlasImporter(QString path, bool normalized)
             ParseLine(stream.readLine(200));
         }
         file.close();
+        return IsValid();
     }
-
+    return false;
 }
 
 bool AtlasImporter::IsValid()
