@@ -15,7 +15,7 @@ public:
     SpriteMap(int maxQuads, QString path, bool useColorPerSprite=false);
     ~SpriteMap();
 
-    Sprite*     CreateSprite(QString spriteName);
+    Sprite*     CreateSprite(QString spriteName="");
     bool        DestroySprite(Sprite* sprite);
 
     MaterialPtr GetMaterial();

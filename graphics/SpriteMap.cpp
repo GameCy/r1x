@@ -36,9 +36,12 @@ MaterialPtr SpriteMap::LoadMaterial(QString path)
 
 Sprite* SpriteMap::CreateSprite(QString spriteName)
 {
-    UVRect uvRect;
-    if (!atlas.GetUVRect(spriteName, uvRect))
-        return 0;
+    UVRect uvRect(0,0,1,1);
+    if (atlas.IsValid())
+    {
+        if (!atlas.GetUVRect(spriteName, uvRect))
+            return 0;
+    }
     Sprite* sprite = new Sprite(uvRect);
     sprites.push_back(sprite);
     return sprite;
