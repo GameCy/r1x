@@ -16,7 +16,7 @@ public:
     enum State
          { Normal=0, Pressed=1, Hover=2  };
 
-    void SetState(State newState, int eventID=0);
+    void SetState(State newState, QVector2D lastMousePos, int eventID=0);
     void ClearActiveID();
     bool IsSameEventId(int id);
     void Enable();
@@ -25,8 +25,9 @@ public:
     QVector2D   Pos;
     QVector2D   Size;
 signals:
-    void Clicked();
-    void StateChanged(InputArea::State newState, InputArea::State oldState);
+    void Clicked(InputArea* sender, QVector2D mousePos);
+    void StateChanged(InputArea::State newState, InputArea::State oldState
+                     ,InputArea* sender, QVector2D lastMousePos );
 
 protected:
     State   state;

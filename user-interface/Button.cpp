@@ -10,7 +10,7 @@ Button::Button(QString txt, FontRendererPtr fontRenderer, Sprite* backgroundsSpr
     Background = backgroundsSprite;
     SetSize( QVector2D(Label->PixelWidth*1.2f, Label->PixelHeight) *1.2f );
     UpdateGeometry();
-    ChangeVisuals(Normal, Normal);
+    ChangeVisuals(Normal, Normal, this);
 
     connect( this, &InputArea::StateChanged, this, &Button::ChangeVisuals);
     ButtonManager::Instance().Add(this);
@@ -60,7 +60,7 @@ void Button::UpdateGeometry()
 
 }
 
-void Button::ChangeVisuals(InputArea::State newState, InputArea::State oldState)
+void Button::ChangeVisuals(InputArea::State newState, InputArea::State oldState, InputAreaPtr sender)
 {
     float Vheight = TexUVArea.V2 - TexUVArea.V1;
 

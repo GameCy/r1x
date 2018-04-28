@@ -37,7 +37,7 @@ void ButtonManager::TapBeginHandler(int id, QVector2D pos)
     {
         if ((*itr)->Contains(pos))
         {
-            (*itr)->SetState(InputArea::Pressed, id);
+            (*itr)->SetState(InputArea::Pressed, pos, id);
             activeAreas.push_back( (*itr) );
             areas.erase(itr);
             break;
@@ -52,13 +52,13 @@ void ButtonManager::TapEndHandler(int id, QVector2D pos)
     {
         if ((*itr)->IsSameEventId(id))
         {
-            (*itr)->SetState(InputArea::Normal, id);
-            (*itr)->ClearActiveID();
+            InputArea* area = (*itr);
+            area->SetState(InputArea::Normal, pos, id);
+            area->ClearActiveID();
+            if (area->Contains(pos))
+                emit area->Clicked(area, pos);
 
-            if ((*itr)->Contains(pos))
-                emit (*itr)->Clicked();
-
-            areas.push_back( (*itr) );
+            areas.push_back( area );
             activeAreas.erase(itr);
 
             break;
@@ -72,7 +72,7 @@ void ButtonManager::TapMoveHandler(int id, QVector2D pos)
     for(itr=activeAreas.begin(); itr!=activeAreas.end(); ++itr)
     {
         InputArea::State newState = ((*itr)->Contains(pos)) ? InputArea::Pressed : InputArea::Hover;
-        (*itr)->SetState(newState, id);
+        (*itr)->SetState(newState, pos, id);
     }
 }
 

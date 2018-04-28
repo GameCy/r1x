@@ -31,7 +31,7 @@ private:
     void UpdateGeometry();
 
 private slots:
-    void ChangeVisuals(InputArea::State newState, InputArea::State oldState);
+    void ChangeVisuals(InputArea::State newState, InputArea::State oldState, InputAreaPtr sender);
 };
 
 //typedef SmartPtr<Button>    ButtonPtr;

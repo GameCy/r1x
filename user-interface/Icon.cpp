@@ -8,7 +8,7 @@ Icon::Icon(QString iconSpriteName, QVector2D pos, QVector2D iconSize, SpriteMapP
     Background = uiMap->CreateSprite(iconSpriteName);
     Background->setUVRect( uvRect );
     Background->setSize(iconSize);
-    ChangeVisuals(Normal, Normal);
+    ChangeVisuals(Normal, Normal, this);
 
     UpdateInternals();
     connect( this, &InputArea::StateChanged, this, &Icon::ChangeVisuals);
@@ -42,7 +42,7 @@ void Icon::UpdateInternals()
     Background->setSize(Size);
 }
 
-void Icon::ChangeVisuals(InputArea::State newState, InputArea::State oldState)
+void Icon::ChangeVisuals(InputArea::State newState, InputArea::State oldState, InputAreaPtr sender)
 {
     float Vheight = TexUVArea.V2 - TexUVArea.V1;
     float deltaV = 0;

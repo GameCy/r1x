@@ -15,15 +15,15 @@ bool InputArea::Contains(QVector2D p)
     return false;
 }
 
-void InputArea::SetState(InputArea::State newState, int eventID)
+void InputArea::SetState(InputArea::State newState, QVector2D lastMousePos, int eventID)
 {
     if (activeEventID!=0 && eventID!=activeEventID)
         return;
     activeEventID = eventID;
 
-    if (state != newState)
+    if (state != newState )
     {
-        emit StateChanged(newState, state);
+        emit StateChanged(newState, state, this, lastMousePos);
         state = newState;
     }
 }
