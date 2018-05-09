@@ -17,8 +17,9 @@ struct ViewPort {
     {
         X2 = x2; Y2 = y2;
     }
-    int Width()  { return X2 - X1; }
-    int Height() { return Y2 - Y1; }
+    int     Width()  { return X2 - X1; }
+    int     Height() { return Y2 - Y1; }
+    float   AspectRatio() { return (X2-X1)/(Y2-Y1); }
     QVector2D LocalPos(QVector2D screenPos)
     {
         float x = float(screenPos.x()-X1)/float(X2-X1);

@@ -1,6 +1,7 @@
 #include "ButtonManager.h"
 #include "Camera.h"
 #include "Graphics.h"
+#include <QDebug>
 
 ButtonManager* ButtonManager::instance=0;
 
@@ -14,17 +15,25 @@ ButtonManager &ButtonManager::Instance()
 void ButtonManager::Add(InputAreaPtr area)
 {
     if (areas.contains(area))
+    {
+        if (toRemove.contains(area))
+            toRemove.removeAll(area);
         return;
+    }
     areas.push_back(area);
+    qDebug() << "InputArea Added" << area;
 }
 
 void ButtonManager::Remove(InputAreaPtr area)
 {
+    qDebug() << "InputArea toRemove" << area;
     toRemove.append(area);
 }
 
 void ButtonManager::ExecuteRemovals()
 {
+    if (toRemove.size()>0)
+        qDebug() << "InputArea Removals:" << toRemove.size();
     foreach(InputAreaPtr area, toRemove)
         areas.removeAll(area);
     toRemove.clear();
