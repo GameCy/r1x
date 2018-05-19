@@ -25,12 +25,12 @@ public:
     void Render();
     void Update();
 
-
 private:
     QVector<Sprite*>    sprites;
     QuadRendererBase*   renderer;
     AtlasImporter       atlas;
     bool                colorPerSprite;
+    bool                rebuiltQuads;
 
     void    BuildQuads();
     int     CountVisibleSprites();

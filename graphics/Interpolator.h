@@ -36,6 +36,8 @@ public:
             (*target) = endValue;
     }
 
+    float GetTime()     { return t; }
+
 private:
     T*      target;
     T       endValue;

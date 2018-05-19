@@ -84,7 +84,12 @@ unsigned int Randomizer::GetUint()
     return (m_z << 16) + m_w;
 }
 
-QVector3D Randomizer::RandPos(float radius)
+QVector2D Randomizer::RandPos2D(float radius)
+{
+    return QVector2D(radius*0.5 - GetFloat(0, radius), radius*0.5 - GetFloat(0, radius));
+}
+
+QVector3D Randomizer::RandPos3D(float radius)
 {
     return QVector3D(radius*0.5 - GetFloat(0, radius), 0, radius*0.5 - GetFloat(0, radius));
 }

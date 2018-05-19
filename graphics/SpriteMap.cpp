@@ -4,6 +4,7 @@
 SpriteMap::SpriteMap(int maxQuads, QString path, bool useColorPerSprite)
     : colorPerSprite(useColorPerSprite)
     , renderer(0)
+    , rebuiltQuads(false)
 {
     MaterialPtr mat = LoadMaterial(path);
 
@@ -44,6 +45,7 @@ Sprite* SpriteMap::CreateSprite(QString spriteName)
     }
     Sprite* sprite = new Sprite(uvRect);
     sprites.push_back(sprite);
+    rebuiltQuads=true;
     return sprite;
 }
 
@@ -51,6 +53,7 @@ bool SpriteMap::DestroySprite(Sprite *sprite)
 {
     int removed = sprites.removeAll(sprite);
     delete sprite;
+    rebuiltQuads=true;
     return (removed>0);
 }
 
@@ -115,13 +118,18 @@ void SpriteMap::Render()
 
 void SpriteMap::Update()
 {
-    for(int i=0; i<sprites.size(); ++i)
+    if (!rebuiltQuads)
     {
-        if (sprites[i]->hasChanged)
+        for(int i=0; i<sprites.size(); ++i)
         {
-            BuildQuads();
-            break;
+            if (sprites[i]->hasChanged)
+            {
+                rebuiltQuads=true;
+                break;
+            }
         }
     }
+    if(rebuiltQuads)
+        BuildQuads();
 }
 

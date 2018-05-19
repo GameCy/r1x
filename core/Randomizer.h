@@ -1,5 +1,6 @@
 #ifndef RANDOMIZER_H
 #define RANDOMIZER_H
+#include <QVector2D>
 #include <QVector3D>
 
 class Randomizer
@@ -34,7 +35,8 @@ public:
 
     unsigned int GetUint();
 
-    QVector3D RandPos(float radius);
+    QVector2D RandPos2D(float radius);
+    QVector3D RandPos3D(float radius);
 
 private:
     unsigned int m_w;
