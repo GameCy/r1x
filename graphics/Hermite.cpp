@@ -2,26 +2,106 @@
 //#include <memory.h>
 #include <math.h>
 
-
-// (c) Soteris Stylianou, feb 2003, revised 2014
+// (c) Soteris Stylianou, feb 2003, revised 2014, 2018
 //
 // there is a nice explanation of hermite curves here:
 // http://www.cubic.org/~submissive/sourcerer/hermite.htm
 
-Hermite::Hermite()
+QVector3D HermiteInterpolate(QVector3D &point1, QVector3D &point2, QVector3D &tangentP1, QVector3D &tangentP2, float weight)
 {
-	m_stiffness = 1.0f;
-	m_TotalCurveLength=0;
+    float w2,w3,h1,h2,h3,h4;
+    w2 = weight*weight;
+    w3 = w2*weight;
+    h1 =  2*w3 - 3*w2 + 1;
+    h2 = -2*w3 + 3*w2;			// basis function 2
+    h3 =  w3 - 2*w2 + weight;	// basis function 3
+    h4 =  w3 - w2;				// basis function 4
+
+    return (  point1*h1 + point2*h2 + tangentP1*h3 + tangentP2*h4 );
 }
 
-Hermite::~Hermite()
+void ComputeTangents(PointArray points, PointArray& tangents, float stiffness)
+{
+    if (points.size()<1)	return;
+
+    tangents.clear();
+
+    QVector3D p1, p2, tan;
+    int numPoints = points.size();
+    for(int i = 0; i<numPoints; ++i)
+    {
+        if (i>0)	p1 = points[i-1];
+        else		p1 = points[i];
+
+        if (i<(numPoints-1))	p2 = points[i+1];
+        else					p2 = points[i];
+
+        tan = p2 - p1;
+        tan *= stiffness;
+        tangents.push_back(tan);
+    }
+    // last tangent is the same
+    tangents.push_back(tan);
+}
+
+// ----------------------------------------------------------------------
+
+SampledCurve::SampledCurve(float duration)
+    : TotalTime(duration)
+    , TotalLength(0)
+    , StepLength(0)
+{
+}
+
+QVector3D	SampledCurve::GetPoint(float t)
+{
+    int numSamples = Points.size();
+    if (numSamples<1)	return QVector3D(0,0,0);
+
+    float x = t/TotalTime*TotalLength;
+    int idx1 = (int) (x/StepLength);
+    int idx2 = idx1+1;
+    if (idx1>=numSamples-1)
+        return Points[numSamples-1];
+
+    float ratio =	( (float)idx2*StepLength - x) /
+                    ( (float)idx2*StepLength - (float)idx1*StepLength);
+
+    return ( Points[idx1]*ratio + Points[idx2]*(1.0f-ratio) );
+}
+
+QVector3D SampledCurve::GetTangent(float t)
+{
+    int numSamples = Tangents.size();
+    if (numSamples<1)	return QVector3D(0,0,0);
+
+    float x = t/TotalTime*TotalLength;
+    int idx1 = (int) (x/StepLength);
+    int idx2 = idx1+1;
+    if (idx1>=numSamples-1)
+        return Tangents[numSamples-1];
+
+    float ratio =	( (float)idx2*StepLength - x) /
+                    ( (float)idx2*StepLength - (float)idx1*StepLength);
+
+    return ( Tangents[idx1]*ratio + Tangents[idx2]*(1.0f-ratio) );
+}
+
+void SampledCurve::MakeTangents(float stiffness)
+{
+    ComputeTangents(Points, Tangents, stiffness);
+}
+
+// ----------------------------------------------------------------------
+
+Hermite::Hermite(float stiffness)
+    : Stiffness(stiffness)
 {
 }
 
 // numSamples can be zero and no samples will be computed
-void	Hermite::init(float duration, int numSamples, int numpoints, float* xyz=0)
+void	Hermite::Init(float duration, int numSamples, int numpoints, float* xyz=0)
 {
-	m_TotalTime = duration;
 	ControlPoints.clear();
 
 	while(numpoints)
@@ -31,44 +111,9 @@ void	Hermite::init(float duration, int numSamples, int numpoints, float* xyz=0)
 		numpoints--;
 	}
 
-	ComputeTangents(ControlPoints, Tangents);
-	ComputeSamples(numSamples);
-	ComputeTangents(SamplePoints, SampleTangents);
-}
-
-// numSamples can be zero and no samples will be computed
-void	Hermite::initSamplesFromControlPoints(float duration, int numSamples)
-{
-	m_TotalTime = duration;
-
-	ComputeTangents(ControlPoints, Tangents);
-	ComputeSamples(numSamples);
-	ComputeTangents(SamplePoints, SampleTangents);
-}
-
-// precompute tangents
-void	Hermite::ComputeTangents(PointArray points, PointArray& tangents)
-{
-	if (points.size()<1)	return;
-
-	tangents.clear();
-	
-    QVector3D p1, p2, tan;
-	int numPoints = points.size();
-	for(int i = 0; i<numPoints; ++i)
-	{
-		if (i>0)	p1 = points[i-1];
-		else		p1 = points[i];
-
-		if (i<(numPoints-1))	p2 = points[i+1];
-		else					p2 = points[i];
-		
-		tan = p2 - p1; 
-        tan *= m_stiffness;
-		tangents.push_back(tan);
-	}
-	// last tangent is the same 
-	tangents.push_back(tan);
+    ComputeTangents(ControlPoints, Tangents, Stiffness);
+//    ComputeSamples(numSamples);
+//	ComputeTangents(SamplePoints, SampleTangents);
 }
 
 
@@ -76,7 +121,7 @@ float	Hermite::CalculateTotalLength(float step)
 {
 	if (ControlPoints.size()<1)	return -1.0f;
 	if (Tangents.size()==0)
-		ComputeTangents(ControlPoints, Tangents);
+        ComputeTangents(ControlPoints, Tangents, Stiffness);
 	
 	// sample curve length
 	float total_len=0;
@@ -96,49 +141,44 @@ float	Hermite::CalculateTotalLength(float step)
 	return total_len;
 }
 
-// now build correct time based precomputed positions on curve
-void	Hermite::ComputeSamples(int numSamples)
+void	Hermite::MakeSampledCurve(int numSamples, SampledCurve* sampled)
 {
-	if (ControlPoints.size()<1)	return;
+    if (ControlPoints.size()<1)
+        return;
 
-	SamplePoints.clear();
+    sampled->Points.clear();
 
 	// sample curve length
-	float total_len=0;
+    float travel=0;
     QVector3D sample1, sample2;
 	float numPoints = (float) ControlPoints.size();
 	float step = 0.1f*((float)(numPoints-1.0f)/(float)numSamples);
 	
-	m_TotalCurveLength = CalculateTotalLength(step);
+    sampled->TotalLength = CalculateTotalLength(step);
+    sampled->StepLength = sampled->TotalLength/float(numSamples-1);
 
 	// sample equidistant points
-	//numSamples = SamplePoints.size();
-	float steplength = m_TotalCurveLength/float(numSamples-1);
-	total_len = 0;
+    travel = 0;
 	sample1 = Interpolate( 0.0);
-	SamplePoints.push_back( sample1);
+    sampled->Points.push_back( sample1);
 	int count=1;
 	for(float t=step; t<=(numPoints-1.0f); t+=step)
 	{
 		sample2 = sample1;
 		sample1 = Interpolate( t);
-        total_len += (sample1-sample2).length();
-		if (total_len>=steplength)
+        travel += (sample1-sample2).length();
+        if (travel>=sampled->StepLength)
 		{
 			if (count>=(numSamples-1))	break;
-			total_len-=steplength;
-			SamplePoints.push_back(sample1);
+            travel -= sampled->StepLength;
+            sampled->Points.push_back(sample1);
 			++count;
 		}
 	}
 	if (count<numSamples) // last point
-		SamplePoints.push_back( ControlPoints.back() );
-}
+        sampled->Points.push_back( ControlPoints.back() );
 
-// actually calculate point now, dont use sampled points
-QVector3D	Hermite::CalcPoint(float w)
-{
-	return Interpolate( w*float(ControlPoints.size()) );
+    ComputeTangents(sampled->Points, sampled->Tangents, Stiffness);
 }
 
 // do the interpolation, t= 0 .. (n-1)
@@ -151,39 +191,6 @@ QVector3D	Hermite::Interpolate(float t)
 
     if ( (segment+2) > ControlPoints.size())	return QVector3D(0,0,0);	// numseg=nump-1; need to have segment<=numseg;
 
-	return RawCurveCalc(  ControlPoints[segment], ControlPoints[segment+1], Tangents[segment], Tangents[segment+1], s );
-}
-
-QVector3D Hermite::RawCurveCalc(QVector3D &point1, QVector3D &point2, QVector3D &tangentP1, QVector3D &tangentP2, float weight)
-{
-	float w2,w3,h1,h2,h3,h4;
-	w2 = weight*weight;
-	w3 = w2*weight;
-	h1 =  2*w3 - 3*w2 + 1;
-	h2 = -2*w3 + 3*w2;			// calculate basis function 2
-	h3 =  w3 - 2*w2 + weight;	// calculate basis function 3
-	h4 =  w3 - w2;				// calculate basis function 4
-
-	return (  point1*h1 + point2*h2 + tangentP1*h3 + tangentP2*h4 );
-}
-
-// get point from previously computed samples, time-lenth corrected - beware
-QVector3D	Hermite::GetPoint(float t)
-{
-    if (SamplePoints.size()<1)	return QVector3D(0,0,0);
-
-	int numSamples = SamplePoints.size();
-	float steplen = m_TotalCurveLength/(float(numSamples)-1.0f);
-	float x = t/m_TotalTime*m_TotalCurveLength;
-	int idx1 = (int) (x/steplen);
-	int idx2 = idx1+1;
-	if (idx1>=numSamples-1)
-		return SamplePoints[numSamples-1];
-
-	float ratio =	( (float)idx2*steplen - x) /
-					( (float)idx2*steplen - (float)idx1*steplen);
-	float inverseratio = 1.0f-ratio;
-	
-	return (SamplePoints[idx1]*ratio + SamplePoints[idx2]*inverseratio);
+    return HermiteInterpolate( ControlPoints[segment], ControlPoints[segment+1], Tangents[segment], Tangents[segment+1], s );
 }
 

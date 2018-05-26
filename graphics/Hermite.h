@@ -5,46 +5,46 @@
 
 typedef std::vector<QVector3D>	PointArray;
 
+void	ComputeTangents(PointArray points, PointArray& tangents, float stiffness);
+
+QVector3D HermiteInterpolate(QVector3D &point1, QVector3D &point2, QVector3D &tangentP1, QVector3D &tangentP2, float weight);
+
+// ------------------------------------------
+
+class SampledCurve
+{
+public:
+    SampledCurve(float duration);
+
+    QVector3D	GetPoint(float t);
+
+    void        MakeTangents(float stiffness);
+    QVector3D	GetTangent(float t);
+
+    float	TotalTime;
+    float	TotalLength;
+    float   StepLength;
+    PointArray	Points;
+    PointArray	Tangents;
+};
+
+// ------------------------------------------
+
 class Hermite
 {
 public:
-	Hermite();
-	virtual ~Hermite();
+    Hermite(float stiffness=1.f);
 
-	void	SetPathDuration(float t)	{ m_TotalTime = t; }
-	void	SetStiffness(float s)		{ m_stiffness = s; }
+    void	Init(float duration, int numSamples, int numpoints, float* xyz);
+    QVector3D		Interpolate(float t); // t = 0.0 to numpoints-1
 
-	// initialize and precompute samples
-	// samples are equidistant, thus speed is constant over the curve
-	void	init(float duration, int numSamples, int numpoints, float* xyz);
-	float	CalculateTotalLength(float step);
-	void	initSamplesFromControlPoints(float duration, int numSamples);
-
-	// get point from samples calculated at initialization
-    QVector3D		GetPoint(float t);
-    QVector3D		GetTangent(float t);
-
-	// calculate point, t = 0.0 to 1.0
-    QVector3D		CalcPoint(float w);
-	// calculate point, t = 0.0 to numpoints-1
-    QVector3D		Interpolate(float t);
-    static QVector3D RawCurveCalc(QVector3D &point1, QVector3D &point2, QVector3D &tangentP1, QVector3D &tangentP2, float weight);
-
-	float	m_TotalTime;
-	float	m_TotalCurveLength;
+    float	CalculateTotalLength(float step);
+    // samples are equidistant, thus speed is constant over the curve
+    void	MakeSampledCurve(int numSamples, SampledCurve* sampled);
 
 	PointArray	ControlPoints; // control points
-	PointArray	SamplePoints;
-	PointArray	SampleTangents;
-
-	float	m_stiffness;
-
-private:
-	void	ComputeTangents(PointArray points, PointArray& tangents);
-	void	ComputeSamples(int numSamples);
-
-	PointArray	Tangents;
+    PointArray	Tangents;
+    float	Stiffness;
 };
 
 #endif
-
