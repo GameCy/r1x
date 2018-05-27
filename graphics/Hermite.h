@@ -1,36 +1,8 @@
 #ifndef _HERMITE_H_
 #define _HERMITE_H_
-#include <vector>
-#include <QVector3D>
-
-typedef std::vector<QVector3D>	PointArray;
-
-void	ComputeTangents(PointArray points, PointArray& tangents, float stiffness);
+#include "SampledCurve.h"
 
 QVector3D HermiteInterpolate(QVector3D &point1, QVector3D &point2, QVector3D &tangentP1, QVector3D &tangentP2, float weight);
-
-// ------------------------------------------
-
-class SampledCurve
-{
-public:
-    SampledCurve(float duration);
-
-    QVector3D	GetPoint(float t);
-
-    void        MakeTangents(float stiffness);
-    QVector3D	GetTangent(float t);
-
-    float	TotalTime;
-    float	TotalLength;
-    float   StepLength;
-    PointArray	Points;
-    PointArray	Tangents;
-private:
-    float calcIndexRatio(float t, int &index);
-};
-
-// ------------------------------------------
 
 class Hermite
 {

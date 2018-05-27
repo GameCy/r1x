@@ -33,7 +33,8 @@ SOURCES += \
     $$PWD/Interpolator.cpp \
     $$PWD/UVAnim.cpp \
     $$PWD/QuadTypes.cpp \
-    $$PWD/QuadRenderers.cpp
+    $$PWD/QuadRenderers.cpp \
+    $$PWD/SampledCurve.cpp
 
 HEADERS += \
     $$PWD/AngleInterpolator.h \
@@ -66,4 +67,5 @@ HEADERS += \
     $$PWD/Interpolator.h \
     $$PWD/UVAnim.h \
     $$PWD/QuadTypes.h \
-    $$PWD/QuadRenderers.h
+    $$PWD/QuadRenderers.h \
+    $$PWD/SampledCurve.h
