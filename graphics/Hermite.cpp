@@ -58,14 +58,10 @@ QVector3D	SampledCurve::GetPoint(float t)
     int numSamples = Points.size();
     if (numSamples<1)	return QVector3D(0,0,0);
 
-    float x = t/TotalTime*TotalLength;
-    int idx1 = (int) (x/StepLength);
-    int idx2 = idx1+1;
+    int idx;
+    float ratio = calcIndexRatio(t, idx);
     if (idx1>=numSamples-1)
         return Points[numSamples-1];
-
-    float ratio =	( (float)idx2*StepLength - x) /
-                    ( (float)idx2*StepLength - (float)idx1*StepLength);
 
     return ( Points[idx1]*ratio + Points[idx2]*(1.0f-ratio) );
 }
@@ -75,16 +71,22 @@ QVector3D SampledCurve::GetTangent(float t)
     int numSamples = Tangents.size();
     if (numSamples<1)	return QVector3D(0,0,0);
 
-    float x = t/TotalTime*TotalLength;
-    int idx1 = (int) (x/StepLength);
-    int idx2 = idx1+1;
-    if (idx1>=numSamples-1)
+    int idx;
+    float ratio = calcIndexRatio(t, idx);
+    if (idx>=numSamples-1)
         return Tangents[numSamples-1];
 
-    float ratio =	( (float)idx2*StepLength - x) /
-                    ( (float)idx2*StepLength - (float)idx1*StepLength);
+    return ( Tangents[idx]*ratio + Tangents[idx+1]*(1.0f-ratio) );
+}
 
-    return ( Tangents[idx1]*ratio + Tangents[idx2]*(1.0f-ratio) );
+float SampledCurve::calcIndexRatio(float t, int &index)
+{
+    float x = t/TotalTime*TotalLength;
+    index = (int) (x/StepLength);
+
+    float minT = float(idx)*StepLength;
+    float maxT = float(idx2)*StepLength;
+    return (maxT - x) / (maxT - minT);
 }
 
 void SampledCurve::MakeTangents(float stiffness)
@@ -112,8 +114,6 @@ void	Hermite::Init(float duration, int numSamples, int numpoints, float* xyz=0)
 	}
 
     ComputeTangents(ControlPoints, Tangents, Stiffness);
-//    ComputeSamples(numSamples);
-//	ComputeTangents(SamplePoints, SampleTangents);
 }
 
 
@@ -177,8 +177,6 @@ void	Hermite::MakeSampledCurve(int numSamples, SampledCurve* sampled)
 	}
 	if (count<numSamples) // last point
         sampled->Points.push_back( ControlPoints.back() );
-
-    ComputeTangents(sampled->Points, sampled->Tangents, Stiffness);
 }
 
 // do the interpolation, t= 0 .. (n-1)
@@ -187,10 +185,11 @@ QVector3D	Hermite::Interpolate(float t)
     if ( ControlPoints.size()<3 || Tangents.size()<2 )	return QVector3D(0,0,0);
 
 	int segment = (int) t;
-	float s = t- (float)segment;
+    float weight = t- (float)segment;
 
     if ( (segment+2) > ControlPoints.size())	return QVector3D(0,0,0);	// numseg=nump-1; need to have segment<=numseg;
 
-    return HermiteInterpolate( ControlPoints[segment], ControlPoints[segment+1], Tangents[segment], Tangents[segment+1], s );
+    return HermiteInterpolate( ControlPoints[segment], ControlPoints[segment+1]
+                            , Tangents[segment], Tangents[segment+1], weight );
 }
 

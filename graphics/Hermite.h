@@ -26,6 +26,8 @@ public:
     float   StepLength;
     PointArray	Points;
     PointArray	Tangents;
+private:
+    float calcIndexRatio(float t, int &index);
 };
 
 // ------------------------------------------
