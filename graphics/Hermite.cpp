@@ -28,7 +28,7 @@ Hermite::Hermite(float stiffness)
 }
 
 // numSamples can be zero and no samples will be computed
-void	Hermite::Init(float duration, int numSamples, int numpoints, float* xyz=0)
+void	Hermite::Init(int numpoints, float* xyz=0)
 {
 	ControlPoints.clear();
 
@@ -38,10 +38,13 @@ void	Hermite::Init(float duration, int numSamples, int numpoints, float* xyz=0)
 		xyz+=3;
 		numpoints--;
 	}
-
-    ComputeTangents(ControlPoints, Tangents, Stiffness);
+    InitTangets();
 }
 
+void Hermite::InitTangets()
+{
+    ComputeTangents(ControlPoints, Tangents, Stiffness);
+}
 
 float	Hermite::CalculateTotalLength(float step)
 {
@@ -81,6 +84,8 @@ void	Hermite::MakeSampledCurve(int numSamples, SampledCurve* sampled)
 	float step = 0.1f*((float)(numPoints-1.0f)/(float)numSamples);
 	
     sampled->TotalLength = CalculateTotalLength(step);
+    if (sampled->TotalLength==0.f)
+        return; // distance between points must not be zero
     sampled->StepLength = sampled->TotalLength/float(numSamples-1);
 
 	// sample equidistant points

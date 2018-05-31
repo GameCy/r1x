@@ -27,6 +27,10 @@ public:
     UVRect &getUVRect();
     void setUVRect(const UVRect &value);
 
+    void DeleteLater();
+
+    Sprite *CloneFrom(Sprite* other);
+
     void ClearChangedFlag();
 
     friend class SpriteMap;
@@ -37,6 +41,7 @@ private:
     UVRect      uvRect;
     bool        isVisible;
     bool        hasChanged;
+    bool        deleteLater;
 };
 
 #endif // _SPRITE_H

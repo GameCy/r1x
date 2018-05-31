@@ -16,6 +16,7 @@ public:
     ~SpriteMap();
 
     Sprite*     CreateSprite(QString spriteName="");
+    Sprite*     CreateClone(Sprite* other);
     bool        DestroySprite(Sprite* sprite);
 
     MaterialPtr GetMaterial();

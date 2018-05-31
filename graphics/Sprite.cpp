@@ -5,6 +5,7 @@ Sprite::Sprite(UVRect _uvRect)
     : isVisible(true)
     , Color(255,255,255,255)
     , uvRect(_uvRect)
+    , deleteLater(false)
 {
     Size = QVector2D(0,0);
     hasChanged = true;
@@ -62,6 +63,11 @@ void Sprite::ClearChangedFlag()
     hasChanged = false;
 }
 
+void Sprite::DeleteLater()
+{
+    deleteLater=true;
+}
+
 UVRect& Sprite::getUVRect()
 {
     return uvRect;
@@ -70,5 +76,15 @@ UVRect& Sprite::getUVRect()
 void Sprite::setUVRect(const UVRect &value)
 {
     uvRect = value;
+    hasChanged = true;
+}
+
+Sprite* Sprite::CloneFrom(Sprite *other)
+{
+    Pos = other->Pos;
+    Size = other->Size;
+    Color = other->Color;
+    uvRect = other->uvRect;
+    isVisible = other->isVisible;
     hasChanged = true;
 }

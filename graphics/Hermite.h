@@ -9,7 +9,9 @@ class Hermite
 public:
     Hermite(float stiffness=1.f);
 
-    void	Init(float duration, int numSamples, int numpoints, float* xyz);
+    void Init(int numpoints, float* xyz);
+    void InitTangets();
+
     QVector3D		Interpolate(float t); // t = 0.0 to numpoints-1
 
     float	CalculateTotalLength(float step);

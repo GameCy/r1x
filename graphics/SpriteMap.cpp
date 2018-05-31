@@ -49,6 +49,15 @@ Sprite* SpriteMap::CreateSprite(QString spriteName)
     return sprite;
 }
 
+Sprite *SpriteMap::CreateClone(Sprite *other)
+{
+    Sprite* sprite = new Sprite( other->getUVRect() );
+    sprite->CloneFrom(other);
+    sprites.push_back(sprite);
+    rebuiltQuads=true;
+    return sprite;
+}
+
 bool SpriteMap::DestroySprite(Sprite *sprite)
 {
     int removed = sprites.removeAll(sprite);
@@ -79,6 +88,7 @@ void SpriteMap::SetQuad2DX(Sprite* spr, int quadIndex)
 
 void SpriteMap::BuildQuads()
 {
+    rebuiltQuads = false;
     renderer->ReserveActiveQuads( CountVisibleSprites() );
 
     int numSprites = sprites.size();
@@ -118,11 +128,25 @@ void SpriteMap::Render()
 
 void SpriteMap::Update()
 {
+    QVector<Sprite*>::iterator spr = sprites.begin();
+    while(spr!=sprites.end())
+    {
+        Sprite* sprite = (*spr);
+        if (sprite->deleteLater)
+        {
+            delete sprite;
+            spr = sprites.erase(spr);
+            rebuiltQuads=true;
+        }
+        else
+            spr++;
+    }
+
     if (!rebuiltQuads)
     {
         for(int i=0; i<sprites.size(); ++i)
         {
-            if (sprites[i]->hasChanged)
+            if (sprites[i]->hasChanged || sprites[i]->deleteLater)
             {
                 rebuiltQuads=true;
                 break;

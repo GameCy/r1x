@@ -1,8 +1,23 @@
 #ifndef _INTERPOLATOR_H
 #define _INTERPOLATOR_H
 
+class Temporal
+{
+public:
+    float   Duration;
+    float   Time;
+
+    bool    Begin(float duration)  { Time=0; Duration = duration; }
+    bool    IsFinished()    { return Time>Duration; }
+
+    virtual void Update(float dt)
+    {
+        Time+=dt;
+    }
+};
+
 template<class T>
-class Interpolator
+class Interpolator : public Temporal
 {
 public:
     Interpolator(T* _target)
@@ -13,38 +28,27 @@ public:
 
     void Start(T end, float _duration)
     {
-        t = 0;
         endValue = end;
         speed = endValue - (*target);
-        duration = _duration;
+        Begin(_duration);
     }
 
-    bool IsFinished()
+    virtual void Update(float dt)
     {
-        return t>duration;
-    }
-
-    void Update(float dt)
-    {
-        if (t>duration)
+        if (Time>Duration)
             return;
 
-        t += dt;
-        if (t<duration)
-            (*target) += (dt/duration)*speed;
-        else
+        Time+=dt;
+        if (IsFinished())
             (*target) = endValue;
+        else
+            (*target) += (dt/Duration)*speed;
     }
-
-    float GetTime()     { return t; }
 
 private:
     T*      target;
     T       endValue;
     T       speed;
-
-    float   duration;
-    float   t;
 };
 
 #include <QVector2D>
