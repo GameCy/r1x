@@ -1,4 +1,4 @@
-#include "UVAnim.h"
+#include "SpriteAnimator.h"
 #include "QuadTypes.h"
 #include <math.h>
 

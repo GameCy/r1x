@@ -65,7 +65,7 @@ HEADERS += \
     $$PWD/InstanceRenderer.h \
     $$PWD/ViewPort.h \
     $$PWD/Interpolator.h \
-    $$PWD/UVAnim.h \
     $$PWD/QuadTypes.h \
     $$PWD/QuadRenderers.h \
-    $$PWD/SampledCurve.h
+    $$PWD/SampledCurve.h \
+    $$PWD/SpriteAnimator.h

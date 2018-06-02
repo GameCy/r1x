@@ -2,7 +2,7 @@
 #define SPRITESFROMTEXTURE_H
 #include "ExampleBase.h"
 #include "SpriteMap.h"
-#include "UVAnim.h"
+#include "SpriteAnimator.h"
 
 class SpritesFromAtlas : public ExampleBase
 {
