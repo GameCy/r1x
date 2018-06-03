@@ -31,10 +31,12 @@ SOURCES += \
     $$PWD/Vertex.cpp \
     $$PWD/InstanceRender.cpp \
     $$PWD/Interpolator.cpp \
-    $$PWD/UVAnim.cpp \
     $$PWD/QuadTypes.cpp \
     $$PWD/QuadRenderers.cpp \
-    $$PWD/SampledCurve.cpp
+    $$PWD/SampledCurve.cpp \
+    $$PWD/SpriteAnimator.cpp \
+    $$PWD/UVRect.cpp \
+    $$PWD/UVRectArray.cpp
 
 HEADERS += \
     $$PWD/AngleInterpolator.h \
@@ -68,4 +70,7 @@ HEADERS += \
     $$PWD/QuadTypes.h \
     $$PWD/QuadRenderers.h \
     $$PWD/SampledCurve.h \
-    $$PWD/SpriteAnimator.h
+    $$PWD/SpriteAnimator.h \
+    $$PWD/UVRect.h \
+    $$PWD/Temporal.h \
+    $$PWD/UVRectArray.h

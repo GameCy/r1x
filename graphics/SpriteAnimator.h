@@ -1,37 +1,25 @@
 #ifndef _TEXTURE_ANIM_
 #define _TEXTURE_ANIM_
-#include <QVector2D>
-#include "AtlasImporter.h"
+#include "Temporal.h"
+#include "UVRectArray.h"
+#include "Sprite.h"
 
-class Quad3D;
-
-class UVAnim
+class SpriteAnimator : public Temporal
 {
 public:
-    UVAnim();
-    UVAnim(float animDT, int numFramesX, int numFramesY, int maxFrames, UVRect *atlasUVRect=0);
+    SpriteAnimator(Sprite* target, UVRectArray* frames);
 
-    void	Init(float animDuration, int	numFramesX, int	numFramesY, int maxFrames, UVRect *atlasUVRect=0);
+    // Temporal interface
+    virtual void Update(float dt);
 
-    void    Update(float dt);
-    UVRect  GetCellUVs();
-
-    UVRect  GetCellUVs(float time);
-    UVRect  GetCellUVs(int cellIndex);
-
-    int		CalcCellIdx(float time);
-
-    float		Time;
-    float       Duration;
+    void SetFrames(UVRectArray *frames);
 
 private:
-    int		MaxFrames;
-	int		FramesX;
-	int		FramesY;
+    UVRectArray *uvFrames;
+    Sprite      *Target;
+    int         lastFrameIndex;
 
-	float	cellDx, cellDy;
-
-    UVRect  uvRect;
+    int		timeToIdx(float time);
 };
 
 #endif

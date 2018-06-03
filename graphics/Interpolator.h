@@ -1,20 +1,6 @@
 #ifndef _INTERPOLATOR_H
 #define _INTERPOLATOR_H
-
-class Temporal
-{
-public:
-    float   Duration;
-    float   Time;
-
-    bool    Begin(float duration)  { Time=0; Duration = duration; }
-    bool    IsFinished()    { return Time>Duration; }
-
-    virtual void Update(float dt)
-    {
-        Time+=dt;
-    }
-};
+#include "Temporal.h"
 
 template<class T>
 class Interpolator : public Temporal

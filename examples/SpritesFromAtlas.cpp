@@ -12,10 +12,12 @@ SpritesFromAtlas::SpritesFromAtlas()
     ring = atlas.CreateSprite("slot.png");
 
     spark = atlas.CreateSprite("energy1.png");
-    sparkAnim.Init(.8f, 1, 6, 6, &spark->getUVRect() );
+    sparkFrames.InitCellsFromGrid(1, 6, 6, &spark->getUVRect());
+    spark->Animate(0.5f, &sparkFrames);
 
     runner = atlas.CreateSprite("Runner.png");
-    runnerAnim.Init(.35f, 4, 1, 4, &runner->getUVRect() );
+    runnerFrames.InitCellsFromGrid( 4, 1, 4, &runner->getUVRect() );
+    runner->Animate(0.8f, &runnerFrames);
 
     Resize(screenWidth, screenHeight);
 }
@@ -39,11 +41,6 @@ void SpritesFromAtlas::Update(float dt)
     ring->setPos( screenPos( sin(t), 0.7f) );
     spark->setPos( screenPos(0.f, -0.6f) );
     runner->setPos(screenPos(-sin(t), 0.0f) );
-
-    sparkAnim.Update(dt);
-    spark->setUVRect( sparkAnim.GetCellUVs() );
-    runnerAnim.Update(dt);
-    runner->setUVRect( runnerAnim.GetCellUVs() );
 
     atlas.Update();
 }

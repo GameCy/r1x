@@ -1,16 +1,16 @@
 #ifndef _SPRITE_H
 #define _SPRITE_H
 #include <QVector2D>
-#include <vector>
-#include "Material.h"
-#include "QuadRenderers.h"
-#include "AtlasImporter.h"
+#include <QColor>
+#include "UVRectArray.h"
+
+class SpriteAnimator;
 
 class Sprite
 {
 public:
     Sprite(UVRect _uvRect);
-    virtual ~Sprite() {}
+    ~Sprite();
 
     void    SetVisible(bool visible);
     bool    IsVisible();
@@ -33,6 +33,8 @@ public:
 
     void ClearChangedFlag();
 
+    void Animate(float duration, UVRectArray *frames);
+
     friend class SpriteMap;
 private:
     QVector2D   Pos;
@@ -42,6 +44,8 @@ private:
     bool        isVisible;
     bool        hasChanged;
     bool        deleteLater;
+
+    SpriteAnimator *animator;
 };
 
 #endif // _SPRITE_H
