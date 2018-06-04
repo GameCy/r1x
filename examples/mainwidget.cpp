@@ -4,6 +4,7 @@
 #include <QMatrix4x4>
 #include "Core.h"
 #include "Graphics.h"
+#include "Temporal.h"
 #include "UI.h"
 #include "ButtonManager.h"
 #include "InputTracker.h"
@@ -95,6 +96,7 @@ void MainWidget::paintGL()
 
     Core::CoreDelegates.Process();
     //Core::CoreEvents.Process();
+    TemporalPool::Update(frameDt);
 
     ogl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     if (example)

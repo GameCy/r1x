@@ -35,8 +35,8 @@ private:
 
     void    BuildQuads();
     int     CountVisibleSprites();
-    void    SetQuad2D(Sprite* spr, int quadIndex);
-    void    SetQuad2DX(Sprite* spr, int quadIndex);
+    inline void    SetQuad2D(Sprite* spr, int quadIndex);
+    inline void    SetQuad2DX(Sprite* spr, int quadIndex);
 };
 
 typedef SmartPtr<SpriteMap>     SpriteMapPtr;

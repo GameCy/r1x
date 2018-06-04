@@ -156,4 +156,3 @@ void SpriteMap::Update()
     if(rebuiltQuads)
         BuildQuads();
 }
-

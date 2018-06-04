@@ -36,7 +36,8 @@ SOURCES += \
     $$PWD/SampledCurve.cpp \
     $$PWD/SpriteAnimator.cpp \
     $$PWD/UVRect.cpp \
-    $$PWD/UVRectArray.cpp
+    $$PWD/UVRectArray.cpp \
+    $$PWD/Temporal.cpp
 
 HEADERS += \
     $$PWD/AngleInterpolator.h \

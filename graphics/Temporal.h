@@ -1,32 +1,37 @@
 #ifndef TEMPORAL_H
 #define TEMPORAL_H
+#include <list>
 
 class Temporal
 {
 public:
-    Temporal()
-        : Duration(-1)
-        , Time(0)
-    {}
+    Temporal();
+    virtual ~Temporal() {}
 
     float   Duration;
     float   Time;
 
-    void    Begin(float duration)  { Time=0; Duration = duration; }
-    bool    IsFinished()    { return Time>Duration; }
+    inline void    Begin(float duration)    { Time=0; Duration = duration; }
 
-    virtual void Update(float dt)
-    {
-        if(Duration>0.f)
-            Time+=dt;
-    }
+    inline bool    IsFinished()    {  return Time>Duration; }
 
-    float TimeRatio()
-    {
-        if (Time<0)            return -1.f;
-        if (Time>Duration)     return 1.f;
-        return Time/Duration;
-    }
+    virtual void Update(float dt);
+
+    float TimeRatio();
+};
+
+class TemporalPool
+{
+public:
+    static void Add(Temporal* tempo);
+    static void Remove(Temporal* tempo);
+    static void Update(float dt);
+
+private:
+    TemporalPool() {}
+
+    static std::list<Temporal*> weakTemporals;
 };
 
 #endif // TEMPORAL_H
+

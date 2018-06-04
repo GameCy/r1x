@@ -7,9 +7,10 @@ public:
     BlinkFloat(float start, float end, float period);
 
     void    Update(float dt);
+    bool    hasEnded();
+
     float   Value();
     void    SetNewTarget(float newTarget);
-    bool    hasEnded();
     void    Repeat(int _repetitions);
 
 private:

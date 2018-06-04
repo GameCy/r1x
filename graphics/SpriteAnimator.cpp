@@ -7,11 +7,25 @@ SpriteAnimator::SpriteAnimator(Sprite *target, UVRectArray* frames)
     : uvFrames(frames)
     , Target(target)
     , lastFrameIndex(-1)
+    , repetitions(-1)
 {
+    TemporalPool::Add(this);
+}
+
+SpriteAnimator::~SpriteAnimator()
+{
+    TemporalPool::Remove(this);
 }
 
 void SpriteAnimator::Update(float dt)
 {
+    if (IsFinished())
+    {
+        if (repetitions!=0)
+            Time=0;
+        if (repetitions>0)
+            --repetitions;
+    }
     Time += dt;
 
     int frameIndex = timeToIdx(Time);
@@ -24,6 +38,11 @@ void SpriteAnimator::Update(float dt)
 void SpriteAnimator::SetFrames(UVRectArray *frames)
 {
     uvFrames = frames;
+}
+
+void SpriteAnimator::Repeat(int numRepeats)
+{
+    repetitions = numRepeats;
 }
 
 int		SpriteAnimator::timeToIdx(float time)

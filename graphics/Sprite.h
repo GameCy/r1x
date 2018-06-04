@@ -13,27 +13,47 @@ public:
     ~Sprite();
 
     void    SetVisible(bool visible);
-    bool    IsVisible();
+    inline bool    IsVisible()    { return isVisible; }
 
-    QVector2D getPos() const;
-    void setPos(const QVector2D &value);
+    inline QVector2D getPos() const    { return Pos; }
+    inline void setPos(const QVector2D &value)
+    {
+        Pos = value;
+        hasChanged = true;
+    }
 
-    QVector2D getSize() const;
-    void setSize(const QVector2D &value);
+    inline QVector2D getSize() const    { return Size; }
+    inline void setSize(const QVector2D &value)
+    {
+        Size = value;
+        hasChanged = true;
+    }
 
-    QColor getColor() const;
-    void setColor(const QColor &value);
+    inline QColor getColor() const    { return Color; }
+    inline void setColor(const QColor &value)
+    {
+        Color = value;
+        hasChanged = true;
+    }
 
-    UVRect &getUVRect();
-    void setUVRect(const UVRect &value);
+    inline UVRect &getUVRect()    { return uvRect; }
+    inline void setUVRect(const UVRect &value)
+    {
+        uvRect = value;
+        hasChanged = true;
+    }
 
-    void DeleteLater();
+    inline void DeleteLater()
+    {
+        deleteLater=true;
+    }
+
+    inline void ClearChangedFlag()    { hasChanged = false; }
 
     Sprite *CloneFrom(Sprite* other);
 
-    void ClearChangedFlag();
-
     void Animate(float duration, UVRectArray *frames);
+    inline SpriteAnimator* GetAnimator()    { return animator;}
 
     friend class SpriteMap;
 private:
