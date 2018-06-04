@@ -14,13 +14,11 @@ public:
     virtual void Update(float dt);
 
     void SetFrames(UVRectArray *frames);
-    void Repeat(int numRepeats);
 
 private:
     UVRectArray *uvFrames;
     Sprite      *Target;
     int         lastFrameIndex;
-    int         repetitions;
 
     int		timeToIdx(float time);
 };

@@ -8,16 +8,20 @@ public:
     Temporal();
     virtual ~Temporal() {}
 
-    float   Duration;
-    float   Time;
 
     inline void    Begin(float duration)    { Time=0; Duration = duration; }
+    inline void    Repeat(int numRepeats)   { Repetitions = numRepeats; }
 
     inline bool    IsFinished()    {  return Time>Duration; }
 
     virtual void Update(float dt);
 
     float TimeRatio();
+
+protected:
+    float   Duration;
+    float   Time;
+    int     Repetitions;
 };
 
 class TemporalPool

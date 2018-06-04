@@ -19,7 +19,6 @@ public:
 private:
     Camera      camera;
     ModelPtr    monkey;
-    float       angle;
 
     BasicModel  ground;
 };

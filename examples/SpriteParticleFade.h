@@ -28,7 +28,6 @@ private:
     QVector2D   screenPos(float x, float y);
     float       screenWidth;
     float       screenHeight;
-    float       t;    
 };
 
 #endif // SPRITEPARTICLEFADE_H

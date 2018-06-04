@@ -1,11 +1,12 @@
 #ifndef EXAMPLEBASE_H
 #define EXAMPLEBASE_H
+#include "Temporal.h"
 
-
-class ExampleBase
+class ExampleBase : public Temporal
 {
 public:
-    virtual ~ExampleBase() {}
+    ExampleBase()               { TemporalPool::Add(this); }
+    virtual ~ExampleBase()      { TemporalPool::Remove(this); }
 
     virtual void Render()=0;
     virtual void Update(float dt)=0;

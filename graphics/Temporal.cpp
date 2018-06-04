@@ -1,18 +1,24 @@
 #include "Temporal.h"
+#include <QDebug>
 
 Temporal::Temporal()
-    : Duration(-1)
-    , Time(0)
+    : Duration(0.f)
+    , Time(-1.f)
+    , Repetitions(-1)
 {}
-
-
-
-
 
 void Temporal::Update(float dt)
 {
     if(Duration>0.f)
         Time+=dt;
+
+    if (IsFinished())
+    {
+        if (Repetitions!=0)
+            Time=0;
+        if (Repetitions>0)
+            --Repetitions; // ToDo: emit Finished
+    }
 }
 
 float Temporal::TimeRatio()
@@ -33,6 +39,7 @@ void TemporalPool::Add(Temporal *tempo)
 void TemporalPool::Remove(Temporal *tempo)
 {
     weakTemporals.remove(tempo);
+    qDebug() << "Temporals:" << weakTemporals.size();
 }
 
 void TemporalPool::Update(float dt)

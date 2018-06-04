@@ -8,7 +8,6 @@ bool colorPerSprite = true;
 SpriteParticleFade::SpriteParticleFade()
     : atlas(50, ":/textures/textures.atlas", colorPerSprite)
     , trigonometricParameter(0.8, 3.0, 6.f)
-    , t(0)
 {
     screenWidth = Graphics::Screen.Width();
     screenHeight= Graphics::Screen.Height();
@@ -24,6 +23,8 @@ SpriteParticleFade::SpriteParticleFade()
 
     trigonometricParameter.Repeat(2000);
     Resize(screenWidth, screenHeight);
+
+    Begin( 2.0*M_PI );
 }
 
 SpriteParticleFade::~SpriteParticleFade()
@@ -42,15 +43,13 @@ void SpriteParticleFade::Render()
 
 void SpriteParticleFade::Update(float dt)
 {
-    t+=dt;
-    static double PIx2 = 2.0*M_PI;
-    while(t>PIx2)   t -= PIx2;
+    Temporal::Update(dt);
 
     trigonometricParameter.Update(dt);
     float trig = trigonometricParameter.Value();
     for(int i=0; i<50; ++i)
     {
-        float st = t + starTime[i];
+        float st = Time + starTime[i];
         star[i]->setPos( screenPos(0.5f*sin(st*trig), 0.5f*cos(st)) );
         star[i]->setColor( QColor(122+40*trig, 122-40*trig, 255, 128+120*sin(st+trig)) );
     }

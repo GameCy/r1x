@@ -101,10 +101,10 @@ void MainWidget::paintGL()
     ogl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     if (example)
     {
-        example->Update( frameDt );
+        //example->Update( frameDt );
         example->Render();
     }
-    userInterface->Update(frameDt);
+    //userInterface->Update(frameDt);
     userInterface->Render();
 
     update();
