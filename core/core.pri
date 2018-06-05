@@ -7,6 +7,7 @@ SOURCES += \
     $$PWD/EventDispatcher.cpp \
     $$PWD/Core.cpp \
     $$PWD/Randomizer.cpp \
+    $$PWD/Temporal.cpp \
     $$PWD/Timer.cpp
 
 HEADERS += \
@@ -18,4 +19,5 @@ HEADERS += \
     $$PWD/Core.h \
     $$PWD/Randomizer.h \
     $$PWD/SmartPtr.h \
+    $$PWD/Temporal.h \
     $$PWD/Timer.h
