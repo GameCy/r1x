@@ -13,7 +13,7 @@ SpritesFromAtlas::SpritesFromAtlas()
 
     spark = atlas.CreateSprite("energy1.png");
     sparkFrames.InitCellsFromGrid(1, 6, 6, &spark->getUVRect());
-    spark->Animate(0.9f, &sparkFrames);
+    spark->Animate(2.9f, &sparkFrames);
     spark->GetAnimator()->Repeat(5);
 
     runner = atlas.CreateSprite("Runner.png");
@@ -39,7 +39,7 @@ void SpritesFromAtlas::Update(float dt)
 {
     t+=dt;
 
-    ring->setPos( screenPos( -0.1f -0.8f*sin(t+0.3f), 0.7f) );
+    ring->setPos( screenPos( -0.1f -0.8f*sin(t+1.3f), 0.7f) );
     spark->setPos( screenPos(0.f, -0.6f) );
     runner->setPos(screenPos(-0.15f -0.7f*sin(t), 0.0f) );
 

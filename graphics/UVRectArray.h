@@ -13,7 +13,7 @@ public:
     void InitCellsFromGrid(int numFramesX, int numFramesY, int maxFrames, UVRect *allUVRect=0);
 
     UVRect *Get(int element);
-    UVRect &operator [](int element);
+    const UVRect &operator [](int element);
 
     int MaxElement;
 private:

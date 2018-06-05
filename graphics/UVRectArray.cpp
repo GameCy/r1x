@@ -15,7 +15,7 @@ UVRectArray::~UVRectArray()
 UVRect *UVRectArray::Get(int element)
 { return &UVS[element]; }
 
-UVRect &UVRectArray::operator [](int element)
+const UVRect &UVRectArray::operator [](int element)
 { return UVS[element]; }
 
 void UVRectArray::AllocateFrames(int numFrames)

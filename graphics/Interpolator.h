@@ -9,32 +9,33 @@ public:
     Interpolator(T* _target)
         : target(_target)
     {
-        Start( (*_target), 0);
+        TemporalPool::Add(this);
+        endValue = *target;
+        distance = endValue - (*target);
     }
+    virtual ~Interpolator()     { TemporalPool::Remove(this); }
 
-    void Start(T end, float _duration)
+    void Start(T end, float _duration, int numRepeats=-1)
     {
         endValue = end;
-        speed = endValue - (*target);
-        Begin(_duration);
+        distance = endValue - (*target);
+        Begin(_duration, numRepeats);
     }
 
     virtual void Update(float dt)
     {
-        if (Time>Duration)
-            return;
+        Temporal::Update(dt);
 
-        Time+=dt;
         if (IsFinished())
             (*target) = endValue;
         else
-            (*target) += (dt/Duration)*speed;
+            (*target) = TimeRatio()*distance;
     }
 
 private:
     T*      target;
     T       endValue;
-    T       speed;
+    T       distance;
 };
 
 #include <QVector2D>
