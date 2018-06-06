@@ -4,22 +4,13 @@
 Temporal::Temporal()
     : Duration(-1.f)
     , Time(0)
-    , Repetitions(-1)
 {}
 
 void Temporal::Update(float dt)
 {
-    if(IsFinished())        return;
-    if (WasStarted())
-    {
-        Time+=dt;
-
-        if (IsFinished())
-        {
-            if (Repetitions>0)      --Repetitions;
-            if (Repetitions!=0)     Time=0;
-        }
-    }
+    if(IsFinished())
+        return;
+     Time+=dt;
 }
 
 float Temporal::TimeRatio()

@@ -15,11 +15,11 @@ public:
     }
     virtual ~Interpolator()     { TemporalPool::Remove(this); }
 
-    void Start(T end, float _duration, int numRepeats=-1)
+    void Start(T end, float _duration)
     {
         endValue = end;
         distance = endValue - (*target);
-        Begin(_duration, numRepeats);
+        Begin(_duration);
     }
 
     virtual void Update(float dt)
@@ -29,7 +29,7 @@ public:
         if (IsFinished())
             (*target) = endValue;
         else
-            (*target) = TimeRatio()*distance;
+            (*target) += (dt/Duration)*distance;
     }
 
 private:

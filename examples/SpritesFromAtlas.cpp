@@ -13,8 +13,7 @@ SpritesFromAtlas::SpritesFromAtlas()
 
     spark = atlas.CreateSprite("energy1.png");
     sparkFrames.InitCellsFromGrid(1, 6, 6, &spark->getUVRect());
-    spark->Animate(2.9f, &sparkFrames);
-    spark->GetAnimator()->Repeat(5);
+    spark->Animate(1.2f, &sparkFrames, 5);
 
     runner = atlas.CreateSprite("Runner.png");
     runnerFrames.InitCellsFromGrid( 4, 1, 4, &runner->getUVRect() );

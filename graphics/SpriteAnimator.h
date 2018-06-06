@@ -10,6 +10,8 @@ public:
     SpriteAnimator(Sprite* target, UVRectArray* frames);
     virtual ~SpriteAnimator();
 
+    void Repeat(int numRepeats=-1);
+
     // Temporal interface
     virtual void Update(float dt);
 
@@ -19,6 +21,7 @@ private:
     UVRectArray *uvFrames;
     Sprite      *Target;
     int         lastFrameIndex;
+    int         repetitions;
 
     int		timeToIdx(float time);
 };

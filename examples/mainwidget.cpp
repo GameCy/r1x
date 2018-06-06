@@ -35,6 +35,8 @@ MainWidget::~MainWidget()
 
 void MainWidget::closeEvent(QCloseEvent *event)
 {
+    if (example)    delete example;
+    if (userInterface)  delete userInterface;
     Graphics::DestroyAll();
     UI::Fonts.ClearAll();
 }

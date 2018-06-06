@@ -38,12 +38,12 @@ Sprite* Sprite::CloneFrom(Sprite *other)
     hasChanged = true;
 }
 
-void Sprite::Animate(float duration, UVRectArray *frames)
+void Sprite::Animate(float duration, UVRectArray *frames, int numRepeats)
 {
     if (!animator)
         animator = new SpriteAnimator(this, frames);
     else
         animator->SetFrames(frames);
-
+    animator->Repeat(numRepeats);
     animator->Begin(duration);
 }

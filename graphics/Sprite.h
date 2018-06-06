@@ -52,7 +52,7 @@ public:
 
     Sprite *CloneFrom(Sprite* other);
 
-    void Animate(float duration, UVRectArray *frames);
+    void Animate(float duration, UVRectArray *frames, int numRepeats=-1);
     inline SpriteAnimator* GetAnimator()    { return animator;}
 
     friend class SpriteMap;

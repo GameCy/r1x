@@ -16,9 +16,22 @@ SpriteAnimator::~SpriteAnimator()
     TemporalPool::Remove(this);
 }
 
+void SpriteAnimator::Repeat(int numRepeats)
+{
+    repetitions = numRepeats;
+}
+
 void SpriteAnimator::Update(float dt)
 {
     Temporal::Update(dt);
+
+    if (IsFinished())
+    {
+        if (repetitions>0)
+            --repetitions;
+        if (repetitions!=0)
+            Time=0;
+    }
 
     int frameIndex = timeToIdx(Time);
     if (lastFrameIndex!=frameIndex)
