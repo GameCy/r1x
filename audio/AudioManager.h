@@ -1,8 +1,9 @@
-#ifndef AUDIOMANAGER_H
-#define AUDIOMANAGER_H
+#ifndef SAMPLEPOOL_H
+#define SAMPLEPOOL_H
 #include "WavBuffer.h"
 #include <QMap>
-
+#include <QList>
+#include "AudioSample.h"
 
 class AudioManager
 {
@@ -10,14 +11,18 @@ public:
     AudioManager();
     ~AudioManager();
 
-    WavBufferPtr Get(QString name);
-    void       Release(QString name);
+    AudioSamplePtr  PlayAndForget(QObject *parent, QString name, bool loop=false);
+    void            RegularCleanup();
+
+    WavBufferPtr    Get(QString name);
+    void            Release(QString name);
 
     void       ClearAll();
 
 private:
-    QMap<QString, WavBufferPtr>   soundBuffers;
+    QMap<QString, WavBufferPtr> soundBuffers;
+    QList<AudioSamplePtr>       playingSamples;
 };
 
-#endif // AUDIOMANAGER_H
+#endif // SAMPLEPOOL_H
 

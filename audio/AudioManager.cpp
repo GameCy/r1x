@@ -4,12 +4,39 @@
 
 AudioManager::AudioManager()
 {
-
 }
 
 AudioManager::~AudioManager()
 {
+    for(WavBufferPtr buffer : soundBuffers)
+        buffer->deleteLater();
     soundBuffers.clear();
+}
+
+AudioSamplePtr AudioManager::PlayAndForget(QObject *parent, QString name, bool loop)
+{
+    AudioSamplePtr audio = new AudioSample( parent, Get(name));
+    audio->Loop(loop);
+    audio->Start();
+    playingSamples.append( audio );
+    qDebug() << "active Sounds : " << playingSamples.size();
+}
+
+void AudioManager::RegularCleanup()
+{
+    QList<AudioSamplePtr>::iterator itr = playingSamples.begin();
+    while (itr!=playingSamples.end())
+    {
+        AudioSamplePtr audio = (*itr);
+        if (audio->isStoped())
+        {
+            audio->deleteLater();
+            itr = playingSamples.erase(itr);
+            qDebug() << "active Sounds : " << playingSamples.size();
+        }
+        else
+            ++itr;
+    }
 }
 
 WavBufferPtr AudioManager::Get(QString name)
