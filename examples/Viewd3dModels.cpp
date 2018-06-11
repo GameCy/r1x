@@ -17,6 +17,10 @@ Viewd3DModels::Viewd3DModels()
     Begin(360.f);
 }
 
+Viewd3DModels::~Viewd3DModels()
+{
+}
+
 void Viewd3DModels::Render()
 {
     if (!Graphics::phongShader->Bind())
@@ -33,8 +37,6 @@ void Viewd3DModels::Render()
 
 void Viewd3DModels::Update(float dt)
 {
-    Temporal::Update(dt);
-
     ground.SetPos( QVector3D(0, -1, 0) );
     ground.SetRotation( QQuaternion::fromAxisAndAngle(0,1,0, -Time*20.f) );
 }

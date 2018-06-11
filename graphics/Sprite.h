@@ -4,8 +4,6 @@
 #include <QColor>
 #include "UVRectArray.h"
 
-class SpriteAnimator;
-
 class Sprite
 {
 public:
@@ -52,9 +50,6 @@ public:
 
     Sprite *CloneFrom(Sprite* other);
 
-    void Animate(float duration, UVRectArray *frames, int numRepeats=-1);
-    inline SpriteAnimator* GetAnimator()    { return animator;}
-
     friend class SpriteMap;
 private:
     QVector2D   Pos;
@@ -64,8 +59,6 @@ private:
     bool        isVisible;
     bool        hasChanged;
     bool        deleteLater;
-
-    SpriteAnimator *animator;
 };
 
 #endif // _SPRITE_H

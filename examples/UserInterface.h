@@ -9,10 +9,10 @@ class UserInterface : public ExampleBase
 public:
     UserInterface();
 
-    // ExampleBase interface
-public:
-    void Render();
+    // Temporal interface
     void Update(float dt);
+    // ExampleBase interface
+    void Render();
     void Resize(float w, float h);
 
     ButtonPtr buttonPrev;

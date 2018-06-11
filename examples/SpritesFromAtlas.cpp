@@ -4,22 +4,25 @@
 
 SpritesFromAtlas::SpritesFromAtlas()
     : atlas(50, ":/textures/textures.atlas")
-    , t(0)
+    , ring( atlas.CreateSprite("slot.png") )
+    , spark( atlas.CreateSprite("energy1.png") )
+    , sparkAnimator(spark, &sparkFrames)
+    , runner( atlas.CreateSprite("Runner.png") )
+    , runnerAnimator(runner, &runnerFrames)
 {
     screenWidth = Graphics::Screen.Width();
     screenHeight= Graphics::Screen.Height();
 
-    ring = atlas.CreateSprite("slot.png");
-
-    spark = atlas.CreateSprite("energy1.png");
     sparkFrames.InitCellsFromGrid(1, 6, 6, &spark->getUVRect());
-    spark->Animate(1.2f, &sparkFrames, 5);
+    sparkAnimator.Repeat(5);
+    sparkAnimator.Begin(1.2f);
 
-    runner = atlas.CreateSprite("Runner.png");
     runnerFrames.InitCellsFromGrid( 4, 1, 4, &runner->getUVRect() );
-    runner->Animate(0.7f, &runnerFrames);
+    runnerAnimator.Begin(0.7f);
+    runnerAnimator.Repeat();
 
     Resize(screenWidth, screenHeight);
+    Begin();
 }
 
 SpritesFromAtlas::~SpritesFromAtlas()
@@ -36,11 +39,9 @@ void SpritesFromAtlas::Render()
 
 void SpritesFromAtlas::Update(float dt)
 {
-    t+=dt;
-
-    ring->setPos( screenPos( -0.1f -0.8f*sin(t+1.3f), 0.7f) );
+    ring->setPos( screenPos( -0.1f -0.8f*sin(Time+1.3f), 0.7f) );
     spark->setPos( screenPos(0.f, -0.6f) );
-    runner->setPos(screenPos(-0.15f -0.7f*sin(t), 0.0f) );
+    runner->setPos(screenPos(-0.15f -0.7f*sin(Time), 0.0f) );
 
     atlas.Update();
 }

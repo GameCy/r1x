@@ -43,7 +43,8 @@ void SpriteParticleFade::Render()
 
 void SpriteParticleFade::Update(float dt)
 {
-    Temporal::Update(dt);
+    if (IsFinished())
+        Begin(2.0*M_PI);
 
     trigonometricParameter.Update(dt);
     float trig = trigonometricParameter.Value();

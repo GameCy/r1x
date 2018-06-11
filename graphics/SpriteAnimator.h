@@ -2,6 +2,7 @@
 #define _TEXTURE_ANIM_
 #include "Temporal.h"
 #include "UVRectArray.h"
+#include "SampledCurve.h"
 #include "Sprite.h"
 
 class SpriteAnimator : public Temporal
@@ -14,16 +15,20 @@ public:
 
     // Temporal interface
     virtual void Update(float dt);
+    bool Completed();
 
     void SetFrames(UVRectArray *frames);
+    void SetPath(SampledCurve *path);
 
 private:
     UVRectArray *uvFrames;
+    SampledCurve *posFrames;
+
     Sprite      *Target;
-    int         lastFrameIndex;
     int         repetitions;
 
-    int		timeToIdx(float time);
+    int		currentFrame();
+    int     lastFrameIndex;
 };
 
 #endif

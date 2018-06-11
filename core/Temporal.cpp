@@ -1,28 +1,13 @@
 #include "Temporal.h"
 #include <QDebug>
 
-Temporal::Temporal()
-    : Duration(-1.f)
-    , Time(0)
-{}
 
-void Temporal::Update(float dt)
-{
-    if(IsFinished())
-        return;
-     Time+=dt;
-}
-
-float Temporal::TimeRatio()
-{
-    if (Time<0)             return 0.f;
-    if (Time>Duration)      return 1.f;
-    if (Duration<0.00001f)  return 0.f;
-    return Time/Duration;
-}
-
-// -----------------------------------------------
 std::list<Temporal*> TemporalPool::weakTemporals;
+
+/*
+ * temporals on stack can use Add() and Remove()
+ * temporals on heap can use Add() and deleteLater()
+*/
 
 void TemporalPool::Add(Temporal *tempo)
 {
@@ -38,6 +23,29 @@ void TemporalPool::Remove(Temporal *tempo)
 
 void TemporalPool::Update(float dt)
 {
+    auto itr = weakTemporals.begin();
+    while(itr!=weakTemporals.end())
+    {
+        Temporal* tempo = (*itr);
+        if (tempo->toDelete)
+        {
+            delete tempo;
+            itr = weakTemporals.erase(itr);
+        }
+        else
+        {
+            if (tempo->IsStarted())
+                tempo->Time += dt;
+            tempo->Update(dt);
+            ++itr;
+        }
+    }
+}
+
+void TemporalPool::DestroyAll()
+{
     for(Temporal* tempo : weakTemporals)
-        tempo->Update(dt);
+    {
+        delete tempo;
+    }
 }

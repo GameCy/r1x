@@ -9,11 +9,12 @@ class Viewd3DModels : public ExampleBase
 {
 public:
     Viewd3DModels();
+    virtual ~Viewd3DModels();
 
-    // ExampleBase interface
-public:
-    void Render();
+    // Temporal interface
     void Update(float dt);
+    // ExampleBase interface
+    void Render();
     void Resize(float w, float h);
 
 private:

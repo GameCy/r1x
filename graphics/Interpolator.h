@@ -24,12 +24,12 @@ public:
 
     virtual void Update(float dt)
     {
-        Temporal::Update(dt);
-
-        if (IsFinished())
-            (*target) = endValue;
-        else
-            (*target) += (dt/Duration)*distance;
+        (*target) += (dt/Duration)*distance;
+    }
+    virtual bool Completed()
+    {
+        (*target) = endValue;
+        return true;
     }
 
 private:

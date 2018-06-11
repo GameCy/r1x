@@ -10,11 +10,11 @@ public:
     SpriteParticleFade();
     virtual ~SpriteParticleFade();
 
+    // Temporal interface
+    void Update(float dt);
     // ExampleBase interface
-public:
-    virtual void Render();
-    virtual void Update(float dt);
-    virtual void Resize(float w, float h);
+    void Render();
+    void Resize(float w, float h);
 
 private:
     SpriteMap   atlas;

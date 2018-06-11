@@ -35,8 +35,7 @@ MainWidget::~MainWidget()
 
 void MainWidget::closeEvent(QCloseEvent *event)
 {
-    if (example)    delete example;
-    if (userInterface)  delete userInterface;
+    TemporalPool::DestroyAll();
     Graphics::DestroyAll();
     UI::Fonts.ClearAll();
 }
@@ -102,11 +101,7 @@ void MainWidget::paintGL()
 
     ogl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     if (example)
-    {
-        //example->Update( frameDt );
         example->Render();
-    }
-    //userInterface->Update(frameDt);
     userInterface->Render();
 
     update();
@@ -196,7 +191,7 @@ void MainWidget::InstantiateExample(int idxChange)
     if (exampleIndex>2) exampleIndex = 2;
     if (example)
     {
-        delete example;
+        example->deleteLater();
         example = 0;
     }
     switch(exampleIndex)
