@@ -15,7 +15,8 @@ SpriteAnimator::SpriteAnimator(Sprite *target, UVRectArray* frames)
 
 SpriteAnimator::~SpriteAnimator()
 {
-    TemporalPool::Remove(this);
+    if (toDelete==false)
+        TemporalPool::Remove(this);
 }
 
 void SpriteAnimator::Repeat(int numRepeats)

@@ -36,16 +36,18 @@ void ButtonManager::ExecuteRemovals()
 
 void ButtonManager::TapBeginHandler(int id, QVector2D pos)
 {
-    QList<InputAreaPtr>::iterator itr;
-    for(itr=areas.begin(); itr!=areas.end(); ++itr)
+    QList<InputAreaPtr>::iterator itr = areas.begin();
+    while( itr!=areas.end())
     {
-        if ((*itr)->Contains(pos))
+        InputAreaPtr area =  (*itr);
+        if (area->Contains(pos))
         {
-            (*itr)->SetState(InputArea::Pressed, pos, id);
-            activeAreas.push_back( (*itr) );
+            area->SetState(InputArea::Pressed, pos, id);
+            activeAreas.push_back( area );
             areas.erase(itr);
-            break;
+            return;
         }
+        ++itr;
     }
 }
 

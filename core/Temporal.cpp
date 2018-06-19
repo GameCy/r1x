@@ -34,7 +34,7 @@ void TemporalPool::Update(float dt)
         }
         else
         {
-            if (tempo->IsStarted())
+            if (tempo->IsStarted() && (tempo->IsForever()==false))
                 tempo->Time += dt;
             tempo->Update(dt);
             ++itr;

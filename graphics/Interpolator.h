@@ -13,7 +13,11 @@ public:
         endValue = *target;
         distance = endValue - (*target);
     }
-    virtual ~Interpolator()     { TemporalPool::Remove(this); }
+    virtual ~Interpolator()
+    {
+        if (toDelete==false)
+            TemporalPool::Remove(this);
+    }
 
     void Start(T end, float _duration)
     {
@@ -24,11 +28,17 @@ public:
 
     virtual void Update(float dt)
     {
-        (*target) += (dt/Duration)*distance;
+        if (IsFinished())
+        {
+            (*target) = endValue;
+            if (Completed())
+                return;
+        }
+        if (IsStarted())
+            (*target) += (dt/Duration)*distance;
     }
     virtual bool Completed()
     {
-        (*target) = endValue;
         return true;
     }
 
