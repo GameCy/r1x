@@ -2,7 +2,7 @@
 #define SPRITESFROMTEXTURE_H
 #include "ExampleBase.h"
 #include "SpriteMap.h"
-#include "SpriteAnimator.h"
+#include "UVAnimator.h"
 
 class SpritesFromAtlas : public ExampleBase
 {
@@ -22,11 +22,11 @@ private:
 
     Sprite      *spark;
     UVRectArray sparkFrames;
-    SpriteAnimator sparkAnimator;
+    UVAnimator sparkAnimator;
 
     Sprite      *runner;
     UVRectArray runnerFrames;
-    SpriteAnimator runnerAnimator;
+    UVAnimator runnerAnimator;
 
     QVector2D   rectSize(float size);
     QVector2D   rectSize(float sx, float sy);

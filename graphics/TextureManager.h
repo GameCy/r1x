@@ -2,7 +2,7 @@
 #define TEXTUREMANAGER_H
 #include "Texture.h"
 #include <QMap>
-#include "SpriteAnimator.h"
+#include "UVAnimator.h"
 
 const QString Tex_Shadow(":/textures/fakeshadow.png");
 const QString Tex_Smoke(":/textures/smokeAnim.png");

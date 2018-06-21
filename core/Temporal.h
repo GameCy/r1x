@@ -39,7 +39,7 @@ public:
         Duration = duration;
     }
 
-    inline bool IsFinished()    { return Time>Duration; }
+    inline bool IsFinished()    { return Duration>=0.f && Time>Duration; }
     inline bool IsStarted()     { return Time>=0.f; }
     inline bool IsForever()     { return Duration<0.f; }
     inline void deleteLater()   { toDelete=true; }

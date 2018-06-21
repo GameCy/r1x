@@ -1,9 +1,9 @@
-#include "SpriteAnimator.h"
+#include "UVAnimator.h"
 #include "QuadTypes.h"
 #include <math.h>
 
 
-SpriteAnimator::SpriteAnimator(Sprite *target, UVRectArray* frames)
+UVAnimator::UVAnimator(Sprite *target, UVRectArray* frames)
     : uvFrames(frames)
     , posFrames(0)
     , Target(target)
@@ -13,20 +13,20 @@ SpriteAnimator::SpriteAnimator(Sprite *target, UVRectArray* frames)
     TemporalPool::Add(this);
 }
 
-SpriteAnimator::~SpriteAnimator()
+UVAnimator::~UVAnimator()
 {
     if (toDelete==false)
         TemporalPool::Remove(this);
 }
 
-void SpriteAnimator::Repeat(int numRepeats)
+void UVAnimator::Repeat(int numRepeats)
 {
     repetitions = numRepeats;
 }
 
-void SpriteAnimator::Update(float dt)
+void UVAnimator::Update(float dt)
 {
-    if (IsFinished() && Completed())
+    if (IsFinished() && CheckRepeats())
     {
         //Parent->Report Completed
         return;
@@ -45,7 +45,7 @@ void SpriteAnimator::Update(float dt)
     }
 }
 
-bool SpriteAnimator::Completed()
+bool UVAnimator::CheckRepeats()
 {
     if (repetitions>0)
         --repetitions;
@@ -55,17 +55,17 @@ bool SpriteAnimator::Completed()
     return false; // not completed, keep it
 }
 
-void SpriteAnimator::SetFrames(UVRectArray *frames)
+void UVAnimator::SetFrames(UVRectArray *frames)
 {
     uvFrames = frames;
 }
 
-void SpriteAnimator::SetPath(SampledCurve *path)
+void UVAnimator::SetPath(SampledCurve *path)
 {
     posFrames = path;
 }
 
-int		SpriteAnimator::currentFrame()
+int		UVAnimator::currentFrame()
 {
     if (Time<0.f)   return 0;
     int maxElement = uvFrames->MaxElement;

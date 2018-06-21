@@ -5,18 +5,18 @@
 #include "SampledCurve.h"
 #include "Sprite.h"
 
-class SpriteAnimator : public Temporal
+class UVAnimator : public Temporal
 {
 public:
-    SpriteAnimator(Sprite* target, UVRectArray* frames);
-    virtual ~SpriteAnimator();
+    UVAnimator(Sprite* target, UVRectArray* frames);
+    virtual ~UVAnimator();
 
     void Repeat(int numRepeats=-1);
 
     // Temporal interface
     virtual void Update(float dt);
-    bool Completed();
 
+    bool CheckRepeats();
     void SetFrames(UVRectArray *frames);
     void SetPath(SampledCurve *path);
 

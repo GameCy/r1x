@@ -31,15 +31,10 @@ public:
         if (IsFinished())
         {
             (*target) = endValue;
-            if (Completed())
-                return;
+            return;
         }
         if (IsStarted())
             (*target) += (dt/Duration)*distance;
-    }
-    virtual bool Completed()
-    {
-        return true;
     }
 
 private:
