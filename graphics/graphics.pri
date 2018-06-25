@@ -36,7 +36,8 @@ SOURCES += \
     $$PWD/SampledCurve.cpp \
     $$PWD/UVRect.cpp \
     $$PWD/UVRectArray.cpp \
-    $$PWD/UVAnimator.cpp
+    $$PWD/UVAnimator.cpp \
+    $$PWD/SampledChannel.cpp
 
 HEADERS += \
     $$PWD/AngleInterpolator.h \
@@ -72,4 +73,5 @@ HEADERS += \
     $$PWD/SampledCurve.h \
     $$PWD/UVRect.h \
     $$PWD/UVRectArray.h \
-    $$PWD/UVAnimator.h
+    $$PWD/UVAnimator.h \
+    $$PWD/SampledChannel.h

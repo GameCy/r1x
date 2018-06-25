@@ -5,6 +5,8 @@ TextLabel::TextLabel(FontPtr font, QString txt)
     : Text(txt)
     , FontRef(font)
     , Scale(1.0f)
+    , isDirty(false)
+    , toDelete(false)
 {
     CalcLabelSize();
 }
@@ -19,6 +21,11 @@ void TextLabel::setScale(float value)
     Scale = value;
     isDirty = true;
     CalcLabelSize();
+}
+
+void TextLabel::DeleteLater()
+{
+    toDelete=true;
 }
 
 void TextLabel::SetText(QString text)

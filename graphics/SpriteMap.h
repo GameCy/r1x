@@ -18,6 +18,7 @@ public:
     Sprite*     CreateSprite(QString spriteName="");
     Sprite*     CreateClone(Sprite* other);
     bool        DestroySprite(Sprite* sprite);
+    void        DestroyAllSprites();
 
     MaterialPtr GetMaterial();
     MaterialPtr LoadMaterial(QString path);

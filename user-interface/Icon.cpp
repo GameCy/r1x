@@ -1,6 +1,6 @@
 #include "Icon.h"
 #include <QDebug>
-#include "ButtonManager.h"
+#include "InputAreaManager.h"
 
 Icon::Icon(QString iconSpriteName, QVector2D pos, QVector2D iconSize, SpriteMapPtr uiMap, UVRect uvRect)
 {
@@ -12,13 +12,12 @@ Icon::Icon(QString iconSpriteName, QVector2D pos, QVector2D iconSize, SpriteMapP
 
     UpdateInternals();
     connect( this, &InputArea::StateChanged, this, &Icon::ChangeVisuals);
-    ButtonManager::Instance().Add(this);
+    InputAreaManager::Instance().Add(this);
 }
 
 Icon::~Icon()
 {
     disconnect( this, &InputArea::StateChanged, this, &Icon::ChangeVisuals);
-    ButtonManager::Instance().Remove(this);
 }
 
 void Icon::SetPos(QVector2D pos)
@@ -42,7 +41,7 @@ void Icon::UpdateInternals()
     Background->setSize(Size);
 }
 
-void Icon::ChangeVisuals(InputArea::State newState, InputArea::State oldState, InputAreaPtr sender)
+void Icon::ChangeVisuals(InputArea::State newState, InputArea::State oldState, InputArea* sender)
 {
     float Vheight = TexUVArea.V2 - TexUVArea.V1;
     float deltaV = 0;

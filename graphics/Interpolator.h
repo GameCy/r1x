@@ -37,6 +37,8 @@ public:
             (*target) += (dt/Duration)*distance;
     }
 
+    T& getEndValue() { return endValue; }
+
 private:
     T*      target;
     T       endValue;

@@ -13,22 +13,22 @@ void    TextRenderer::ClearAllLabels()
     quadRenderer->ClearQuads();
 }
 
-TextLabelPtr    TextRenderer::CreateLabel(QString text)
+TextLabel *TextRenderer::CreateLabel(QString text)
 {
-    TextLabelPtr label= new TextLabel(fontRef, text);
+    TextLabel* label= new TextLabel(fontRef, text);
     labels.push_back(label);
     return label;
 }
 
-void    TextRenderer::RemoveLabel(TextLabelPtr label)
+void    TextRenderer::RemoveLabel(TextLabel *label)
 {
-    labels.removeAll(label);
+    labels.remove(label);
 }
 
 void    TextRenderer::BuildQuads()
 {
     int character=0;
-    foreach (TextLabelPtr label, labels)
+    foreach (TextLabel* label, labels)
         character += label->Text.length();
     quadRenderer->ReserveActiveQuads(character);
 
@@ -36,7 +36,7 @@ void    TextRenderer::BuildQuads()
     float texHeight = fontRef->RasterMap->GetTexture()->height();
 
     character=0;
-    foreach (TextLabelPtr label, labels)
+    foreach (TextLabel* label, labels)
     {
         float xcursor = label->Position.x();
         float ycursor = label->Position.y();
@@ -65,12 +65,24 @@ void    TextRenderer::Render()
 
 void	TextRenderer::Update()
 {
-    foreach (TextLabelPtr label,  labels)
+    bool dirty=false;
+    auto itr = labels.begin();
+    while(itr!=labels.end())
     {
-        if (label->isDirty)
+        TextLabel* label = (*itr);
+        if (label->toDelete)
         {
-            BuildQuads();  // build all once and exit loop
-            break;
+            itr = labels.erase(itr);
+            delete label;
+            dirty = true;
+        }
+        else
+        {
+            if (label->isDirty)
+                dirty = true;
+            ++itr;
         }
     }
+    if (dirty)
+        BuildQuads();
 }

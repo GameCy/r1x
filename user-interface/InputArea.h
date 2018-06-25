@@ -2,9 +2,10 @@
 #define _INPUT_AREA_
 #include <QObject>
 #include <QVector2D>
-#include "SmartPtr.h"
 
-class InputArea : public QObject, public RefCountBase
+class InputAreaManager;
+
+class InputArea : public QObject
 {
     Q_OBJECT
 
@@ -19,11 +20,13 @@ public:
     void SetState(State newState, QVector2D lastMousePos, int eventID=0);
     void ClearActiveID();
     bool IsSameEventId(int id);
-    void Enable();
-    void Disable();
+    void DeleteLater();
 
     QVector2D   Pos;
     QVector2D   Size;
+    bool        InputDisabled;
+
+    friend class InputAreaManager;
 signals:
     void Clicked(InputArea* sender, QVector2D mousePos);
     void StateChanged(InputArea::State newState, InputArea::State oldState
@@ -32,9 +35,8 @@ signals:
 protected:
     State   state;
     int     activeEventID;
+    bool    toDelete;
+    int     uniqueAreaID;
 };
-
-//typedef SmartPtr<InputArea>   InputAreaPtr;
-typedef InputArea*   InputAreaPtr;
 
 #endif

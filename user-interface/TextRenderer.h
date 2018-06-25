@@ -3,6 +3,7 @@
 #include "SmartPtr.h"
 #include "TextLabel.h"
 #include "QuadRenderers.h"
+#include <list>
 
 class TextRenderer : public RefCountBase
 {
@@ -10,8 +11,8 @@ public:
     TextRenderer(FontPtr font);
 
     void    ClearAllLabels();
-    TextLabelPtr CreateLabel(QString text);
-    void    RemoveLabel(TextLabelPtr label);
+    TextLabel* CreateLabel(QString text);
+    void    RemoveLabel(TextLabel* label);
 
     void    BuildQuads();
 
@@ -19,7 +20,7 @@ public:
     virtual void	Update();
 
 private:
-    QList<TextLabelPtr> labels;
+    std::list<TextLabel*> labels;
     QuadRenderer3D      *quadRenderer;
     FontPtr             fontRef;
 };

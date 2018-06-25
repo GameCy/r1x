@@ -1,10 +1,8 @@
 #ifndef TEXTLABEL_H
 #define TEXTLABEL_H
-#include "SmartPtr.h"
 #include "Font.h"
 
-
-class TextLabel : public RefCountBase
+class TextLabel
 {
 public:
     void        SetText(QString text);
@@ -13,6 +11,8 @@ public:
 
     float       getScale() const;
     void        setScale(float value);
+
+    void        DeleteLater();
 
     float       PixelWidth;
     float       PixelHeight;
@@ -26,10 +26,9 @@ private:
     float       Scale;
     FontPtr     FontRef;
     bool        isDirty;
+    bool        toDelete;
 
     void    CalcLabelSize();
 };
-
-typedef SmartPtr<TextLabel>     TextLabelPtr;
 
 #endif // TEXTLABEL_H

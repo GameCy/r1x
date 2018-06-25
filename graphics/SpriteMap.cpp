@@ -66,6 +66,12 @@ bool SpriteMap::DestroySprite(Sprite *sprite)
     return (removed>0);
 }
 
+void SpriteMap::DestroyAllSprites()
+{
+    sprites.clear();
+    rebuiltQuads=true;
+}
+
 bool SpriteMap::GetUVRect(QString spriteName, UVRect &uvRect)
 {
     return atlas.GetUVRect(spriteName, uvRect);

@@ -1,10 +1,13 @@
 #include "InputArea.h"
-#include "ButtonManager.h"
+#include "InputAreaManager.h"
 
 InputArea::InputArea()
     : state(Normal)
     , activeEventID(0)
+    , InputDisabled(false)
+    , toDelete(false)
 {
+    uniqueAreaID = InputAreaManager::GetUniqueID();
 }
 
 bool InputArea::Contains(QVector2D p)
@@ -38,5 +41,7 @@ bool InputArea::IsSameEventId(int id)
     return (activeEventID==id);
 }
 
-void InputArea::Enable()     { ButtonManager::Instance().Add(this); }
-void InputArea::Disable()    { ButtonManager::Instance().Remove(this); }
+void InputArea::DeleteLater()
+{
+    toDelete=true;
+}

@@ -25,8 +25,5 @@ private:
     void UpdateInternals();
 
 private slots:
-    void ChangeVisuals(InputArea::State newState, InputArea::State oldState, InputAreaPtr sender);
+    void ChangeVisuals(InputArea::State newState, InputArea::State oldState, InputArea* sender);
 };
-
-//typedef SmartPtr<Button>    ButtonPtr;
-typedef Icon*    IconPtr;

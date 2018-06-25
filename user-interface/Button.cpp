@@ -1,6 +1,6 @@
 #include "Button.h"
 #include <QDebug>
-#include "ButtonManager.h"
+#include "InputAreaManager.h"
 
 Button::Button(QString txt, FontRendererPtr fontRenderer, Sprite* backgroundsSprite, UVRect uvRect)
 {
@@ -13,13 +13,14 @@ Button::Button(QString txt, FontRendererPtr fontRenderer, Sprite* backgroundsSpr
     ChangeVisuals(Normal, Normal, this);
 
     connect( this, &InputArea::StateChanged, this, &Button::ChangeVisuals);
-    ButtonManager::Instance().Add(this);
+    InputAreaManager::Instance().Add(this);
 }
 
 Button::~Button()
 {
+    Background->DeleteLater();
+    Label->DeleteLater();
     disconnect( this, &InputArea::StateChanged, this, &Button::ChangeVisuals);
-    ButtonManager::Instance().Remove(this);
 }
 
 void Button::SetText(QString text)
@@ -60,7 +61,7 @@ void Button::UpdateGeometry()
 
 }
 
-void Button::ChangeVisuals(InputArea::State newState, InputArea::State oldState, InputAreaPtr sender)
+void Button::ChangeVisuals(InputArea::State newState, InputArea::State oldState, InputArea *sender)
 {
     float Vheight = TexUVArea.V2 - TexUVArea.V1;
 
