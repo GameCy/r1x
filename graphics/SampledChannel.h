@@ -17,6 +17,7 @@ public:
 private:
     float calcIndexRatio(float t, int &index);
     int numSamples;
+    float stepDuration;
 };
 
 #endif // SAMPLEDCHANNEL_H
