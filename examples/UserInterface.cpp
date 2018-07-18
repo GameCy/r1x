@@ -26,17 +26,17 @@ void UserInterface::Update(float dt)
     uiFactory->Update();
 }
 
-void UserInterface::Resize(float w, float h)
+void UserInterface::Resize(ViewPort &screen)
 {
-    Graphics::rasterShader->UpdateViewport( Graphics::Screen );
+    Graphics::rasterShader->UpdateViewport( screen );
 
-    float textScale = Graphics::Screen.Width()/1000.f;
+    float textScale = screen.Width()/1000.f;
     fpsLabel->setScale(textScale);
-    fpsLabel->SetPos( Graphics::Screen.Normalized(0.05f, 1.f - 0.15f*textScale) );
+    fpsLabel->SetPos( screen.Normalized(0.05f, 1.f - 0.15f*textScale) );
 
-    buttonPrev->SetPos( Graphics::Screen.Normalized(0.05f, 0.0f) );
-    buttonNext->SetPos( Graphics::Screen.Normalized(0.55f, 0.0f) );
+    buttonPrev->SetPos( screen.Normalized(0.05f, 0.0f) );
+    buttonNext->SetPos( screen.Normalized(0.55f, 0.0f) );
 
-    buttonPrev->SetSize( Graphics::Screen.Normalized(0.4f, 0.2f) );
-    buttonNext->SetSize( Graphics::Screen.Normalized(0.4f, 0.2f) );
+    buttonPrev->SetSize( screen.Normalized(0.4f, 0.2f) );
+    buttonNext->SetSize( screen.Normalized(0.4f, 0.2f) );
 }

@@ -41,7 +41,7 @@ void Viewd3DModels::Update(float dt)
     ground.SetRotation( QQuaternion::fromAxisAndAngle(0,1,0, -Time*20.f) );
 }
 
-void Viewd3DModels::Resize(float w, float h)
+void Viewd3DModels::Resize(ViewPort &screen)
 {
 
 }

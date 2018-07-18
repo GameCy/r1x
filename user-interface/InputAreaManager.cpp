@@ -35,7 +35,6 @@ void InputAreaManager::ExecuteRemovals()
         if (area->toDelete)
         {
             itr = areas.erase(itr);
-            qDebug() << "deleting InputArea: " << area << "uid: " << area->uniqueAreaID;
             delete area;
         }
         else
@@ -48,7 +47,6 @@ void InputAreaManager::ExecuteRemovals()
         if (area->toDelete)
         {
             itr = areas.erase(itr);
-            qDebug() << "deleting InputArea: " << area<< "uid: " << area->uniqueAreaID;
             delete area;
         }
         else
@@ -64,8 +62,6 @@ void InputAreaManager::TapBeginHandler(int id, QVector2D pos)
         InputArea* area =  (*itr);
         if ((!area->InputDisabled) && area->Contains(pos))
         {
-            qDebug() << "tap Begin: " << area << "uid: " << area->uniqueAreaID;
-
             activeAreas.push_back( area );
             areas.erase(itr);
             area->SetState(InputArea::Pressed, pos, id);
@@ -83,8 +79,6 @@ void InputAreaManager::TapEndHandler(int id, QVector2D pos)
         InputArea* area = (*itr);
         if (area->IsSameEventId(id))
         {
-            qDebug() << "tap End: " << area << "uid: " << area->uniqueAreaID;
-
             area->SetState(InputArea::Normal, pos, id);
             area->ClearActiveID();
             if (area->Contains(pos) && (!area->InputDisabled))

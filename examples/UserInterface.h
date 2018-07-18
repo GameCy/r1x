@@ -2,6 +2,7 @@
 #define USERINTERFACE_H
 #include "ExampleBase.h"
 #include "UIFactory.h"
+#include "ViewPort.h"
 #include "FrameRate.h"
 
 class UserInterface : public ExampleBase
@@ -13,16 +14,16 @@ public:
     void Update(float dt);
     // ExampleBase interface
     void Render();
-    void Resize(float w, float h);
+    void Resize(ViewPort &screen);
 
-    ButtonPtr buttonPrev;
-    ButtonPtr buttonNext;
+    Button* buttonPrev;
+    Button* buttonNext;
 
 private:
     UIFactory*  uiFactory;
 
-    TextLabelPtr    fpsLabel;
-    FrameRate       fpsCounter;
+    TextLabel*  fpsLabel;
+    FrameRate   fpsCounter;
 
 };
 

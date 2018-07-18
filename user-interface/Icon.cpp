@@ -2,14 +2,18 @@
 #include <QDebug>
 #include "InputAreaManager.h"
 
-Icon::Icon(QString iconSpriteName, QVector2D pos, QVector2D iconSize, SpriteMapPtr uiMap, UVRect uvRect)
+Icon::Icon(QString iconSpriteName, QString overlayName, SpriteMapPtr uiMap, UVRect uvRect)
 {
     TexUVArea = uvRect;
     Background = uiMap->CreateSprite(iconSpriteName);
     Background->setUVRect( uvRect );
-    Background->setSize(iconSize);
-    ChangeVisuals(Normal, Normal, this);
 
+    if (overlayName.isEmpty())
+        Overlay=0;
+    else
+        Overlay = uiMap->CreateSprite(overlayName);
+
+    ChangeVisuals(Normal, Normal, this);
     UpdateInternals();
     connect( this, &InputArea::StateChanged, this, &Icon::ChangeVisuals);
     InputAreaManager::Instance().Add(this);
@@ -17,6 +21,8 @@ Icon::Icon(QString iconSpriteName, QVector2D pos, QVector2D iconSize, SpriteMapP
 
 Icon::~Icon()
 {
+    Background->DeleteLater();
+    Overlay->DeleteLater();
     disconnect( this, &InputArea::StateChanged, this, &Icon::ChangeVisuals);
 }
 
@@ -39,6 +45,9 @@ void Icon::UpdateInternals()
 {
     Background->setPos(Pos);
     Background->setSize(Size);
+
+    Overlay->setPos(Pos+Size*0.2f);
+    Overlay->setSize(Size*0.6f);
 }
 
 void Icon::ChangeVisuals(InputArea::State newState, InputArea::State oldState, InputArea* sender)

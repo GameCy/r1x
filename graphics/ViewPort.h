@@ -36,6 +36,11 @@ struct ViewPort {
         return QVector2D( X1 + x*(X2-X1), Y1 + y*(Y2-Y1) );
     }
 
+    QVector2D Size()
+    {
+        return QVector2D(X2-X1, Y2-Y1);
+    }
+
     int X1; int Y1; int X2; int Y2;
 };
 

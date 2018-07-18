@@ -14,21 +14,21 @@ UIFactory::UIFactory(QString atlasPath, int maxSprites, QString fontName)
     uiMat->Blending = true;
 }
 
-ButtonPtr UIFactory::CreateButton(QString text)
+Button *UIFactory::CreateButton(QString text)
 {
     UVRect uvRect;
     if (!UITexureMap->GetUVRect("ButtonStates.png", uvRect))
         return 0;
-    ButtonPtr btn = new Button(text, textRenderer, UITexureMap->CreateSprite("ButtonStates.png"), uvRect);
+    Button* btn = new Button(text, textRenderer, UITexureMap->CreateSprite("ButtonStates.png"), uvRect);
     return btn;
 }
 
-IconPtr UIFactory::CreateIcon(QString iconSpriteName)
+Icon *UIFactory::CreateIcon(QString iconSpriteName, QString overlayName)
 {
     UVRect uvRect;
     if (!UITexureMap->GetUVRect(iconSpriteName, uvRect))
         return 0;
-    IconPtr icon = new Icon(iconSpriteName, QVector2D(0,0), QVector2D(8,8), UITexureMap, uvRect );
+    Icon* icon = new Icon(iconSpriteName, overlayName, UITexureMap, uvRect );
     return icon;
 }
 
@@ -37,7 +37,7 @@ Sprite *UIFactory::CreateSprite(QString spriteName)
     return UITexureMap->CreateSprite(spriteName);
 }
 
-TextLabelPtr UIFactory::CreateLabel(QString text)
+TextLabel *UIFactory::CreateLabel(QString text)
 {
     return textRenderer->CreateLabel(text);
 }

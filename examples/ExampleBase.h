@@ -1,6 +1,7 @@
 #ifndef EXAMPLEBASE_H
 #define EXAMPLEBASE_H
 #include "Temporal.h"
+#include "ViewPort.h"
 
 class ExampleBase : public Temporal
 {
@@ -9,7 +10,7 @@ public:
     virtual ~ExampleBase()      { }
 
     virtual void Render()=0;
-    virtual void Resize(float w, float h)=0;
+    virtual void Resize(ViewPort &screen)=0;
 };
 
 #endif // EXAMPLEBASE_H

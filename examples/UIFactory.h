@@ -10,10 +10,10 @@ class UIFactory
 public:
     UIFactory(QString atlasPath, int maxSprites, QString fontName);
 
-    ButtonPtr CreateButton(QString text);
-    IconPtr   CreateIcon(QString iconSpriteName);
-    Sprite*   CreateSprite(QString spriteName);
-    TextLabelPtr CreateLabel(QString text);
+    Button* CreateButton(QString text);
+    Icon*   CreateIcon(QString iconSpriteName, QString overlayName);
+    Sprite* CreateSprite(QString spriteName);
+    TextLabel* CreateLabel(QString text);
 
     SpriteMapPtr    UITexureMap;
     FontRendererPtr textRenderer;

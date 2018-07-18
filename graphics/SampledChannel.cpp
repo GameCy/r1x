@@ -1,5 +1,4 @@
 #include "SampledChannel.h"
-#include <QDebug>
 
 SampledChannel::SampledChannel(FloatArray points, float duration)
     : Duration(duration)

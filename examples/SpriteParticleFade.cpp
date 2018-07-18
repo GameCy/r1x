@@ -22,7 +22,7 @@ SpriteParticleFade::SpriteParticleFade()
     atlas.GetMaterial()->DepthTesting = false;
 
     trigonometricParameter.Repeat(2000);
-    Resize(screenWidth, screenHeight);
+    Resize( Graphics::Screen );
 
     Begin( 2.0*M_PI );
 }
@@ -58,11 +58,10 @@ void SpriteParticleFade::Update(float dt)
     atlas.Update();
 }
 
-void SpriteParticleFade::Resize(float w, float h)
+void SpriteParticleFade::Resize(ViewPort &screen)
 {
-    Graphics::rasterShader->UpdateViewport( Graphics::Screen );
-    screenWidth = w;
-    screenHeight = h;
+    screenWidth = screen.Width();
+    screenHeight = screen.Height();
     for(int i=0; i<50; ++i)
         star[i]->setSize( rectSize(0.2f) );
 }

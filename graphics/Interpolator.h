@@ -1,6 +1,7 @@
 #ifndef _INTERPOLATOR_H
 #define _INTERPOLATOR_H
 #include "Temporal.h"
+#include "Delegates.h"
 
 template<class T>
 class Interpolator : public Temporal
@@ -8,6 +9,7 @@ class Interpolator : public Temporal
 public:
     Interpolator(T* _target)
         : target(_target)
+        , Finished(0)
     {
         TemporalPool::Add(this);
         endValue = *target;
@@ -19,10 +21,11 @@ public:
             TemporalPool::Remove(this);
     }
 
-    void Start(T end, float _duration)
+    void Start(T end, float _duration, Delegate* finished=0)
     {
         endValue = end;
         distance = endValue - (*target);
+        Finished = finished;
         Begin(_duration);
     }
 
@@ -31,6 +34,12 @@ public:
         if (IsFinished())
         {
             (*target) = endValue;
+            if (Finished)
+            {
+                EventArgs args("Interpolator Finished", this);
+                Finished->Invoke(args);
+                Finished=0;
+            }
             return;
         }
         if (IsStarted())
@@ -43,6 +52,7 @@ private:
     T*      target;
     T       endValue;
     T       distance;
+    Delegate *Finished;
 };
 
 #include <QVector2D>

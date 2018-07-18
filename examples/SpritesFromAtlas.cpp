@@ -21,7 +21,7 @@ SpritesFromAtlas::SpritesFromAtlas()
     runnerAnimator.Begin(0.7f);
     runnerAnimator.Repeat();
 
-    Resize(screenWidth, screenHeight);
+    Resize( Graphics::Screen );
     Begin();
 }
 
@@ -46,12 +46,12 @@ void SpritesFromAtlas::Update(float dt)
     atlas.Update();
 }
 
-void SpritesFromAtlas::Resize(float w, float h)
+void SpritesFromAtlas::Resize(ViewPort &screen)
 {
-    Graphics::rasterShader->UpdateViewport( Graphics::Screen );
+    Graphics::rasterShader->UpdateViewport( screen );
 
-    screenWidth = w;
-    screenHeight = h;
+    screenWidth = screen.Width();
+    screenHeight = screen.Height();
     ring->setSize( rectSize(0.15f) );
     spark->setSize( rectSize(0.3f) );
     runner->setSize( rectSize(0.3f, 0.6f) );

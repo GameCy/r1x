@@ -14,7 +14,7 @@ public:
     void Update(float dt);
     // ExampleBase interface
     void Render();
-    void Resize(float w, float h);
+    void Resize(ViewPort &screen);
 
 private:
     SpriteMap   atlas;

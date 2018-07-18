@@ -9,7 +9,7 @@ class Icon: public InputArea
 {
     Q_OBJECT
 public:
-    Icon(QString iconSpriteName, QVector2D pos, QVector2D iconSize, SpriteMapPtr uiMap, UVRect uvRect);
+    Icon(QString iconSpriteName, QString overlayName, SpriteMapPtr uiMap, UVRect uvRect);
     ~Icon();
 
     void    SetPos(QVector2D pos);
@@ -21,6 +21,7 @@ public:
 private:
     Sprite*     Background;
     UVRect      TexUVArea ;
+    Sprite*     Overlay;
 
     void UpdateInternals();
 

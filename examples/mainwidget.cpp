@@ -6,7 +6,7 @@
 #include "Graphics.h"
 #include "Temporal.h"
 #include "UI.h"
-#include "ButtonManager.h"
+#include "InputAreaManager.h"
 #include "InputTracker.h"
 #include "Ogl.h"
 #include "SpritesFromAtlas.h"
@@ -69,8 +69,8 @@ void MainWidget::resizeGL(int w, int h)
     Graphics::Screen.SetHighPoint(w,h);
     Graphics::DPI.Update();
 
-    if (userInterface)  userInterface->Resize(w,h);
-    if (example)        example->Resize(w,h);
+    if (userInterface)  userInterface->Resize( Graphics::Screen );
+    if (example)        example->Resize( Graphics::Screen );
 }
 
 
@@ -81,16 +81,16 @@ void MainWidget::paintGL()
         float w = Graphics::Screen.Width();
         float h = Graphics::Screen.Height();
         userInterface = new UserInterface();
-        userInterface->Resize(w, h);
+        userInterface->Resize( Graphics::Screen );
         connect(userInterface->buttonNext, &Button::Clicked, this, &MainWidget::nextButtonClicked);
         connect(userInterface->buttonPrev, &Button::Clicked, this, &MainWidget::previousButtonClicked);
         InstantiateExample(0);
-        example->Resize(w, h);
+        example->Resize( Graphics::Screen );
         firstTime = false;
         return;
     }
 
-    ButtonManager::Instance().ExecuteRemovals();
+    InputAreaManager::Instance().ExecuteRemovals();
     Core::Clock.UpdateTimer();
     float frameDt = Core::Clock.Ellapsed;
     if (frameDt>0.5f)   frameDt = 0.5f;
@@ -112,7 +112,7 @@ void MainWidget::mousePressEvent(QMouseEvent *e)
     if (e->button()==Qt::LeftButton)
     {
         QVector2D invpos(e->localPos().x(), Graphics::Screen.Height() - e->localPos().y());
-        ButtonManager::Instance().TapBeginHandler(123456, invpos);
+        InputAreaManager::Instance().TapBeginHandler(123456, invpos);
 
         //QVector2D pos(e->localPos().x(), e->localPos().y());
         InputTracker::Instance().feedTapBegin( invpos );
@@ -126,7 +126,7 @@ void MainWidget::mouseMoveEvent(QMouseEvent *e)
     if (e->buttons()==Qt::LeftButton)
     {
         QVector2D invpos(e->localPos().x(), Graphics::Screen.Height() - e->localPos().y());
-        ButtonManager::Instance().TapMoveHandler(123456, invpos);
+        InputAreaManager::Instance().TapMoveHandler(123456, invpos);
 
         //QVector2D pos(e->localPos().x(), e->localPos().y());
         InputTracker::Instance().feedTapMove( invpos );
@@ -138,7 +138,7 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e)
     if (e->button()==Qt::LeftButton)
     {
         QVector2D invpos(e->localPos().x(), Graphics::Screen.Height() - e->localPos().y());
-        ButtonManager::Instance().TapEndHandler(123456, invpos);
+        InputAreaManager::Instance().TapEndHandler(123456, invpos);
 
         //QVector2D pos(e->localPos().x(), e->localPos().y());
         InputTracker::Instance().feedTapEnd( invpos );
