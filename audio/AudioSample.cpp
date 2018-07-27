@@ -3,7 +3,7 @@
 #include <qendian.h>
 #include <QDebug>
 
-AudioSample::AudioSample(QObject *parent, WavBufferPtr wavBuffer)
+AudioSample::AudioSample(QObject *parent, WavBuffer *wavBuffer)
     : QIODevice(parent)
     , buffer(wavBuffer)
     , audioOutput(0)
@@ -134,7 +134,7 @@ void AudioSample::setDevice(const QAudioDeviceInfo &value)
     device = value;
 }
 
-void AudioSample::extractFormatFromWav(QAudioFormat &format, WavBufferPtr wav)
+void AudioSample::extractFormatFromWav(QAudioFormat &format, WavBuffer *wav)
 {
     format.setSampleRate( wav->sampleRate() );
     format.setChannelCount( wav->channelsCount() );

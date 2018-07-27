@@ -29,6 +29,10 @@ void InputArea::SetState(InputArea::State newState, QVector2D lastMousePos, int 
         emit StateChanged(newState, state, this, lastMousePos);
         state = newState;
     }
+    else
+    {
+        emit MoveUpdate(state, state, this, lastMousePos);
+    }
 }
 
 void InputArea::ClearActiveID()

@@ -8,6 +8,7 @@ SOURCES += \
     $$PWD/FontManager.cpp \
     $$PWD/Icon.cpp \
     $$PWD/InputArea.cpp \
+    $$PWD/Slider.cpp \
     $$PWD/UI.cpp \
     $$PWD/InputAreaManager.cpp
 
@@ -20,6 +21,7 @@ HEADERS += \
     $$PWD/FontManager.h \
     $$PWD/Icon.h \
     $$PWD/InputArea.h \
+    $$PWD/Slider.h \
     $$PWD/UI.h \
     $$PWD/InputAreaManager.h
 

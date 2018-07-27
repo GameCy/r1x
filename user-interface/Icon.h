@@ -18,10 +18,10 @@ public:
     void    Hide();
     void    Show();
 
-private:
     Sprite*     Background;
-    UVRect      TexUVArea ;
     Sprite*     Overlay;
+private:
+    UVRect      TexUVArea ;
 
     void UpdateInternals();
 

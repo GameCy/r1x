@@ -8,26 +8,27 @@ AudioManager::AudioManager()
 
 AudioManager::~AudioManager()
 {
-    for(WavBufferPtr buffer : soundBuffers)
+    for(WavBuffer* buffer : soundBuffers)
         buffer->deleteLater();
     soundBuffers.clear();
 }
 
-AudioSamplePtr AudioManager::PlayAndForget(QObject *parent, QString name, bool loop)
+AudioSample* AudioManager::PlayAndForget(QObject *parent, QString name, bool loop)
 {
-    AudioSamplePtr audio = new AudioSample( parent, Get(name));
+    AudioSample* audio = new AudioSample( parent, Get(name));
     audio->Loop(loop);
     audio->Start();
     playingSamples.append( audio );
     qDebug() << "active Sounds : " << playingSamples.size();
+    return audio;
 }
 
 void AudioManager::RegularCleanup()
 {
-    QList<AudioSamplePtr>::iterator itr = playingSamples.begin();
+    auto itr = playingSamples.begin();
     while (itr!=playingSamples.end())
     {
-        AudioSamplePtr audio = (*itr);
+        AudioSample* audio = (*itr);
         if (audio->isStoped())
         {
             audio->deleteLater();
@@ -39,9 +40,9 @@ void AudioManager::RegularCleanup()
     }
 }
 
-WavBufferPtr AudioManager::Get(QString name)
+WavBuffer* AudioManager::Get(QString name)
 {
-    WavBufferPtr found;
+    WavBuffer* found;
     if (name.isEmpty())
         return 0;
 
@@ -74,5 +75,7 @@ void AudioManager::Release(QString name)
 
 void AudioManager::ClearAll()
 {
+    for(auto buffer : soundBuffers)
+        delete buffer;
     soundBuffers.clear();
 }

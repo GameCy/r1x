@@ -48,7 +48,4 @@ private:
     void ReadHeader();
 };
 
-typedef WavBuffer*  WavBufferPtr;
-//typedef SmatPtr<WavBuffer>  WavBufferPtr;
-
 #endif // WAVBUFFER_H

@@ -11,17 +11,17 @@ public:
     AudioManager();
     ~AudioManager();
 
-    AudioSamplePtr  PlayAndForget(QObject *parent, QString name, bool loop=false);
-    void            RegularCleanup();
+    AudioSample *PlayAndForget(QObject *parent, QString name, bool loop=false);
+    void         RegularCleanup();
 
-    WavBufferPtr    Get(QString name);
-    void            Release(QString name);
+    WavBuffer   *Get(QString name);
+    void         Release(QString name);
 
-    void       ClearAll();
+    void         ClearAll();
 
 private:
-    QMap<QString, WavBufferPtr> soundBuffers;
-    QList<AudioSamplePtr>       playingSamples;
+    QMap<QString, WavBuffer*>   soundBuffers;
+    QList<AudioSample*>       playingSamples;
 };
 
 #endif // SAMPLEPOOL_H

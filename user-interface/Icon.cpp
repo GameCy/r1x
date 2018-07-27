@@ -46,8 +46,11 @@ void Icon::UpdateInternals()
     Background->setPos(Pos);
     Background->setSize(Size);
 
-    Overlay->setPos(Pos+Size*0.2f);
-    Overlay->setSize(Size*0.6f);
+    if (Overlay)
+    {
+        Overlay->setPos(Pos+Size*0.2f);
+        Overlay->setSize(Size*0.6f);
+    }
 }
 
 void Icon::ChangeVisuals(InputArea::State newState, InputArea::State oldState, InputArea* sender)

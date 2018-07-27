@@ -7,7 +7,7 @@ class AudioSample : public QIODevice
 {
     Q_OBJECT
 public:
-    AudioSample(QObject* parent, WavBufferPtr wavBuffer);
+    AudioSample(QObject* parent, WavBuffer* wavBuffer);
     ~AudioSample();
 
     void Start();
@@ -32,7 +32,7 @@ public:
     void setDevice(const QAudioDeviceInfo &value);
 
 private:
-    WavBufferPtr        buffer;
+    WavBuffer           *buffer;
     QAudioOutput        *audioOutput;
     QAudioDeviceInfo    device;
     QAudioFormat        format;
@@ -41,13 +41,11 @@ private:
     bool        looping;
     qreal       volume;
 
-    void    extractFormatFromWav(QAudioFormat &format, WavBufferPtr wav);
+    void    extractFormatFromWav(QAudioFormat &format, WavBuffer* wav);
 
 private slots:
     void AudioStateChanged(QAudio::State newState);
     void slideVolume();
 };
-
-typedef AudioSample*    AudioSamplePtr;
 
 #endif // AUDIOSAMPLE_H

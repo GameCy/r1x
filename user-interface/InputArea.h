@@ -31,6 +31,8 @@ signals:
     void Clicked(InputArea* sender, QVector2D mousePos);
     void StateChanged(InputArea::State newState, InputArea::State oldState
                      ,InputArea* sender, QVector2D lastMousePos );
+    void MoveUpdate(InputArea::State newState, InputArea::State oldState
+                    ,InputArea* sender, QVector2D lastMousePos);
 
 protected:
     State   state;
