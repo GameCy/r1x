@@ -53,6 +53,7 @@ Font::Font(QString filepath)
         {
             qDebug() << "font texture not created: " << config->textureFile;
         }
+        symbolsGLNormalizeYOffset();
     }
 }
 
@@ -72,10 +73,27 @@ bool    Font::LoadTexture()
     return (!!RasterMap) && RasterMap->isTextureCreated();
 }
 
-Symbol *Font::GetSymbolData(int ch)
+void Font::symbolsGLNormalizeYOffset()
 {
-    SymbolsHash::iterator symbol = symbols.find(ch);
+    if (!config)
+        return;
+    float fontHeight = config->charHeight;
+    for(Symbol &sym:symbols)
+        sym.yoffset = fontHeight - sym.yoffset - sym.height;
+}
+
+Symbol *Font::GetSymbolData(QChar ch)
+{
+    int charID = ch.unicode(); //ch.toLatin1();
+    SymbolsHash::iterator symbol = symbols.find(charID);
     if (symbol==symbols.end())
         return 0;
     return &(*symbol);
 }
+// greek mapping starts at:
+/*
+ushort index = ch.unicode();
+if (index>0x03A1)
+     --index;
+return index - 0x0391;
+*/

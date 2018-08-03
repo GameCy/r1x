@@ -42,7 +42,7 @@ public:
     inline bool IsFinished()    { return Duration>=0.f && Time>Duration; }
     inline bool IsStarted()     { return Time>=0.f; }
     inline bool IsForever()     { return Duration<0.f; }
-    inline void deleteLater()   { toDelete=true; }
+    inline void DeleteLater()   { toDelete=true; }
 
     inline float TimeRatio()
     {

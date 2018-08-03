@@ -46,7 +46,7 @@ void InputAreaManager::ExecuteRemovals()
         InputArea* area = (*itr);
         if (area->toDelete)
         {
-            itr = areas.erase(itr);
+            itr = activeAreas.erase(itr);
             delete area;
         }
         else

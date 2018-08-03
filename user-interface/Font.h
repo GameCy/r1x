@@ -11,12 +11,15 @@ class Font : public RefCountBase
 public:
     Font(QString filepath);
 
-    Symbol *GetSymbolData(int ch);
+    Symbol *GetSymbolData(QChar ch);
+
+    FontConfig* GetConfig()     { return config; }
 
     MaterialPtr     RasterMap;
 
 private:
     bool    LoadTexture();
+    void    symbolsGLNormalizeYOffset();
 
     QString     fileName;
     FontConfig *config;

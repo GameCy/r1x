@@ -59,4 +59,11 @@ void TypeDelegate<T>::Invoke(EventArgs& args)
    (mObject->*m_pfn)(args);
 }
 
+
+#define DeclareDelegate(_CLASS_,_METHOD_) \
+    TypeDelegate<_CLASS_> delegate_##_METHOD_;\
+    void _METHOD_(EventArgs &args)
+
+#define ConstructDelegate(_CLASS_,_METHOD_) delegate_##_METHOD_(this, &_CLASS_::_METHOD_)
+
 #define NewDelegate(_CLASS_,_METHOD_)	new TypeDelegate<_CLASS_>(this, &_CLASS_::_METHOD_)
