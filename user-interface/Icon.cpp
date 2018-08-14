@@ -38,8 +38,18 @@ void Icon::SetSize(QVector2D size)
     UpdateInternals();
 }
 
-void Icon::Hide()       { Background->SetVisible(false); }
-void Icon::Show()       { Background->SetVisible(true); }
+void Icon::Hide()
+{
+    Background->SetVisible(false);
+    Overlay->SetVisible(false);
+    InputDisabled=true;;
+}
+void Icon::Show()
+{
+    Background->SetVisible(true);
+    Overlay->SetVisible(true);
+    InputDisabled=true;;
+}
 
 void Icon::UpdateInternals()
 {

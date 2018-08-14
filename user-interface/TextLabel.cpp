@@ -52,7 +52,7 @@ void TextLabel::CalcLabelSize()
     PixelWidth = 0;
     foreach (QChar ch, Text)
     {
-        Symbol *symbol = FontRef->GetSymbolData( int(ch.toLatin1()) );
+        Symbol *symbol = FontRef->GetSymbolData( ch.unicode() );
         if (symbol==0)
             continue;
 
