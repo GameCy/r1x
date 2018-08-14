@@ -65,6 +65,7 @@ void Symbol::CalcQuad(float xOffset, float yOffset, float z, Quad3D &quad, float
 {
     float W = width*scale;
     float H = height*scale;
+    yOffset += yoffset*scale;
 
     quad.pos1 = QVector3D( xOffset   ,yOffset   ,z);
     quad.pos2 = QVector3D( xOffset+W ,yOffset   ,z);

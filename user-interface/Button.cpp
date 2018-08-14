@@ -53,12 +53,12 @@ void Button::UpdateGeometry()
     Background->setPos(Pos);
     Background->setSize(Size);
 
-    float scale = textScale * (Size.x() / Label->PixelWidth);
-    Label->setScale( scale );
-    float xOffset = (Size.x() - Label->PixelWidth)/2.f;
-    float yOffset = (Size.y() - Label->PixelHeight)/2.f;
-    Label->SetPos(Pos + QVector2D(xOffset, yOffset) );
+    Label->fitInsideBox( Size*0.80f );
 
+    float baseline = Label->getBaseline();
+    float xOffset = 0.5f*(Size.x() - Label->PixelWidth);
+    float yOffset = - baseline + 0.5f*(Size.y() - Label->PixelHeight - baseline) ;
+    Label->SetPos(Pos + QVector2D(xOffset, yOffset) );
 }
 
 void Button::ChangeVisuals(InputArea::State newState, InputArea::State oldState, InputArea *sender)

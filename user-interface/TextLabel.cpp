@@ -3,12 +3,17 @@
 
 TextLabel::TextLabel(FontPtr font, QString txt)
     : Text(txt)
-    , FontRef(font)
     , Scale(1.0f)
+    , FontRef(font)
     , isDirty(false)
     , toDelete(false)
 {
     CalcLabelSize();
+}
+
+float TextLabel::getBaseline() const
+{
+    return Baseline;
 }
 
 float TextLabel::getScale() const
@@ -21,6 +26,13 @@ void TextLabel::setScale(float value)
     Scale = value;
     isDirty = true;
     CalcLabelSize();
+}
+
+void TextLabel::fitInsideBox(QVector2D box)
+{
+    float fitFactorDx = box.x() / PixelWidth;
+    float fitFactorDy = box.y() / (PixelHeight +Baseline);
+    setScale( Scale*fmin(fitFactorDx, fitFactorDy) );
 }
 
 void TextLabel::DeleteLater()
@@ -48,17 +60,22 @@ QVector2D TextLabel::GetPos()
 
 void TextLabel::CalcLabelSize()
 {
-    float maxHeight=0;
     PixelWidth = 0;
+    Baseline=999999.f;
+    float topline=0;
     foreach (QChar ch, Text)
     {
-        Symbol *symbol = FontRef->GetSymbolData( ch.unicode() );
-        if (symbol==0)
+        Symbol *symbol = FontRef->GetSymbolData(ch);
+        if (symbol==nullptr)
             continue;
 
         PixelWidth += symbol->xadvance;
-        maxHeight = fmax( symbol->height, maxHeight);
+
+        if (Baseline>symbol->yoffset)   Baseline=symbol->yoffset;
+        if (topline<(symbol->yoffset+symbol->height))
+            topline = symbol->yoffset+symbol->height;
     }
     PixelWidth *= Scale;
-    PixelHeight = maxHeight*Scale;
+    PixelHeight = Scale*(topline - Baseline); //Scale*FontRef->GetConfig()->charHeight;
+    Baseline *= Scale;
 }

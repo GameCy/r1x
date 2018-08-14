@@ -35,8 +35,8 @@ void    TextRenderer::BuildQuads()
     float texWidth = fontRef->RasterMap->GetTexture()->width();
     float texHeight = fontRef->RasterMap->GetTexture()->height();
 
-    int baseline = fontRef->GetConfig()->base;
-    int fontHeight = fontRef->GetConfig()->charHeight;
+    auto *config = fontRef->GetConfig();
+    int baseline = config->charHeight - config->base;
     character=0;
     foreach (TextLabel* label, labels)
     {
@@ -47,11 +47,10 @@ void    TextRenderer::BuildQuads()
         foreach (QChar ch, label->Text)
         {
             Symbol *symbol = fontRef->GetSymbolData(ch);
-            if (symbol==0)
+            if (symbol==nullptr)
                 continue;
             Quad3D &quad = quadRenderer->getQuad(character);
-            symbol->CalcQuad( xcursor
-                              , ycursor + symbol->yoffset*scale
+            symbol->CalcQuad( xcursor, ycursor
                               , -2.0f, quad, texWidth, texHeight, scale);
 
             xcursor += symbol->xadvance * scale;
