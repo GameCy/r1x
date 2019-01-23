@@ -5,6 +5,11 @@
          "height":20,
          "name":"Tile Layer 1",
          "opacity":1,
+         "properties":
+            {
+             "layerProp2":"lp2",
+             "layerProperty1":"lp1"
+            },
          "type":"tilelayer",
          "visible":true,
          "width":20,
@@ -12,11 +17,13 @@
          "y":0
         }, 
         {
+         "draworder":"topdown",
          "height":20,
          "name":"Object Layer 1",
          "objects":[
                 {
                  "height":0,
+                 "id":1,
                  "name":"obj1poly",
                  "polygon":[
                         {
@@ -57,7 +64,9 @@
                         }],
                  "properties":
                     {
-
+                     "objProperty1":"test Obj Prop 1",
+                     "objProperty2":"test obj prop 2",
+                     "objProperty3":"test obj prop 3"
                     },
                  "rotation":0,
                  "type":"",
@@ -84,11 +93,14 @@
          "x":0,
          "y":0
         }],
+ "nextobjectid":2,
  "orientation":"orthogonal",
  "properties":
     {
-
+     "prop1":"",
+     "prop2":""
     },
+ "renderorder":"right-down",
  "tileheight":128,
  "tilesets":[
         {
@@ -103,6 +115,7 @@
 
             },
          "spacing":0,
+         "tilecount":25,
          "tileheight":128,
          "tilewidth":128
         }, 
@@ -118,6 +131,7 @@
 
             },
          "spacing":0,
+         "tilecount":25,
          "tileheight":128,
          "tilewidth":128
         }],

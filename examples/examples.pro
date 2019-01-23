@@ -20,7 +20,8 @@ SOURCES += \
     SpritesFromAtlas.cpp \
     UserInterface.cpp \
     Viewd3dModels.cpp \
-    SpriteParticleFade.cpp
+    SpriteParticleFade.cpp \
+    TiledMap.cpp
 
 HEADERS += \
     InputTracker.h \
@@ -30,12 +31,14 @@ HEADERS += \
     SpritesFromAtlas.h \
     UserInterface.h \
     Viewd3dModels.h \
-    SpriteParticleFade.h
+    SpriteParticleFade.h \
+    TiledMap.h
 
 RESOURCES += \
     assets/textures.qrc \
     assets/fonts.qrc \
-    assets/models.qrc
+    assets/models.qrc \
+    assets/tiledmaps.qrc
 
 # add files to  APK
 DISTFILES += \

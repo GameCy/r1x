@@ -1,15 +1,16 @@
-#ifndef VIEWD3DMODELS_H
-#define VIEWD3DMODELS_H
+#ifndef TILEDMAP_H
+#define TILEDMAP_H
 #include "ExampleBase.h"
 #include "Graphics.h"
 #include "Camera.h"
-#include "BasicModel.h"
+#include "TmxJsonParser.h"
+#include "TmxRenderer.h"
 
-class Viewd3DModels : public ExampleBase
+class TiledMap : public ExampleBase
 {
 public:
-    Viewd3DModels();
-    virtual ~Viewd3DModels();
+    TiledMap();
+    virtual ~TiledMap();
 
     // Temporal interface
     void Update(float dt);
@@ -19,9 +20,7 @@ public:
 
 private:
     Camera      camera;
-    ModelPtr    monkey;
-
-    BasicModel  ground;
+    tmxparser::Map_t  tmxMap;
 };
 
-#endif // VIEWD3DMODELS_H
+#endif // TILEDMAP_H

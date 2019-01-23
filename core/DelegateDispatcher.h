@@ -10,7 +10,7 @@ class DelegateDispatcher
 {
 public:
     DelegateDispatcher(Timer* pTimer);
-    ~DelegateDispatcher(void);
+    ~DelegateDispatcher();
 
 	void	Process();
 

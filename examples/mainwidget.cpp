@@ -12,6 +12,7 @@
 #include "SpritesFromAtlas.h"
 #include "Viewd3dModels.h"
 #include "SpriteParticleFade.h"
+#include "TiledMap.h"
 
 MainWidget::MainWidget(QWidget *parent) :
     QOpenGLWidget(parent)
@@ -84,7 +85,7 @@ void MainWidget::paintGL()
         userInterface->Resize( Graphics::Screen );
         connect(userInterface->buttonNext, &Button::Clicked, this, &MainWidget::nextButtonClicked);
         connect(userInterface->buttonPrev, &Button::Clicked, this, &MainWidget::previousButtonClicked);
-        InstantiateExample(0);
+        InstantiateExample(3);
         example->Resize( Graphics::Screen );
         firstTime = false;
         return;
@@ -188,10 +189,10 @@ void MainWidget::InstantiateExample(int idxChange)
 {
     exampleIndex += idxChange;
     if (exampleIndex<0) exampleIndex = 0;
-    if (exampleIndex>2) exampleIndex = 2;
+    if (exampleIndex>3) exampleIndex = 3;
     if (example)
     {
-        example->deleteLater();
+        example->DeleteLater();
         example = 0;
     }
     switch(exampleIndex)
@@ -199,6 +200,7 @@ void MainWidget::InstantiateExample(int idxChange)
         case 0 : example = new SpriteParticleFade(); break;
         case 1 : example = new SpritesFromAtlas();  break;
         case 2 : example = new Viewd3DModels();  break;
+        case 3 : example = new TiledMap(); break;
     }
 }
 

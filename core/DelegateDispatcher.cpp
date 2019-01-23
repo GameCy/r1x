@@ -10,14 +10,14 @@ DelegateDispatcher::DelegateDispatcher(Timer *pTimer)
     CreateLock();
 }
 
-DelegateDispatcher::~DelegateDispatcher(void)
+DelegateDispatcher::~DelegateDispatcher()
 {
     DestroyLock();
 }
 
 void	DelegateDispatcher::Process()
 {
-    if (triggers.size()==0)	return;
+    if (triggers.empty())	return;
     float t = timer->Time;
 	DispatchList	pending;
 

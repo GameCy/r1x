@@ -1,2 +1,7 @@
-<!DOCTYPE RCC>
-<RCC version="1.0"/>
+<RCC>
+    <qresource prefix="/">
+        <file>tiledMaps/tilemap2.png</file>
+        <file>tiledMaps/tilemap1.png</file>
+        <file>tiledMaps/testLevel.json</file>
+    </qresource>
+</RCC>
