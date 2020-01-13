@@ -1,9 +1,17 @@
 #include "Sprite.h"
 
+Sprite::Sprite()
+    : Color(255,255,255,255)
+    , uvRect()
+    , isVisible(true)
+    , deleteLater(false)
+{
+}
+
 Sprite::Sprite(UVRect _uvRect)
-    : isVisible(true)
-    , Color(255,255,255,255)
+    : Color(255,255,255,255)
     , uvRect(_uvRect)
+    , isVisible(true)
     , deleteLater(false)
 {
     Size = QVector2D(0,0);
@@ -23,7 +31,7 @@ void Sprite::SetVisible(bool visible)
     }
 }
 
-Sprite* Sprite::CloneFrom(Sprite *other)
+void Sprite::CloneFrom(Sprite *other)
 {
     Pos = other->Pos;
     Size = other->Size;

@@ -2,9 +2,9 @@
 #include "InputAreaManager.h"
 
 InputArea::InputArea()
-    : state(Normal)
+    : InputDisabled(false)
+    , state(Normal)
     , activeEventID(0)
-    , InputDisabled(false)
     , toDelete(false)
 {
     uniqueAreaID = InputAreaManager::GetUniqueID();

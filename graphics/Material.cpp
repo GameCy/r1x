@@ -3,12 +3,12 @@
 #include "Graphics.h"
 
 Material::Material()
-    : texture(0)
-    , blendSourceMode( GL_SRC_ALPHA)
+    : blendSourceMode( GL_SRC_ALPHA)
     , blendDestMode(GL_ONE_MINUS_SRC_ALPHA)
     , Blending(false)
     , DepthTesting(true)
     , DepthWriting(true)
+    , texture(nullptr)
 {
 }
 

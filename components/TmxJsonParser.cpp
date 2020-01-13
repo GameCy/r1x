@@ -108,8 +108,8 @@ void json_parseLayer(QJsonObject &item, Layer_t* outLayer)
     outLayer->name = GetChildValue_string(item, "name");
 	outLayer->opacity = GetChildValue_double(item, "opacity", 0.0);
 	outLayer->visible = GetChildValue_int(item, "visible", 1);
-    outLayer->startPoint.setX( GetChildValue_int(item, "x", 0) );
-    outLayer->startPoint.setY( GetChildValue_int(item, "y", 0) );
+    outLayer->offset.setX( GetChildValue_int(item, "offsetx", 0) );
+    outLayer->offset.setY( GetChildValue_int(item, "offsety", 0) );
     outLayer->size.setX( GetChildValue_int(item, "width", 0) );
     outLayer->size.setY( GetChildValue_int(item, "height", 0) );
 
@@ -149,7 +149,8 @@ void json_parseLayerObjects(QJsonObject &item, Layer_t* outLayer)
 
 void json_parseTilesetNode(QJsonObject &item, Tileset_t* outTileset)
 {
-	outTileset->firstgid = GetChildValue_int(item, "firstgid", -1);
+    outTileset->firstgid = GetChildValue_int(item, "firstgid", -1);
+    outTileset->tileCount= GetChildValue_int(item, "tilecount", 0);
 	outTileset->tileWidth = GetChildValue_int(item, "tilewidth", 0);
 	outTileset->tileHeight = GetChildValue_int(item, "tileheight", 0);
 	outTileset->imageWidth = GetChildValue_int(item,"imagewidth", 0);
@@ -234,7 +235,24 @@ void parseTmxFromJSON_file(const QString& filename, tmxparser::Map_t* outMap)
         {
             qDebug() << "Error: " << parseError.error << " at character: " << parseError.offset << " while parsing TMX file: " << filename;
         }
-	}
+    }
+}
+
+int CountLayerTilesetUsage(Map_t &map, int layerIndex, int tilesetIndex)
+{
+    unsigned int firstIndex = map.tilesets[tilesetIndex].firstgid;
+    unsigned int lastIndex = UINT_MAX;
+    if (tilesetIndex>=0 && tilesetIndex<map.tilesets.size())
+        lastIndex = map.tilesets[tilesetIndex+1].firstgid;
+
+    auto tiles = map.layers[layerIndex].tiles;
+    int count=0;
+    for(unsigned int tileIndex : tiles)
+    {
+        if (tileIndex>=firstIndex && tileIndex<lastIndex)
+            count++;
+    }
+    return count;
 }
 
 }

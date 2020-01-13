@@ -8,9 +8,9 @@ class AtlasImporter
 {
 public:
     AtlasImporter();
-    AtlasImporter(QString path, bool normalized);
+    AtlasImporter(QString path, bool normalizedUV=true);
 
-    bool Load(QString path, bool normalized);
+    bool Load(QString path, bool normalizedUV=true);
     bool IsValid();
 
     bool GetUVRect(QString spriteName, UVRect &uvRect);

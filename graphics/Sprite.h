@@ -7,6 +7,7 @@
 class Sprite
 {
 public:
+    Sprite();
     Sprite(UVRect _uvRect);
     ~Sprite();
 
@@ -47,8 +48,9 @@ public:
     }
 
     inline void ClearChangedFlag()    { hasChanged = false; }
+    inline bool wasChanged() { return hasChanged; }
 
-    Sprite *CloneFrom(Sprite* other);
+    void CloneFrom(Sprite* other);
 
     friend class SpriteMap;
 private:

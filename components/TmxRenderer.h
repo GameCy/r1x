@@ -1,58 +1,47 @@
-#ifndef _TMX_RENDERER_H_
-#define _TMX_RENDERER_H_
+#ifndef TMXRENDERER_H_
+#define TMXRENDERER_H_
 #include <QVector2D>
 #include "TmxJsonParser.h"
+#include "SpriteMap.h"
+#include "ViewPort.h"
 
-
-namespace tmxparser
+namespace tmxrenderer
 {
 
-
-typedef struct TileMappingInfo_t
+class TmxLayerRenderer
 {
 public:
-    TileMappingInfo_t(int gid, int tx, int ty) { tilesetIndex=gid; srcOffset.setX(tx); srcOffset.setY(ty); }
+    TmxLayerRenderer(int maxTiles, MaterialPtr mat);
 
-	int			tilesetIndex;
-    QVector2D	srcOffset;
-} TileMappingInfo_t;
+    void Render();
+    void ResizeTiles(QVector2D newTileSize);
+    void MoveLayer(QVector2D center);
+    void BuildQuads(const tmxparser::Layer_t *layer, unsigned int minGid, unsigned int maxGid, QVector<UVRect> &uvTable);
 
-typedef std::vector<TileMappingInfo_t>		TileMappingCollection_t;
-
+    QVector2D           tileSize;
+    QuadRenderer2DX     quadRenderer;
+};
 
 class TmxRenderer
 {
 public:
-	TmxRenderer(Map_t* map);
+    TmxRenderer(tmxparser::Map_t* map);
 	~TmxRenderer();
 	
-	// render without resizing tiles
-    void Render(QVector2D offset);
+    void Render();
 
-	// render each tile, scaled to a new cell size
-    void Render(QVector2D offset, QVector2D destCellSize);
-
-	// 0,0 destCellSize renders at map tile size
-    //void RenderLayer(int layerIdx, Point_t offset, QVector2D destCellSize);
+    QVector<TmxLayerRenderer*>  layers;
 
 private:
 	TmxRenderer() {}
 
-    //void LoadResources();
-    //void DestroyResources();
-    //void Precalculate();
-    //bool isTileVisible(Point_t destination);
+    void BuildUVTable();
+    void BuildLayers();
+    void BuildQuads(QuadRendererBase* renderer, int layerIndex, int tilesetIndex);
 
-	TileMappingCollection_t		gidTable; // to translate gid's to tileIndex,tile Location pairs,
+    QVector<UVRect>     uvTable;
+    tmxparser::Map_t*   map;
 
-    //CIw2DImage** TilesetImages; // replace this with some texture or material
-	int numSets;
-
-    // sizes depend on viewport , so , tile size can be float, even display size and starting point
-    //Point_t displaySize;
-    //Point_t displayTileSize;
-
-	Map_t* map;
 };
 
 }

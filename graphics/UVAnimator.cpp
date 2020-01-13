@@ -5,10 +5,10 @@
 
 UVAnimator::UVAnimator(Sprite *target, UVRectArray* frames)
     : uvFrames(frames)
-    , posFrames(0)
+    , posFrames(nullptr)
     , Target(target)
-    , lastFrameIndex(-1)
     , repetitions(1)
+    , lastFrameIndex(-1)
 {
     TemporalPool::Add(this);
 }
@@ -72,7 +72,7 @@ int		UVAnimator::currentFrame()
 
     if (Time>Duration) return maxElement-1;
     float ratio = Time/Duration;
-    int idx = (int) (ratio*float(maxElement));
+    int idx = int(ratio*float(maxElement));
 	return idx;
 }
 

@@ -26,8 +26,9 @@ typedef struct
 
 typedef struct
 {
-	unsigned int firstgid;
-	unsigned int tileWidth;
+    unsigned int firstgid;
+    unsigned int tileCount;
+    unsigned int tileWidth;
 	unsigned int tileHeight;
 	unsigned int imageWidth;
 	unsigned int imageHeight;
@@ -73,7 +74,7 @@ typedef std::vector<unsigned int> TileArray_t;
 typedef struct
 {
 	std::string name;
-    QPoint startPoint;
+    QPoint offset;
     QPoint size;
 
     float opacity;
@@ -103,9 +104,13 @@ typedef struct
 	LayerCollection_t	layers;
 
 	PropertyMap_t propertyMap;
+
 } Map_t;
 
 void parseTmxFromJSON_file(const QString &filename, Map_t* outMap);
+
+// counts the number of tiles in a layer, that belong to a tileset
+int CountLayerTilesetUsage(Map_t &map, int layerIndex, int tilesetIndex);
 
 }
 #endif /* _TMX_JSON_PARSER_H_ */

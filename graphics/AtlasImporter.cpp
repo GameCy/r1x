@@ -9,16 +9,16 @@ AtlasImporter::AtlasImporter()
 {
 }
 
-AtlasImporter::AtlasImporter(QString path, bool normalized)
+AtlasImporter::AtlasImporter(QString path, bool normalizedUV)
     : PixelWidth(0)
     , PixelHeight(0)
 {
-    Load(path, normalized);
+    Load(path, normalizedUV);
 }
 
-bool AtlasImporter::Load(QString path, bool normalized)
+bool AtlasImporter::Load(QString path, bool normalizedUV)
 {
-    normalizedCoords = normalized;
+    normalizedCoords = normalizedUV;
     QFile file(path);
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))

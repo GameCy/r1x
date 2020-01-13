@@ -1,4 +1,4 @@
-#include "Slider.h".h"
+#include "Slider.h"
 #include <QDebug>
 #include "InputAreaManager.h"
 

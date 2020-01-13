@@ -2,7 +2,8 @@
 #include "Ogl.h"
 
 QuadRendererBase::QuadRendererBase()
-    : quadByteSize(0)
+    : ActiveQuads(0)
+    , quadByteSize(0)
     , offset2(0)
     , offset3(0)
     , attrib1Components(0)
@@ -10,8 +11,7 @@ QuadRendererBase::QuadRendererBase()
     , attrib3Components(0)
     , quadsBuffer(INVALID_OGL_VALUE)
     , indicesBuffer(INVALID_OGL_VALUE)
-    , ActiveQuads(0)
-    , material(0)
+    , material(nullptr)
 {
 }
 

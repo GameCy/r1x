@@ -3,12 +3,12 @@
 
 
 Camera::Camera(PhongShader *shader)
-    : shader(shader)
+    : UpVector (QVector3D(0, 1, 0))
     , FieldOfView(default_fov)
     , Near(default_near)
     , Far(default_far)
     , Aspect(default_aspect)
-    , UpVector (QVector3D(0, 1, 0))
+    , shader(shader)
 {
     projectionMatrix.setToIdentity();
     projectionMatrix.perspective(FieldOfView, Aspect, Near, Far);

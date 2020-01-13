@@ -2,8 +2,8 @@
 #include "Utils.h"
 
 SpriteMap::SpriteMap(int maxQuads, QString path, bool useColorPerSprite)
-    : colorPerSprite(useColorPerSprite)
-    , renderer(0)
+    : renderer(nullptr)
+    , colorPerSprite(useColorPerSprite)
     , rebuiltQuads(false)
 {
     MaterialPtr mat = LoadMaterial(path);
