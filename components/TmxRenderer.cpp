@@ -1,5 +1,6 @@
 #include "TmxRenderer.h"
 #include <Graphics.h>
+#include "Utils.h"
 
 namespace tmxrenderer
 {
@@ -17,11 +18,13 @@ void TmxLayerRenderer::Render()
 }
 
 void TmxLayerRenderer::BuildQuads(const Layer_t *layer
+                                  , unsigned int tileCount
                                   , unsigned int minGid
                                   , unsigned int maxGid
                                   , QVector<UVRect> &uvTable
                                   , QVector2D tileSize)
 {
+    quadRenderer.ReserveActiveQuads(tileCount);
     int quadIndex=0;
     QColor white(255,255,255,255);
     float cursorY=layer->offset.y();
@@ -34,7 +37,6 @@ void TmxLayerRenderer::BuildQuads(const Layer_t *layer
             auto gid = layer->tiles[tileIndex];
             if ( (gid>=minGid) && (gid<=maxGid))
             {
-                float cursorY = 0;
                 Quad2DX &quad = quadRenderer.getQuad(quadIndex);
                 quad.SetUVRect( uvTable[gid] );
                 quad.SetGeometry(cursorX, cursorY, tileSize.x(), tileSize.y());
@@ -53,8 +55,9 @@ void TmxLayerRenderer::BuildQuads(const Layer_t *layer
 // -----------------------------------------------
 
 TmxRenderer::TmxRenderer(QString tmxJsonFilePath)
+    : filePath(tmxJsonFilePath)
 {
-    parseTmxFromJSON_file(tmxJsonFilePath, &map);
+    parseTmxFromJSON_file(filePath, &map);
     if (map.layers.size()>0)
     {
         BuildUVTable();
@@ -101,13 +104,15 @@ void TmxRenderer::BuildLayers()
         for( ; tilesetItr!=map.tilesets.end(); ++tilesetItr)
         {
 
-            if (tmxparser::CountLayerTilesetUsage(map, layerIndex, tilesetIndex) <= 0)
+            int tileCount = tmxparser::CountLayerTilesetUsage(map, layerIndex, tilesetIndex);
+            if (tileCount<=0)
             {
                 layers.push_back(nullptr);
             }
             else
             {
-                QString tilesetPath = QString::fromStdString( tilesetItr->imagePath );
+                QString tilesetPath = Utils::getFolder(filePath) + "/" + QString::fromStdString( tilesetItr->imagePath );
+
                 auto mat = new Material(tilesetPath);
                 int maxQuads = layerItr->size.x() * layerItr->size.x();
                 auto tileSize = QVector2D(tilesetItr->tileWidth, tilesetItr->tileHeight);
@@ -115,7 +120,7 @@ void TmxRenderer::BuildLayers()
                 auto layer = new TmxLayerRenderer( maxQuads, mat);
                 unsigned int minGid = tilesetItr->firstgid;
                 unsigned int maxGid = minGid + tilesetItr->tileCount -1;
-                layer->BuildQuads( &(*layerItr), minGid, maxGid, uvTable, tileSize);
+                layer->BuildQuads( &(*layerItr), tileCount, minGid, maxGid, uvTable, tileSize);
                 layers.push_back(layer);
             }
             ++tilesetIndex;
@@ -129,14 +134,26 @@ void TmxRenderer::Render()
     auto layerItr = layers.begin();
     for( ; layerItr!=layers.end(); ++layerItr)
     {
-        (*layerItr)->Render();
+        auto layer = *layerItr;
+        if (layer)
+            layer->Render();
     }
 }
 
-QVector2D TmxRenderer::getTilePixelSize(unsigned int tilesetIndex)
+QPoint TmxRenderer::getTilePixelSize(unsigned int tilesetIndex)
 {
     auto &tileset = map.tilesets[tilesetIndex];
-    return QVector2D(tileset.tileWidth, tileset.tileHeight);
+    return QPoint(tileset.tileWidth, tileset.tileHeight);
+}
+
+QRect TmxRenderer::getLayerBoundaries(unsigned int layerIndex)
+{
+    auto &layer = map.layers[layerIndex];
+    auto &tileset = map.tilesets[0]; // cheating
+    return QRect(layer.offset.x()
+                 , layer.offset.y()
+                 , layer.offset.x() + layer.size.x()*tileset.tileWidth
+                 , layer.offset.y() + layer.size.y()*tileset.tileHeight );
 }
 
 } // tmxrenderer

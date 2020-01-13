@@ -4,15 +4,19 @@
 TiledMap::TiledMap()
     : tmxRenderer(":/tiledMaps/testLevel.json")
 {
+    tilePixelSize = tmxRenderer.getTilePixelSize(0);
+
     // window viewport in pixels, dummy values, will change in Resize() method
     windowViewport.SetLowerPoint(0,0);
-    windowViewport.SetHighPoint(320,240);
+    windowViewport.SetHighPoint(Graphics::Screen.Width()
+                                , Graphics::Screen.Height());
 
     tmxViewport.SetLowerPoint(0,0);
-    // get tile size from tileset 0 in pixels
-    auto tilePixelSize = tmxRenderer.getTilePixelSize(0);
     // fit 8x6 tiles into the window viewport
     tmxViewport.SetHighPoint(tilePixelSize.x()*8.f, tilePixelSize.y()*6.f );
+
+    scrollBoundaries = tmxRenderer.getLayerBoundaries(0);
+    scrollBoundaries.setRight( scrollBoundaries.right() - 8*tilePixelSize.x());
 
     Begin(360.f);
 }
@@ -26,10 +30,15 @@ void TiledMap::Render()
     if (!Graphics::rasterShader->Bind())
         return;
 
-    ogl.glViewport(windowViewport.X1, windowViewport.Y1, windowViewport.Width(), windowViewport.Height());
+    windowViewport.GLApply();
     Graphics::rasterShader->UpdateViewport(tmxViewport);
 
     tmxRenderer.Render();
+
+    // restore viewport to full size for user interface
+    auto screen = Graphics::Screen;
+    ogl.glViewport(screen.X1, screen.Y1, screen.Width(), screen.Height());
+    Graphics::rasterShader->UpdateViewport( screen );
 }
 
 void TiledMap::Update(float dt)
@@ -38,13 +47,13 @@ void TiledMap::Update(float dt)
 
     // move render viewport diagonally accross the screen/window
     auto lowerPos = ratio*halfScreen;
-    windowViewport.SetLowerPoint(lowerPos.x(), lowerPos.y());
+    //windowViewport.SetLowerPoint(lowerPos.x(), lowerPos.y());
     auto highPos = lowerPos + halfScreen;
-    windowViewport.SetHighPoint(highPos.x(), highPos.y());
+    //windowViewport.SetHighPoint(highPos.x(), highPos.y());
 
     // scroll tiles
-    tmxViewport.X1 = TimeRatio()*halfScreen.x();
-    tmxViewport.X2 = tmxViewport.X1 + halfScreen.x();
+    tmxViewport.X1 = ratio*scrollBoundaries.width();
+    tmxViewport.X2 = tmxViewport.X1 + tilePixelSize.x()*8.f;
 }
 
 void TiledMap::Resize(ViewPort &screen)

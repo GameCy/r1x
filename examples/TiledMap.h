@@ -24,7 +24,9 @@ private:
 
     tmxrenderer::TmxRenderer tmxRenderer;
 
+    QPoint      tilePixelSize;
     QVector2D   halfScreen;
+    QRect       scrollBoundaries;
 };
 
 #endif // TILEDMAP_H

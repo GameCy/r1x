@@ -4,6 +4,7 @@
 #include "TmxJsonParser.h"
 #include "SpriteMap.h"
 #include "ViewPort.h"
+#include <QRect>
 
 namespace tmxrenderer
 {
@@ -15,6 +16,7 @@ public:
 
     void Render();
     void BuildQuads(const tmxparser::Layer_t *layer
+                    , unsigned int tileCount
                     , unsigned int minGid
                     , unsigned int maxGid
                     , QVector<UVRect> &uvTable
@@ -32,7 +34,9 @@ public:
 	~TmxRenderer();
 	
     void Render();
-    QVector2D getTilePixelSize(unsigned int tilesetIndex);
+
+    QPoint getTilePixelSize(unsigned int tilesetIndex);
+    QRect getLayerBoundaries(unsigned int layerIndex);
 
     QVector<TmxLayerRenderer*>  layers;
 
@@ -42,6 +46,7 @@ private:
     void BuildUVTable();
     void BuildLayers();
 
+    QString filePath;
     QVector<UVRect>     uvTable;
     tmxparser::Map_t    map;
 };
