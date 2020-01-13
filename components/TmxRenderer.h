@@ -14,21 +14,25 @@ public:
     TmxLayerRenderer(int maxTiles, MaterialPtr mat);
 
     void Render();
-    void ResizeTiles(QVector2D newTileSize);
-    void MoveLayer(QVector2D center);
-    void BuildQuads(const tmxparser::Layer_t *layer, unsigned int minGid, unsigned int maxGid, QVector<UVRect> &uvTable);
+    void BuildQuads(const tmxparser::Layer_t *layer
+                    , unsigned int minGid
+                    , unsigned int maxGid
+                    , QVector<UVRect> &uvTable
+                    , QVector2D tileSize);
 
-    QVector2D           tileSize;
+private:
     QuadRenderer2DX     quadRenderer;
 };
+
 
 class TmxRenderer
 {
 public:
-    TmxRenderer(tmxparser::Map_t* map);
+    TmxRenderer(QString tmxJsonFilePath);
 	~TmxRenderer();
 	
     void Render();
+    QVector2D getTilePixelSize(unsigned int tilesetIndex);
 
     QVector<TmxLayerRenderer*>  layers;
 
@@ -37,11 +41,9 @@ private:
 
     void BuildUVTable();
     void BuildLayers();
-    void BuildQuads(QuadRendererBase* renderer, int layerIndex, int tilesetIndex);
 
     QVector<UVRect>     uvTable;
-    tmxparser::Map_t*   map;
-
+    tmxparser::Map_t    map;
 };
 
 }

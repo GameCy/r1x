@@ -16,15 +16,12 @@ void TmxLayerRenderer::Render()
     quadRenderer.RenderQuads();
 }
 
-void TmxLayerRenderer::ResizeTiles(QVector2D newTileSize)
+void TmxLayerRenderer::BuildQuads(const Layer_t *layer
+                                  , unsigned int minGid
+                                  , unsigned int maxGid
+                                  , QVector<UVRect> &uvTable
+                                  , QVector2D tileSize)
 {
-    tileSize = newTileSize;
-}
-
-void TmxLayerRenderer::BuildQuads(const Layer_t *layer, unsigned int minGid, unsigned int maxGid
-                                  , QVector<UVRect> &uvTable)
-{
-
     int quadIndex=0;
     QColor white(255,255,255,255);
     float cursorY=layer->offset.y();
@@ -55,11 +52,14 @@ void TmxLayerRenderer::BuildQuads(const Layer_t *layer, unsigned int minGid, uns
 
 // -----------------------------------------------
 
-TmxRenderer::TmxRenderer(Map_t* pMap)
-	: map(pMap)
+TmxRenderer::TmxRenderer(QString tmxJsonFilePath)
 {
-    BuildUVTable();
-    BuildLayers();
+    parseTmxFromJSON_file(tmxJsonFilePath, &map);
+    if (map.layers.size()>0)
+    {
+        BuildUVTable();
+        BuildLayers();
+    }
 }
 
 TmxRenderer::~TmxRenderer()
@@ -72,7 +72,7 @@ void TmxRenderer::BuildUVTable()
     uvTable.push_back( UVRect() ); // gid zero doesn't exist, so fill 1st element
 	int gid=1;
 
-    for(auto tileset=map->tilesets.begin(); tileset!=map->tilesets.end(); ++tileset)
+    for(auto tileset=map.tilesets.begin(); tileset!=map.tilesets.end(); ++tileset)
 	{
         float tileU = float(tileset->tileWidth)/float(tileset->imageWidth);
         float tileV = float(tileset->tileHeight)/float(tileset->imageHeight);
@@ -93,15 +93,15 @@ void TmxRenderer::BuildUVTable()
 void TmxRenderer::BuildLayers()
 {
     int layerIndex = 0;
-    auto layerItr = map->layers.cbegin();
-    for( ; layerItr!=map->layers.end(); ++layerItr)
+    auto layerItr = map.layers.cbegin();
+    for( ; layerItr!=map.layers.end(); ++layerItr)
     {
         int tilesetIndex=0;
-        auto tilesetItr = map->tilesets.begin();
-        for( ; tilesetItr!=map->tilesets.end(); ++tilesetItr)
+        auto tilesetItr = map.tilesets.begin();
+        for( ; tilesetItr!=map.tilesets.end(); ++tilesetItr)
         {
 
-            if (tmxparser::CountLayerTilesetUsage(*map, layerIndex, tilesetIndex) <= 0)
+            if (tmxparser::CountLayerTilesetUsage(map, layerIndex, tilesetIndex) <= 0)
             {
                 layers.push_back(nullptr);
             }
@@ -110,11 +110,12 @@ void TmxRenderer::BuildLayers()
                 QString tilesetPath = QString::fromStdString( tilesetItr->imagePath );
                 auto mat = new Material(tilesetPath);
                 int maxQuads = layerItr->size.x() * layerItr->size.x();
+                auto tileSize = QVector2D(tilesetItr->tileWidth, tilesetItr->tileHeight);
 
                 auto layer = new TmxLayerRenderer( maxQuads, mat);
                 unsigned int minGid = tilesetItr->firstgid;
                 unsigned int maxGid = minGid + tilesetItr->tileCount -1;
-                layer->BuildQuads( &(*layerItr), minGid, maxGid, uvTable);
+                layer->BuildQuads( &(*layerItr), minGid, maxGid, uvTable, tileSize);
                 layers.push_back(layer);
             }
             ++tilesetIndex;
@@ -122,7 +123,6 @@ void TmxRenderer::BuildLayers()
         ++layerIndex;
     }
 }
-
 
 void TmxRenderer::Render()
 {
@@ -133,52 +133,10 @@ void TmxRenderer::Render()
     }
 }
 
-/*
-
-void TmxRenderer::RenderLayer(int layerIdx, Point_t offset, QVector2D destCellSize)
+QVector2D TmxRenderer::getTilePixelSize(unsigned int tilesetIndex)
 {
-	Layer_t* layer = &map->layers[layerIdx];
-	TileArray_t* cells = &layer->tiles;
-	if (cells->size()==0)	return;
-	int cellIndex=0;
-	int setIndex;
-	int tileWidth, tileHeight;
-	
-	bool pixel_to_pixel = false;
-    if (destCellSize.x()==0 && destCellSize.y()==0)
-	{
-        displayTileSize.setX(map->tileWidth);
-        displayTileSize.setY(map->tileHeight);
-		pixel_to_pixel = true;
-	}
-	else displayTileSize = destCellSize;
-
-    Point_t destination = -offset + layer->startPoint;
-    for(int y=0; y<layer->size.y; ++y)
-	{
-        for(int x=0; x<layer->size.x ++x)
-		{
-			int gid = cells->at(cellIndex);
-			if (gid>0 && isTileVisible(destination))
-			{
-                TileMappingInfo_t* info = &uvTable[gid];
-				setIndex = info->tilesetIndex;
-                QVector2D srcSize( map->tilesets[setIndex].tileWidth
-								, map->tilesets[setIndex].tileHeight);
-
-                Iw2DDrawImageRegion(TilesetImages[setIndex]
-                                , destination
-                                , displayTileSize
-                                , info->srcOffset
-                                , srcSize);
-			}
-			cellIndex++;
-			destination.x += displayTileSize.x;
-		}
-		destination.x = -offset.x;
-		destination.y += displayTileSize.y;
-	}
+    auto &tileset = map.tilesets[tilesetIndex];
+    return QVector2D(tileset.tileWidth, tileset.tileHeight);
 }
 
-*/
-}
+} // tmxrenderer

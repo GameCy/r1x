@@ -19,8 +19,12 @@ public:
     void Resize(ViewPort &screen);
 
 private:
-    Camera      camera;
-    tmxparser::Map_t  tmxMap;
+    ViewPort    windowViewport;
+    ViewPort    tmxViewport;
+
+    tmxrenderer::TmxRenderer tmxRenderer;
+
+    QVector2D   halfScreen;
 };
 
 #endif // TILEDMAP_H
