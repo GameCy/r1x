@@ -20,13 +20,15 @@ public:
 
 private:
     ViewPort    windowViewport;
-    ViewPort    tmxViewport;
+    ViewPort    tmxVisibleArea;
 
     tmxrenderer::TmxRenderer tmxRenderer;
 
     QPoint      tilePixelSize;
     QVector2D   halfScreen;
     QRect       scrollBoundaries;
+
+    void updateWindowViewport();
 };
 
 #endif // TILEDMAP_H

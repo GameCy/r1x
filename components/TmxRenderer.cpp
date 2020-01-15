@@ -27,7 +27,7 @@ void TmxLayerRenderer::BuildQuads(const Layer_t *layer
     quadRenderer.ReserveActiveQuads(tileCount);
     int quadIndex=0;
     QColor white(255,255,255,255);
-    float cursorY=layer->offset.y();
+    float cursorY=layer->offset.y() + (layer->size.y()-1)*tileSize.y()+1;
     unsigned int tileIndex=0;
     for(int row=0; row<layer->size.y(); ++row)
     {
@@ -47,7 +47,7 @@ void TmxLayerRenderer::BuildQuads(const Layer_t *layer
             ++tileIndex;
             cursorX += tileSize.x();
         }
-        cursorY += tileSize.y();
+        cursorY -= tileSize.y();
     }
     quadRenderer.UpdateQuadsBuffer();
 }
@@ -114,6 +114,7 @@ void TmxRenderer::BuildLayers()
                 QString tilesetPath = Utils::getFolder(filePath) + "/" + QString::fromStdString( tilesetItr->imagePath );
 
                 auto mat = new Material(tilesetPath);
+                mat->DepthTesting = false;
                 int maxQuads = layerItr->size.x() * layerItr->size.x();
                 auto tileSize = QVector2D(tilesetItr->tileWidth, tilesetItr->tileHeight);
 

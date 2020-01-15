@@ -46,7 +46,7 @@ void MainWidget::initializeGL()
     this->setAttribute(Qt::WA_AcceptTouchEvents);
 
     ogl.initializeOpenGLFunctions();
-    ogl.glClearColor(0, 0, 0, 1);
+    ogl.glClearColor(0.3, 0.3, .3, 1);
     ogl.glEnable(GL_DEPTH_TEST);
     ogl.glDisable(GL_CULL_FACE);
 

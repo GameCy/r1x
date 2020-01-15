@@ -11,12 +11,12 @@ TiledMap::TiledMap()
     windowViewport.SetHighPoint(Graphics::Screen.Width()
                                 , Graphics::Screen.Height());
 
-    tmxViewport.SetLowerPoint(0,0);
+    tmxVisibleArea.SetLowerPoint(0,0);
     // fit 8x6 tiles into the window viewport
-    tmxViewport.SetHighPoint(tilePixelSize.x()*8.f, tilePixelSize.y()*6.f );
+    tmxVisibleArea.SetHighPoint(tilePixelSize.x()*20.f, tilePixelSize.y()*20.f );
 
     scrollBoundaries = tmxRenderer.getLayerBoundaries(0);
-    scrollBoundaries.setRight( scrollBoundaries.right() - 8*tilePixelSize.x());
+    //scrollBoundaries.setRight( scrollBoundaries.right());
 
     Begin(360.f);
 }
@@ -30,35 +30,46 @@ void TiledMap::Render()
     if (!Graphics::rasterShader->Bind())
         return;
 
-    windowViewport.GLApply();
-    Graphics::rasterShader->UpdateViewport(tmxViewport);
+    // aply the windowViewport to the openGL context
+    // to limit drawing to only a part of the real window
+    //windowViewport.GLApply();
 
+    // use the boundaries of the visible area in the rasterShader
+    Graphics::rasterShader->UpdateViewport(tmxVisibleArea);
+
+    // render all the layers
     tmxRenderer.Render();
 
-    // restore viewport to full size for user interface
-    auto screen = Graphics::Screen;
-    ogl.glViewport(screen.X1, screen.Y1, screen.Width(), screen.Height());
-    Graphics::rasterShader->UpdateViewport( screen );
+    // restore openGL viewport and rasterShader viewport
+    // to full size, for the user interface to render properly
+    Graphics::Screen.GLApply();
+    Graphics::rasterShader->UpdateViewport( Graphics::Screen );
 }
 
 void TiledMap::Update(float dt)
 {
-    float ratio= .5f + 0.5f*sin(Time);
-
-    // move render viewport diagonally accross the screen/window
-    auto lowerPos = ratio*halfScreen;
-    //windowViewport.SetLowerPoint(lowerPos.x(), lowerPos.y());
-    auto highPos = lowerPos + halfScreen;
-    //windowViewport.SetHighPoint(highPos.x(), highPos.y());
+    updateWindowViewport();
 
     // scroll tiles
-    tmxViewport.X1 = ratio*scrollBoundaries.width();
-    tmxViewport.X2 = tmxViewport.X1 + tilePixelSize.x()*8.f;
+    float ratio= .5f + 0.5f*sin(Time);
+    tmxVisibleArea.X1 = scrollBoundaries.left()-50;
+    tmxVisibleArea.X2 = scrollBoundaries.right()+50;
+    tmxVisibleArea.Y1 = scrollBoundaries.top()-50;
+    tmxVisibleArea.Y2 = scrollBoundaries.bottom()+50;
+//    tmxViewport.X1 = ratio*scrollBoundaries.width();
+//    tmxViewport.X2 = tmxViewport.X1 + tilePixelSize.x()*8.f;
 }
 
 void TiledMap::Resize(ViewPort &screen)
 {
-    halfScreen = 0.5f*screen.Size();
-    windowViewport.SetLowerPoint(0,0);
-    windowViewport.SetHighPoint(halfScreen.x(), halfScreen.y());
+    updateWindowViewport();
+}
+
+void TiledMap::updateWindowViewport()
+{
+    auto screen = Graphics::Screen.Size();
+    auto t = Time;
+    float swing = 0.25f*(1.f+ sin(0.2f*t));
+    windowViewport.SetLowerPoint(0, (0.0f+ swing)*screen.y());
+    windowViewport.SetHighPoint(screen.x(), (0.5f+swing)*screen.y());
 }
