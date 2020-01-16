@@ -32,7 +32,7 @@ void UserInterface::Resize(ViewPort &screen)
 
     float textScale = screen.Width()/1000.f;
     fpsLabel->setScale(textScale);
-    fpsLabel->SetPos( screen.Normalized(0.05f, 1.f - 0.15f*textScale) );
+    fpsLabel->SetPos( screen.Normalized(0.05f, 1.f - 0.2f*textScale) );
 
     buttonPrev->SetPos( screen.Normalized(0.05f, 0.0f) );
     buttonNext->SetPos( screen.Normalized(0.55f, 0.0f) );

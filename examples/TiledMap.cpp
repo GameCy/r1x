@@ -77,5 +77,5 @@ void TiledMap::updateWindowViewport()
     auto t = Time;
     float swing = 0.25f*(1.f+ sin(0.2f*t));
     windowViewport.SetLowerPoint(0.1f*dx, (0.0f+ swing)*dy);
-    windowViewport.SetHighPoint(0.9*dy, (0.5f+swing)*dy);
+    windowViewport.SetHighPoint(0.9*dx, (0.5f+swing)*dy);
 }

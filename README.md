@@ -8,6 +8,8 @@ Simple examples with some animated sprites from a texture atlas and rendering 3d
 
 ![alt text](https://github.com/GameCy/r1x/blob/master/examples/screenshots/ScreenshotExample1.png)
 ![alt text](https://github.com/GameCy/r1x/blob/master/examples/screenshots/ScreenshotExample2.png)
+![alt text](https://github.com/GameCy/r1x/blob/master/examples/screenshots/ScreenshotExample3.png)
+![alt text](https://github.com/GameCy/r1x/blob/master/examples/screenshots/ScreenshotExample4.png)
 
 
 Features
@@ -24,6 +26,7 @@ graphics/
 * Loading and Rendering 3D models from OBJ files
 * Mesh Instancing
 * ViewPort and Camera abstraction classes
+* Loading levels built with the Tiled editor and exported in json format. (see examples/TiledMap.cpp)
 
 audio/
 
