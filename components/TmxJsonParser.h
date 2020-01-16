@@ -33,7 +33,7 @@ typedef struct
 	unsigned int imageWidth;
 	unsigned int imageHeight;
 	unsigned int tileSpacingInImage;
-	unsigned int tileMarginInImage;
+    unsigned int tileMarginInImage;
 
 	std::string name;
 	std::string imagePath;

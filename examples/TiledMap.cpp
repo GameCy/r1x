@@ -2,7 +2,8 @@
 
 
 TiledMap::TiledMap()
-    : tmxRenderer(":/tiledMaps/testLevel.json")
+    //: tmxRenderer(":/tiledMaps/testLevel.json")
+    : tmxRenderer(":/tiledMaps/desertLand.json")
 {
     tilePixelSize = tmxRenderer.getTilePixelSize(0);
 
@@ -32,7 +33,11 @@ void TiledMap::Render()
 
     // aply the windowViewport to the openGL context
     // to limit drawing to only a part of the real window
-    //windowViewport.GLApply();
+    windowViewport.GLApply();
+    ogl.glScissor(windowViewport.X1, windowViewport.Y1, windowViewport.Width(), windowViewport.Height());
+    ogl.glEnable(GL_SCISSOR_TEST);
+    ogl.glClearColor(0.1f, 0.35f, 0.1f,0);
+    ogl.glClear(GL_COLOR_BUFFER_BIT);
 
     // use the boundaries of the visible area in the rasterShader
     Graphics::rasterShader->UpdateViewport(tmxVisibleArea);
@@ -42,6 +47,7 @@ void TiledMap::Render()
 
     // restore openGL viewport and rasterShader viewport
     // to full size, for the user interface to render properly
+    ogl.glDisable(GL_SCISSOR_TEST);
     Graphics::Screen.GLApply();
     Graphics::rasterShader->UpdateViewport( Graphics::Screen );
 }
@@ -51,13 +57,11 @@ void TiledMap::Update(float dt)
     updateWindowViewport();
 
     // scroll tiles
-    float ratio= .5f + 0.5f*sin(Time);
-    tmxVisibleArea.X1 = scrollBoundaries.left()-50;
-    tmxVisibleArea.X2 = scrollBoundaries.right()+50;
-    tmxVisibleArea.Y1 = scrollBoundaries.top()-50;
-    tmxVisibleArea.Y2 = scrollBoundaries.bottom()+50;
-//    tmxViewport.X1 = ratio*scrollBoundaries.width();
-//    tmxViewport.X2 = tmxViewport.X1 + tilePixelSize.x()*8.f;
+    int offset = scrollBoundaries.width()*(0.25f +0.25f*sin(0.4f*Time));
+    tmxVisibleArea.X1 = offset + scrollBoundaries.left() -50;
+    tmxVisibleArea.X2 = offset + scrollBoundaries.right()/2.f +50;
+    tmxVisibleArea.Y1 = scrollBoundaries.top() +50;
+    tmxVisibleArea.Y2 = scrollBoundaries.bottom() -50;
 }
 
 void TiledMap::Resize(ViewPort &screen)
@@ -68,8 +72,10 @@ void TiledMap::Resize(ViewPort &screen)
 void TiledMap::updateWindowViewport()
 {
     auto screen = Graphics::Screen.Size();
+    auto dx = screen.x();
+    auto dy = screen.y();
     auto t = Time;
     float swing = 0.25f*(1.f+ sin(0.2f*t));
-    windowViewport.SetLowerPoint(0, (0.0f+ swing)*screen.y());
-    windowViewport.SetHighPoint(screen.x(), (0.5f+swing)*screen.y());
+    windowViewport.SetLowerPoint(0.1f*dx, (0.0f+ swing)*dy);
+    windowViewport.SetHighPoint(0.9*dy, (0.5f+swing)*dy);
 }

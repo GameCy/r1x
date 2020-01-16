@@ -17,9 +17,9 @@
 MainWidget::MainWidget(QWidget *parent) :
     QOpenGLWidget(parent)
   , firstTime(true)
-  , example(0)
+  , example(nullptr)
+  , userInterface(nullptr)
   , exampleIndex(0)
-  , userInterface(0)
 {
     //== Disable VSync, get more than 60FPS
     QSurfaceFormat format = QSurfaceFormat::defaultFormat();
@@ -46,7 +46,7 @@ void MainWidget::initializeGL()
     this->setAttribute(Qt::WA_AcceptTouchEvents);
 
     ogl.initializeOpenGLFunctions();
-    ogl.glClearColor(0.3, 0.3, .3, 1);
+    ogl.glClearColor(0.f, 0.f, 0.f, 1);
     ogl.glEnable(GL_DEPTH_TEST);
     ogl.glDisable(GL_CULL_FACE);
 
@@ -58,7 +58,7 @@ void MainWidget::initializeGL()
     //UI::Fonts.LoadFont("Pipe", ":/fonts/pipe.json");
     UI::Fonts.LoadFont("Pipe48", ":/fonts/pipe48.json");
 
-    Core::Random.ReSeed( time(0) );
+    Core::Random.ReSeed( time(nullptr) );
     Core::Clock.ResetTimer();
 
     connect(this, &MainWidget::exitGame, this, &MainWidget::close);
@@ -79,8 +79,6 @@ void MainWidget::paintGL()
 {
     if (firstTime)
     {
-        float w = Graphics::Screen.Width();
-        float h = Graphics::Screen.Height();
         userInterface = new UserInterface();
         userInterface->Resize( Graphics::Screen );
         connect(userInterface->buttonNext, &Button::Clicked, this, &MainWidget::nextButtonClicked);
@@ -100,6 +98,7 @@ void MainWidget::paintGL()
     //Core::CoreEvents.Process();
     TemporalPool::Update(frameDt);
 
+    ogl.glClearColor(0.f, 0.f, 0.f, 1);
     ogl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     if (example)
         example->Render();
@@ -193,7 +192,7 @@ void MainWidget::InstantiateExample(int idxChange)
     if (example)
     {
         example->DeleteLater();
-        example = 0;
+        example = nullptr;
     }
     switch(exampleIndex)
     {

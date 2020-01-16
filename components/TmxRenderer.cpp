@@ -22,12 +22,13 @@ void TmxLayerRenderer::BuildQuads(const Layer_t *layer
                                   , unsigned int minGid
                                   , unsigned int maxGid
                                   , QVector<UVRect> &uvTable
-                                  , QVector2D tileSize)
+                                  , QVector2D tileSize
+                                  , QVector2D cellSize)
 {
     quadRenderer.ReserveActiveQuads(tileCount);
     int quadIndex=0;
     QColor white(255,255,255,255);
-    float cursorY=layer->offset.y() + (layer->size.y()-1)*tileSize.y()+1;
+    float cursorY=layer->offset.y() + (layer->size.y()-1)*cellSize.y()+1;
     unsigned int tileIndex=0;
     for(int row=0; row<layer->size.y(); ++row)
     {
@@ -45,9 +46,9 @@ void TmxLayerRenderer::BuildQuads(const Layer_t *layer
                 quadIndex++;
             }
             ++tileIndex;
-            cursorX += tileSize.x();
+            cursorX += cellSize.x();
         }
-        cursorY -= tileSize.y();
+        cursorY -= cellSize.y();
     }
     quadRenderer.UpdateQuadsBuffer();
 }
@@ -60,7 +61,7 @@ TmxRenderer::TmxRenderer(QString tmxJsonFilePath)
     parseTmxFromJSON_file(filePath, &map);
     if (map.layers.size()>0)
     {
-        BuildUVTable();
+        BuildUVTable(0.2f);
         BuildLayers();
     }
 }
@@ -69,32 +70,51 @@ TmxRenderer::~TmxRenderer()
 {
 }
 
-void TmxRenderer::BuildUVTable()
+void TmxRenderer::BuildUVTable(float bleedingInset)
 {
     uvTable.clear();
     uvTable.push_back( UVRect() ); // gid zero doesn't exist, so fill 1st element
 	int gid=1;
-
     for(auto tileset=map.tilesets.begin(); tileset!=map.tilesets.end(); ++tileset)
 	{
-        float tileU = float(tileset->tileWidth)/float(tileset->imageWidth);
-        float tileV = float(tileset->tileHeight)/float(tileset->imageHeight);
-        // margin .25  of a pixel
-        float marginU = 0.25f/float(tileset->imageWidth);
-        float marginV = 0.25f/float(tileset->imageHeight);
-        for(float v = 0; v<1.0f; v+=tileV)
+        auto &imageDx = tileset->imageWidth;
+        auto &imageDy = tileset->imageHeight;
+        auto &margin  = tileset->tileMarginInImage;
+        auto &spacing = tileset->tileSpacingInImage;
+        auto &tileU   = tileset->tileWidth;
+        auto &tileV   = tileset->tileHeight;
+
+        for(uint v = margin; (v+tileV)<imageDy; v += (tileV + spacing))
 		{
-            for(float u = 0; u<1.0f; u+=tileU)
-			{
-                uvTable.push_back( UVRect(u, v, u + tileU - marginU, v + tileV - marginV) );
+            for(uint u = margin; (u+tileU)<imageDx; u += (tileU+spacing))
+            {
+                UVRect tile_uvs(  float(u) + bleedingInset
+                                , float(v) + bleedingInset
+                                , float(u + tileU) - bleedingInset
+                                , float(v + tileV) - bleedingInset);
+                tile_uvs.Normalize(imageDx, imageDy);
+                uvTable.push_back(tile_uvs);
 				gid++;
 			}
 		}
 	}
 }
 
+Material *TmxRenderer::PrepareMaterial(QString tilesetFilename)
+{
+    QString tilesetPath = Utils::getFolder(filePath) + "/" + tilesetFilename;
+
+    auto mat = new Material(tilesetPath);
+    mat->DepthTesting = false;
+    auto texture = mat->GetTexture();
+    texture->bind();
+    texture->setMinMagFilters(QOpenGLTexture::Nearest, QOpenGLTexture::Nearest);
+    return mat;
+}
+
 void TmxRenderer::BuildLayers()
 {
+    auto cellSize = QVector2D(map.tileWidth, map.tileHeight);
     int layerIndex = 0;
     auto layerItr = map.layers.cbegin();
     for( ; layerItr!=map.layers.end(); ++layerItr)
@@ -111,17 +131,22 @@ void TmxRenderer::BuildLayers()
             }
             else
             {
-                QString tilesetPath = Utils::getFolder(filePath) + "/" + QString::fromStdString( tilesetItr->imagePath );
+                auto tilesetFilename = QString::fromStdString( tilesetItr->imagePath );
+                auto mat = PrepareMaterial(tilesetFilename);
 
-                auto mat = new Material(tilesetPath);
-                mat->DepthTesting = false;
                 int maxQuads = layerItr->size.x() * layerItr->size.x();
                 auto tileSize = QVector2D(tilesetItr->tileWidth, tilesetItr->tileHeight);
 
                 auto layer = new TmxLayerRenderer( maxQuads, mat);
                 unsigned int minGid = tilesetItr->firstgid;
                 unsigned int maxGid = minGid + tilesetItr->tileCount -1;
-                layer->BuildQuads( &(*layerItr), tileCount, minGid, maxGid, uvTable, tileSize);
+                layer->BuildQuads( &(*layerItr)
+                                   , tileCount
+                                   , minGid
+                                   , maxGid
+                                   , uvTable
+                                   , tileSize
+                                   , cellSize);
                 layers.push_back(layer);
             }
             ++tilesetIndex;
@@ -150,11 +175,10 @@ QPoint TmxRenderer::getTilePixelSize(unsigned int tilesetIndex)
 QRect TmxRenderer::getLayerBoundaries(unsigned int layerIndex)
 {
     auto &layer = map.layers[layerIndex];
-    auto &tileset = map.tilesets[0]; // cheating
     return QRect(layer.offset.x()
                  , layer.offset.y()
-                 , layer.offset.x() + layer.size.x()*tileset.tileWidth
-                 , layer.offset.y() + layer.size.y()*tileset.tileHeight );
+                 , layer.offset.x() + layer.size.x()*map.tileWidth - 1
+                 , layer.offset.y() + layer.size.y()*map.tileHeight - 1);
 }
 
 } // tmxrenderer

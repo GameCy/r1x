@@ -20,7 +20,7 @@ public:
                     , unsigned int minGid
                     , unsigned int maxGid
                     , QVector<UVRect> &uvTable
-                    , QVector2D tileSize);
+                    , QVector2D tileSize, QVector2D cellSize);
 
 private:
     QuadRenderer2DX     quadRenderer;
@@ -40,11 +40,13 @@ public:
 
     QVector<TmxLayerRenderer*>  layers;
 
+
 private:
 	TmxRenderer() {}
 
-    void BuildUVTable();
+    void BuildUVTable(float bleedingInset);
     void BuildLayers();
+    Material* PrepareMaterial(QString tilesetFilename);
 
     QString filePath;
     QVector<UVRect>     uvTable;

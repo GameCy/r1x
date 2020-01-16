@@ -3,5 +3,7 @@
         <file>tiledMaps/tilemap2.png</file>
         <file>tiledMaps/tilemap1.png</file>
         <file>tiledMaps/testLevel.json</file>
+        <file>tiledMaps/desertLand.json</file>
+        <file>tiledMaps/tmw_desert_spacing.png</file>
     </qresource>
 </RCC>

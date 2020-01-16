@@ -241,9 +241,7 @@ void parseTmxFromJSON_file(const QString& filename, tmxparser::Map_t* outMap)
 int CountLayerTilesetUsage(Map_t &map, int layerIndex, int tilesetIndex)
 {
     unsigned int firstIndex = map.tilesets[tilesetIndex].firstgid;
-    unsigned int lastIndex = UINT_MAX;
-    if (tilesetIndex>=0 && tilesetIndex<map.tilesets.size())
-        lastIndex = map.tilesets[tilesetIndex+1].firstgid;
+    unsigned int lastIndex  = firstIndex + map.tilesets[tilesetIndex].tileCount -1;
 
     auto tiles = map.layers[layerIndex].tiles;
     int count=0;
