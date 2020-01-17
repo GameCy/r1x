@@ -9,8 +9,8 @@ public:
     UVRectArray();
     ~UVRectArray();
 
-    void InitCellsFromAtlas(AtlasImporter &atlas, std::vector<QString> &cellNames);
-    void InitCellsFromGrid(int numFramesX, int numFramesY, int maxFrames, UVRect *allUVRect=0);
+    void InitCellsFromAtlas(AtlasImporter &atlas, QStringList &cellNames);
+    void InitCellsFromGrid(int numFramesX, int numFramesY, int maxFrames, UVRect *allUVRect=nullptr);
 
     UVRect *Get(int element);
     const UVRect &operator [](int element);

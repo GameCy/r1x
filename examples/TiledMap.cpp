@@ -1,5 +1,5 @@
 #include "TiledMap.h"
-
+#include <math.h>
 
 TiledMap::TiledMap()
     //: tmxRenderer(":/tiledMaps/testLevel.json")
@@ -56,12 +56,17 @@ void TiledMap::Update(float dt)
 {
     updateWindowViewport();
 
-    // scroll tiles
-    int offset = scrollBoundaries.width()*(0.25f +0.25f*sin(0.4f*Time));
-    tmxVisibleArea.X1 = offset + scrollBoundaries.left() -50;
-    tmxVisibleArea.X2 = offset + scrollBoundaries.right()/2.f +50;
-    tmxVisibleArea.Y1 = scrollBoundaries.top() +50;
-    tmxVisibleArea.Y2 = scrollBoundaries.bottom() -50;
+    float zoom = 0.16f +0.1f*sin(0.55f*Time);
+    // scroll X-axis
+    int offsetX = scrollBoundaries.width()*(0.25f +0.25f*sin(0.4f*Time));
+    tmxVisibleArea.X1 = offsetX + scrollBoundaries.left();
+    tmxVisibleArea.X2 = tmxVisibleArea.X1
+                        + scrollBoundaries.width()*zoom;
+    // scroll Y-axis
+    int offsetY = scrollBoundaries.height()*(0.25f +0.25f*sin(0.25f*Time));
+    tmxVisibleArea.Y1 = offsetY + scrollBoundaries.top();
+    tmxVisibleArea.Y2 = tmxVisibleArea.Y1
+                        + scrollBoundaries.height()*zoom/Graphics::DPI.ASPECT_RATIO;
 }
 
 void TiledMap::Resize(ViewPort &screen)

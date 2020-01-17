@@ -83,7 +83,7 @@ void MainWidget::paintGL()
         userInterface->Resize( Graphics::Screen );
         connect(userInterface->buttonNext, &Button::Clicked, this, &MainWidget::nextButtonClicked);
         connect(userInterface->buttonPrev, &Button::Clicked, this, &MainWidget::previousButtonClicked);
-        InstantiateExample(3);
+        InstantiateExample(0);
         example->Resize( Graphics::Screen );
         firstTime = false;
         return;

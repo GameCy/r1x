@@ -1,4 +1,5 @@
 #include "Viewd3dModels.h"
+#include <math.h>
 
 // The first way to render a 3D model is to use the BasicModel() class
 // The second way is a more basic manipulation of the Model/Mexh classes

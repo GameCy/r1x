@@ -1,5 +1,6 @@
 #include "TextLabel.h"
 #include "Font.h"
+#include <math.h>
 
 TextLabel::TextLabel(FontPtr font, QString txt)
     : Text(txt)

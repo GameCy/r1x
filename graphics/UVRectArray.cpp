@@ -25,7 +25,7 @@ void UVRectArray::AllocateFrames(int numFrames)
     UVS = new UVRect[MaxElement];
 }
 
-void UVRectArray::InitCellsFromAtlas(AtlasImporter &atlas, std::vector<QString> &cellNames)
+void UVRectArray::InitCellsFromAtlas(AtlasImporter &atlas, QStringList &cellNames)
 {
     AllocateFrames(cellNames.size());
     for(int n=0; n<MaxElement; ++n)
