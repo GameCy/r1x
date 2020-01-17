@@ -30,6 +30,41 @@ struct Quad2DX
     void    SetAllColors(QColor color);
 };
 
+template<class QuadType>
+void    RotateAndSetGeometry(QuadType &outQuad, QVector2D &point, QVector2D size, QVector2D &center, float angle)
+{
+  QVector2D p2(point.x()+size.x(), point.x());
+  QVector2D p4(point.x(), point.y() + size.y());
+  QVector2D p3 = point + size;
+
+  float s = sinf(angle);
+  float c = cosf(angle);
+
+  // translate point to origin, then rotate, then translate to desired
+  QVector2D to_origin = point - center;
+  QVector2D rotated = center + QVector2D( to_origin.x()*c - to_origin.y()*s, to_origin.x()*s + to_origin.y()*c);
+  outQuad.X1 = rotated.x();
+  outQuad.Y1 = rotated.y();
+
+  // same for p2
+  to_origin = p2 - center;
+  rotated = center + QVector2D( to_origin.x()*c - to_origin.y()*s, to_origin.x()*s + to_origin.y()*c);
+  outQuad.X2 = rotated.x();
+  outQuad.Y2 = rotated.y();
+
+  // same for p3
+  to_origin = p3 - center;
+  rotated = center + QVector2D( to_origin.x()*c - to_origin.y()*s, to_origin.x()*s + to_origin.y()*c);
+  outQuad.X3 = rotated.x();
+  outQuad.Y3 = rotated.y();
+
+  // same for p4
+  to_origin = p4 - center;
+  rotated = center + QVector2D( to_origin.x()*c - to_origin.y()*s, to_origin.x()*s + to_origin.y()*c);
+  outQuad.X4 = rotated.x();
+  outQuad.Y4 = rotated.y();
+}
+
 
 struct Quad3D
 {

@@ -51,7 +51,7 @@ Sprite* SpriteMap::CreateSprite(QString spriteName)
 
 Sprite *SpriteMap::CreateClone(Sprite *other)
 {
-    Sprite* sprite = new Sprite( other->getUVRect() );
+    Sprite* sprite = new Sprite();
     sprite->CloneFrom(other);
     sprites.push_back(sprite);
     rebuiltQuads=true;
@@ -80,16 +80,38 @@ bool SpriteMap::GetUVRect(QString spriteName, UVRect &uvRect)
 void SpriteMap::SetQuad2D(Sprite* spr, int quadIndex)
 {
     Quad2D &quad = ((QuadRenderer2D*)renderer)->getQuad(quadIndex);
-    quad.SetGeometry(spr->Pos.x(), spr->Pos.y(), spr->Size.x(), spr->Size.y());
     quad.SetUVRect( spr->getUVRect() );
+    if (fabsf(spr->RotationAngle)<0.0005f)
+    {
+        auto p = spr->Pos - spr->RotationCenter;
+        quad.SetGeometry(p.x(), p.y(), spr->Size.x(), spr->Size.y());
+    }
+    else
+    {
+        RotateAndSetGeometry<Quad2D>( quad, spr->Pos
+                                     , spr->Size
+                                     , spr->RotationCenter
+                                     , spr->RotationAngle);
+    }
 }
 
 void SpriteMap::SetQuad2DX(Sprite* spr, int quadIndex)
 {
     Quad2DX &quad = ((QuadRenderer2DX*)renderer)->getQuad(quadIndex);
-    quad.SetGeometry(spr->Pos.x(), spr->Pos.y(), spr->Size.x(), spr->Size.y());
     quad.SetUVRect( spr->uvRect );
     quad.SetAllColors( spr->Color );
+    if (fabsf(spr->RotationAngle)<0.0005f)
+    {
+        auto p = spr->Pos - spr->RotationCenter;
+        quad.SetGeometry(p.x(), p.y(), spr->Size.x(), spr->Size.y());
+    }
+    else
+    {
+        RotateAndSetGeometry<Quad2DX>( quad, spr->Pos
+                                     , spr->Size
+                                     , spr->RotationCenter
+                                     , spr->RotationAngle);
+    }
 }
 
 void SpriteMap::BuildQuads()

@@ -21,6 +21,25 @@ public:
         hasChanged = true;
     }
 
+    inline float getRotationAngle() const    { return RotationAngle; }
+    inline void setRotationAngle(const float &value)
+    {
+        RotationAngle = value;
+        hasChanged = true;
+    }
+    inline void setRotationAngle(float value)
+    {
+        RotationAngle = value;
+        hasChanged = true;
+    }
+
+    inline QVector2D getRotationCenter() const    { return RotationCenter; }
+    inline void setRotationCenter(const QVector2D &value)
+    {
+        RotationCenter = value;
+        hasChanged = true;
+    }
+
     inline QVector2D getSize() const    { return Size; }
     inline void setSize(const QVector2D &value)
     {
@@ -55,6 +74,8 @@ public:
     friend class SpriteMap;
 private:
     QVector2D   Pos;
+    float       RotationAngle;
+    QVector2D   RotationCenter;
     QVector2D   Size;
     QColor      Color;
     UVRect      uvRect;

@@ -1,4 +1,5 @@
 #include "Sprite.h"
+#include <cmath>
 
 Sprite::Sprite()
     : Color(255,255,255,255)
@@ -34,6 +35,8 @@ void Sprite::SetVisible(bool visible)
 void Sprite::CloneFrom(Sprite *other)
 {
     Pos = other->Pos;
+    RotationAngle = other->RotationAngle;
+    RotationCenter = other->RotationCenter;
     Size = other->Size;
     Color = other->Color;
     uvRect = other->uvRect;
