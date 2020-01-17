@@ -5,16 +5,16 @@
 SpritesFromAtlas::SpritesFromAtlas()
     : atlas(50, ":/textures/textures.atlas")
     , ring( atlas.CreateSprite("slot.png") )
-    , spark( atlas.CreateSprite("energy1.png") )
-    , sparkAnimator(spark, &sparkFrames)
     , runner( atlas.CreateSprite("Runner.png") )
     , runnerAnimator(runner, &runnerFrames)
+    , spark( atlas.CreateSprite("energy1.png") )
+    , sparkAnimator(spark, &sparkFrames)
 {
     screenWidth = Graphics::Screen.Width();
     screenHeight= Graphics::Screen.Height();
 
     sparkFrames.InitCellsFromGrid(1, 6, 6, &spark->getUVRect());
-    sparkAnimator.Repeat(5);
+    sparkAnimator.Repeat(15);// loop 15 times
     sparkAnimator.Begin(1.2f);
 
     runnerFrames.InitCellsFromGrid( 4, 1, 4, &runner->getUVRect() );
@@ -40,9 +40,11 @@ void SpritesFromAtlas::Render()
 void SpritesFromAtlas::Update(float dt)
 {
     ring->setPos( screenPos( -0.1f -0.8f*sin(Time+1.3f), 0.7f) );
-    spark->setPos( screenPos(0.f, -0.6f) );
-    runner->setPos(screenPos(-0.15f -0.7f*sin(Time), 0.0f) );
+    runner->setPos(screenPos(-0.15f -0.7f*sin(Time), 0.1f) );
+    spark->setPos( screenPos(0.f, -0.4f) );
 
+    ring->setRotationAngle( float(-12.f*Time) );
+    spark->setRotationAngle( 2.f*Time );
     atlas.Update();
 }
 
@@ -52,9 +54,13 @@ void SpritesFromAtlas::Resize(ViewPort &screen)
 
     screenWidth = screen.Width();
     screenHeight = screen.Height();
-    ring->setSize( rectSize(0.15f) );
-    spark->setSize( rectSize(0.3f) );
-    runner->setSize( rectSize(0.3f, 0.6f) );
+    ring->setSize( rectSize(0.13f, 0.18f) );
+    runner->setSize( rectSize(0.3f, 0.5f) );
+    spark->setSize( rectSize( 0.3f) );
+    spark->setRotationCenter( spark->getSize()*0.5f );
+
+    // set rotation center for ring to be outside of ring
+    ring->setRotationCenter( .5f*ring->getSize() );
 }
 
 QVector2D SpritesFromAtlas::rectSize(float size)

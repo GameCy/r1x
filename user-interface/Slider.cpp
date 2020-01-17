@@ -84,7 +84,7 @@ void Slider::UpdateInternals()
         offset.setY( value*Size.y()/(maximum-minimum) - 0.5f*handleSY);
     }
     Overlay->setPos(Pos+offset);
-    Overlay->setSize( ovSize );
+    Overlay->setSize( ovSize);
 }
 
 void Slider::ChangeVisuals(InputArea::State newState, InputArea::State oldState

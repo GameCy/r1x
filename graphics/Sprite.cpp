@@ -2,7 +2,8 @@
 #include <cmath>
 
 Sprite::Sprite()
-    : Color(255,255,255,255)
+    : RotationAngle(0)
+    , Color(255,255,255,255)
     , uvRect()
     , isVisible(true)
     , deleteLater(false)
@@ -10,7 +11,8 @@ Sprite::Sprite()
 }
 
 Sprite::Sprite(UVRect _uvRect)
-    : Color(255,255,255,255)
+    : RotationAngle(0)
+    , Color(255,255,255,255)
     , uvRect(_uvRect)
     , isVisible(true)
     , deleteLater(false)

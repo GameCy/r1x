@@ -18,15 +18,17 @@ public:
 
 private:
     SpriteMap   atlas;
-    Sprite      *ring;
 
-    Sprite      *spark;
-    UVRectArray sparkFrames;
-    UVAnimator sparkAnimator;
+    Sprite      *ring;
 
     Sprite      *runner;
     UVRectArray runnerFrames;
     UVAnimator runnerAnimator;
+
+    Sprite      *spark;
+    UVRectArray sparkFrames;
+    UVAnimator  sparkAnimator;
+
 
     QVector2D   rectSize(float size);
     QVector2D   rectSize(float sx, float sy);

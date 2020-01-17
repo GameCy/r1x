@@ -22,11 +22,6 @@ public:
     }
 
     inline float getRotationAngle() const    { return RotationAngle; }
-    inline void setRotationAngle(const float &value)
-    {
-        RotationAngle = value;
-        hasChanged = true;
-    }
     inline void setRotationAngle(float value)
     {
         RotationAngle = value;
