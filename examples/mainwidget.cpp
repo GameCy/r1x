@@ -3,16 +3,20 @@
 #include <math.h>
 #include <QMatrix4x4>
 #include "Core.h"
+#include "Ogl.h"
 #include "Graphics.h"
 #include "Temporal.h"
 #include "UI.h"
 #include "InputAreaManager.h"
 #include "InputTracker.h"
-#include "Ogl.h"
+#include "DragDrop.h"
+
+// ** include examples **
 #include "SpritesFromAtlas.h"
 #include "Viewd3dModels.h"
 #include "SpriteParticleFade.h"
 #include "TiledMap.h"
+#include "DragToTarget.h"
 
 MainWidget::MainWidget(QWidget *parent) :
     QOpenGLWidget(parent)
@@ -107,6 +111,7 @@ void MainWidget::paintGL()
     update();
 }
 
+
 void MainWidget::mousePressEvent(QMouseEvent *e)
 {
     if (e->button()==Qt::LeftButton)
@@ -116,6 +121,12 @@ void MainWidget::mousePressEvent(QMouseEvent *e)
 
         //QVector2D pos(e->localPos().x(), e->localPos().y());
         InputTracker::Instance().feedTapBegin( invpos );
+
+        if (gDragDropManager)
+            gDragDropManager->BeginDragging(MouseEventInfo(123456
+                                               , invpos.x()
+                                               , invpos.y()
+                                               , ButtonStates::ButtonDown));
     }
 }
 
@@ -130,6 +141,12 @@ void MainWidget::mouseMoveEvent(QMouseEvent *e)
 
         //QVector2D pos(e->localPos().x(), e->localPos().y());
         InputTracker::Instance().feedTapMove( invpos );
+
+        if (gDragDropManager)
+            gDragDropManager->UpdateDragging(MouseEventInfo(123456
+                                               , invpos.x()
+                                               , invpos.y()
+                                               , ButtonStates::ActiveMotion));
     }
 }
 
@@ -142,6 +159,12 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e)
 
         //QVector2D pos(e->localPos().x(), e->localPos().y());
         InputTracker::Instance().feedTapEnd( invpos );
+
+        if (gDragDropManager)
+            gDragDropManager->EndDragging(MouseEventInfo(123456
+                                               , invpos.x()
+                                               , invpos.y()
+                                               , ButtonStates::ButtonUp));
     }
 }
 
@@ -187,8 +210,8 @@ void MainWidget::quitButtonClicked()
 void MainWidget::InstantiateExample(int idxChange)
 {
     exampleIndex += idxChange;
-    if (exampleIndex<0) exampleIndex = 0;
-    if (exampleIndex>3) exampleIndex = 3;
+    if (exampleIndex<0) exampleIndex = 4;
+    if (exampleIndex>4) exampleIndex = 0;
     if (example)
     {
         example->DeleteLater();
@@ -200,6 +223,7 @@ void MainWidget::InstantiateExample(int idxChange)
         case 1 : example = new SpritesFromAtlas();  break;
         case 2 : example = new Viewd3DModels();  break;
         case 3 : example = new TiledMap(); break;
+        case 4 : example = new DragToTarget(); break;
     }
 }
 

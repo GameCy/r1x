@@ -13,6 +13,7 @@ include($$PWD/../user-interface/user-interface.pri)
 include($$PWD/../components/components.pri)
 
 SOURCES += \
+    DragToTarget.cpp \
     InputTracker.cpp \
     main.cpp \
     mainwidget.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
     TiledMap.cpp
 
 HEADERS += \
+    DragToTarget.h \
     InputTracker.h \
     mainwidget.h \
     UIFactory.h \

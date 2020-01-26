@@ -4,6 +4,7 @@
 #include <QVector3D>
 #include <QColor>
 #include "AtlasImporter.h"
+#include <cmath>
 
 struct Quad2D
 {
