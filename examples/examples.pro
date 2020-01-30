@@ -4,10 +4,12 @@ TARGET = R1X-Examples
 
 QT += core gui widgets multimedia
 
+INCLUDEPATH += $$PWD/../audio
 INCLUDEPATH += $$PWD/../graphics
 INCLUDEPATH += $$PWD/../user-interface
 INCLUDEPATH += $$PWD/../components
 
+include($$PWD/../audio/audio.pri)
 include($$PWD/../graphics/graphics.pri)
 include($$PWD/../user-interface/user-interface.pri)
 include($$PWD/../components/components.pri)
@@ -15,6 +17,7 @@ include($$PWD/../components/components.pri)
 SOURCES += \
     DragToTarget.cpp \
     InputTracker.cpp \
+    PlaySoundFx.cpp \
     main.cpp \
     mainwidget.cpp \
     UIFactory.cpp \
@@ -27,6 +30,7 @@ SOURCES += \
 HEADERS += \
     DragToTarget.h \
     InputTracker.h \
+    PlaySoundFx.h \
     mainwidget.h \
     UIFactory.h \
     ExampleBase.h \
@@ -37,6 +41,7 @@ HEADERS += \
     TiledMap.h
 
 RESOURCES += \
+    assets/Sounds.qrc \
     assets/textures.qrc \
     assets/fonts.qrc \
     assets/models.qrc \

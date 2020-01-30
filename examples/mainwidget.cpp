@@ -17,6 +17,7 @@
 #include "SpriteParticleFade.h"
 #include "TiledMap.h"
 #include "DragToTarget.h"
+#include "PlaySoundFx.h"
 
 MainWidget::MainWidget(QWidget *parent) :
     QOpenGLWidget(parent)
@@ -209,9 +210,10 @@ void MainWidget::quitButtonClicked()
 
 void MainWidget::InstantiateExample(int idxChange)
 {
+    const int maxExampleIndex = 5;
     exampleIndex += idxChange;
-    if (exampleIndex<0) exampleIndex = 4;
-    if (exampleIndex>4) exampleIndex = 0;
+    if (exampleIndex<0) exampleIndex = maxExampleIndex;
+    if (exampleIndex>maxExampleIndex) exampleIndex = 0;
     if (example)
     {
         example->DeleteLater();
@@ -224,6 +226,7 @@ void MainWidget::InstantiateExample(int idxChange)
         case 2 : example = new Viewd3DModels();  break;
         case 3 : example = new TiledMap(); break;
         case 4 : example = new DragToTarget(); break;
+        case 5 : example = new PlaySoundFx(); break;
     }
 }
 

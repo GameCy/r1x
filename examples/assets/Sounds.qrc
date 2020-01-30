@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>sounds/bounce.wav</file>
+        <file>sounds/complain.wav</file>
+        <file>sounds/going-down.wav</file>
+        <file>sounds/Powerup.wav</file>
+    </qresource>
+</RCC>

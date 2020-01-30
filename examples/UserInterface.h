@@ -9,6 +9,7 @@ class UserInterface : public ExampleBase
 {
 public:
     UserInterface();
+    ~UserInterface();
 
     // Temporal interface
     void Update(float dt);

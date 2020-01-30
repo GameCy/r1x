@@ -44,21 +44,21 @@ WavBuffer* AudioManager::Get(QString name)
 {
     WavBuffer* found;
     if (name.isEmpty())
-        return 0;
+        return nullptr;
 
-    found = soundBuffers.value(name, 0);
+    found = soundBuffers.value(name, nullptr);
     if (!found)
     {
         found = new WavBuffer;
         if (!found)
         {
             qDebug() << "failed to allocate memory for WavBuffer " << name;
-            return 0;
+            return nullptr;
         }
         if (!found->Load(name))
         {
             qDebug() << "failed to load " << name;
-            return 0;
+            return nullptr;
         }
         qDebug() << "Audio loaded " << name;
 

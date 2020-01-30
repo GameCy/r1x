@@ -18,6 +18,7 @@ Button::Button(QString txt, FontRendererPtr fontRenderer, Sprite* backgroundsSpr
 
 Button::~Button()
 {
+    InputAreaManager::Instance().Remove(this);
     Background->DeleteLater();
     Label->DeleteLater();
     disconnect( this, &InputArea::StateChanged, this, &Button::ChangeVisuals);

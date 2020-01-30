@@ -2,8 +2,19 @@
 #include "Graphics.h"
 #include <math.h>
 
+
+bool isInsideBox(QVector2D pos, QVector2D bottomLeft, QVector2D siz)
+{
+    auto topRight = bottomLeft + siz;
+    return pos.x()>bottomLeft.x() &&
+           pos.x()<topRight.x() &&
+           pos.y()>bottomLeft.y() &&
+           pos.y()<topRight.y();
+}
+
 Circle::Circle(QPoint pos, DropTargetList *targetList, SpriteMap &atlas)
     : sprite( atlas.CreateSprite("slot.png") )
+    , initialPos(pos)
 {
     EndDrag(pos);
     sprite->setPos(QVector2D(pos));
@@ -12,15 +23,10 @@ Circle::Circle(QPoint pos, DropTargetList *targetList, SpriteMap &atlas)
 
 bool Circle::IsInside(QPoint pos)
 {
-    auto bottomLeft = sprite->getPos() - sprite->getRotationCenter();
-    auto topRight = bottomLeft + sprite->getSize();
-
-    if(pos.x()>bottomLeft.x() &&
-           pos.x()<topRight.x() &&
-           pos.y()>bottomLeft.y() &&
-           pos.y()<topRight.y())
+    QVector2D p(pos);
+    if(isInsideBox(p, sprite->getPos(), sprite->getSize()))
     {
-        distanceFromHold = QVector2D(pos) - sprite->getPos();
+        distanceFromHold = p - sprite->getPos();
         return true;
     }
     return false;
@@ -28,12 +34,16 @@ bool Circle::IsInside(QPoint pos)
 
 void Circle::Update()
 {
-    if (IsDragging())
+//    if (IsDragging())
     {
         sprite->setPos(QVector2D( GetLastPosition()) - distanceFromHold);
     }
-//    else
-  //      sprite->setPos(QVector2D( GetLastPosition() ));
+}
+
+void Circle::ResetPos()
+{
+    distanceFromHold = QVector2D(0,0);
+    EndDrag(initialPos.toPoint());
 }
 
 // ---------------------------------------------------------------
@@ -44,15 +54,15 @@ TargetBox::TargetBox(QPoint pos, SpriteMap &atlas)
     sprite->setPos( QVector2D(pos) );
 }
 
-bool TargetBox::IsInside(QPoint pos, Draggable *source)
+bool TargetBox::IsDropedInside(QPoint pos, Draggable *source)
 {
-    auto bottomLeft = sprite->getPos() - sprite->getRotationCenter();
-    auto topRight = bottomLeft + sprite->getSize();
-
-    return pos.x()>bottomLeft.x() &&
-           pos.x()<topRight.x() &&
-           pos.y()>bottomLeft.y() &&
-            pos.y()<topRight.y();
+    QVector2D p(pos);
+    if(isInsideBox(p, sprite->getPos(), sprite->getSize()))
+    {
+        ((Circle*)source)->ResetPos();
+        return true;
+    }
+    return false;
 }
 
 // ---------------------------------------------------------------

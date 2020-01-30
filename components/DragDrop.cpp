@@ -55,7 +55,7 @@ void Draggable::CheckDropTargets()
 	std::list<DropTarget*>::iterator itr;
 	for(itr=targets->List.begin(); itr!=targets->List.end(); ++itr)
 	{
-		if ((*itr)->IsInside(lastDragPos, this))
+        if ((*itr)->IsDropedInside(lastDragPos, this))
 			break;
 	}
 }

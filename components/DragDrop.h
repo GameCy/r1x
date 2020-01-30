@@ -7,7 +7,7 @@ class Draggable;
 class DropTarget
 {
 public:
-    virtual bool IsInside(QPoint pos, Draggable* source)=0;
+    virtual bool IsDropedInside(QPoint pos, Draggable* source)=0;
 
 protected:
 	DropTarget()	{}

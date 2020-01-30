@@ -12,9 +12,11 @@ public:
     virtual ~Circle() {}
     virtual bool IsInside(QPoint pos);
     void Update();
+    void ResetPos();
 
     Sprite* sprite;
     QVector2D   distanceFromHold;
+    QVector2D   initialPos;
 };
 
 // ---------------------------------------------------------------
@@ -24,7 +26,7 @@ class TargetBox : public DropTarget
 public:
     TargetBox(QPoint pos, SpriteMap& atlas);
     virtual ~TargetBox() {}
-    virtual bool IsInside(QPoint pos, Draggable* source);
+    virtual bool IsDropedInside(QPoint pos, Draggable* source);
 
     Sprite* sprite;
 };

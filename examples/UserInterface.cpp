@@ -12,6 +12,12 @@ UserInterface::UserInterface()
     buttonNext = uiFactory->CreateButton("Next");
 }
 
+UserInterface::~UserInterface()
+{
+    buttonPrev->DeleteLater();
+    buttonNext->DeleteLater();
+}
+
 void UserInterface::Render()
 {
     if (!Graphics::rasterShader->Bind())
