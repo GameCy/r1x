@@ -89,6 +89,8 @@ void	CellMap<T>::SetMapping(float minX, float maxX, float minY, float maxY)
 	m_factorY = ((float)mapSizeY)/(maxY-minY);
 	m_cellhdx = 0.5f*(maxX-minX)/((float)mapSizeX);
 	m_cellhdy = 0.5f*(maxY-minY)/((float)mapSizeY);
+    m_minX = minX;	m_minY = minY;
+    m_maxX = maxX;	m_maxY = maxY;
 }
 
 template<class T>
