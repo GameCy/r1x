@@ -86,10 +86,10 @@ unsigned int Randomizer::GetUint()
 
 QVector2D Randomizer::RandPos2D(float radius)
 {
-    return QVector2D(radius*0.5 - GetFloat(0, radius), radius*0.5 - GetFloat(0, radius));
+    return QVector2D(GetFloat(-radius, radius), GetFloat(-radius, radius));
 }
 
 QVector3D Randomizer::RandPos3D(float radius)
 {
-    return QVector3D(radius*0.5 - GetFloat(0, radius), 0, radius*0.5 - GetFloat(0, radius));
+    return QVector3D(GetFloat(-radius, radius), 0,  GetFloat(-radius, radius));
 }
