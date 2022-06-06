@@ -1,13 +1,29 @@
 #pragma once
 #include <list>
-#include <QPoint>
+#include <QVector2D>
+
+
+enum DragStates     { Grab, Move, Release };
+
+struct DragEventInfo
+{
+public:
+    DragEventInfo(int touch_id, QVector2D pos, DragStates st)
+    {
+        id = touch_id; position = pos; state = st;
+    }
+
+    int id;
+    QVector2D position;
+    DragStates state;
+};
 
 class Draggable;
 
 class DropTarget
 {
 public:
-    virtual bool IsDropedInside(QPoint pos, Draggable* source)=0;
+    virtual bool IsInside(QVector2D pos, Draggable* source)=0;
 
 protected:
 	DropTarget()	{}
@@ -23,73 +39,60 @@ public:
 	std::list<DropTarget*>	List;
 };
 
-// -------------------------
 
+// -------------------------
 class Draggable
 {
 public:
 	Draggable(void)
-        : isDragging(false), targets(nullptr)
+        : State(Release)
+        , UniqueTouchId(-1)
+        , isDragging(false)
+        , targets(nullptr)
 	{}
     virtual ~Draggable(void)
 	{}
 
-    virtual bool IsInside(QPoint pos)=0;
 	void	SetTargetList(DropTargetList* targetList);
     bool	IsDragging();
-    QPoint GetLastPosition();
-    QPoint GetDragVector();
+    QVector2D GetLastPosition();
+    QVector2D GetDragVector();
 
-	// manual updates
-    void BeginDrag(QPoint pos);
-    void UpdateDrag(QPoint pos);
-    void EndDrag(QPoint pos);
-	void CheckDropTargets();
+    void Update(DragStates newState, QVector2D pos, int touch_id);
+    void CheckDropTargets();
 
-protected:
-    QPoint	beginDragPos;
-    QPoint	lastDragPos;
-    bool	isDragging;
+    virtual bool IsInside(QVector2D pos)=0;
+    virtual void OnStateChanged(DragStates newState);
+
+    DragStates  State;
+    int         UniqueTouchId;
+
+private:
+    QVector2D	beginDragPos;
+    QVector2D	lastDragPos;
+	bool		isDragging;
 
 	DropTargetList* targets;
+
+    void SetState(DragStates newState);
 };
 
 typedef std::list<Draggable*>	DraggableList;
 
-enum ButtonStates
-{
-    ButtonDown,
-    ButtonUp,
-    ActiveMotion,
-    PassiveMotion,
-    ButtonUndefined
-};
-
-struct MouseEventInfo
-{
-public:
-    MouseEventInfo(int touch_id, int x, int y, ButtonStates st)
-    {
-        id = touch_id; pos.setX(x); pos.setY(y); state = st;
-    }
-
-	int id;
-    QPoint pos;
-    ButtonStates state;
-};
-
+// -----------------------------------------
 class DragDropManager
 {
 public:
-	DragDropManager();
-	~DragDropManager();
+    static DragDropManager* Instance();
+    static void DestroyInstance();
 
 	DraggableList Draggables;
 
-	// handlers and delegates
-	void BeginDragging(MouseEventInfo mouse);
-	void UpdateDragging(MouseEventInfo mouse);
-	void EndDragging(MouseEventInfo mouse);
+    void InspectDraggables(DragStates touchState, int touch_id, QVector2D pos);
+
+private:
+    static DragDropManager* instance;
+    DragDropManager();
+    ~DragDropManager();
 };
 
-extern DragDropManager* gDragDropManager;

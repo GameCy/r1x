@@ -123,11 +123,7 @@ void MainWidget::mousePressEvent(QMouseEvent *e)
         //QVector2D pos(e->localPos().x(), e->localPos().y());
         InputTracker::Instance().feedTapBegin( invpos );
 
-        if (gDragDropManager)
-            gDragDropManager->BeginDragging(MouseEventInfo(123456
-                                               , invpos.x()
-                                               , invpos.y()
-                                               , ButtonStates::ButtonDown));
+        DragDropManager::Instance()->InspectDraggables(Grab, 123456, invpos);
     }
 }
 
@@ -143,11 +139,7 @@ void MainWidget::mouseMoveEvent(QMouseEvent *e)
         //QVector2D pos(e->localPos().x(), e->localPos().y());
         InputTracker::Instance().feedTapMove( invpos );
 
-        if (gDragDropManager)
-            gDragDropManager->UpdateDragging(MouseEventInfo(123456
-                                               , invpos.x()
-                                               , invpos.y()
-                                               , ButtonStates::ActiveMotion));
+        DragDropManager::Instance()->InspectDraggables(Move, 123456, invpos);
     }
 }
 
@@ -161,11 +153,7 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e)
         //QVector2D pos(e->localPos().x(), e->localPos().y());
         InputTracker::Instance().feedTapEnd( invpos );
 
-        if (gDragDropManager)
-            gDragDropManager->EndDragging(MouseEventInfo(123456
-                                               , invpos.x()
-                                               , invpos.y()
-                                               , ButtonStates::ButtonUp));
+        DragDropManager::Instance()->InspectDraggables(Release, 123456, invpos);
     }
 }
 

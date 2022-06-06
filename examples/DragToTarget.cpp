@@ -3,6 +3,17 @@
 #include <math.h>
 
 
+QVector2D toPixels(float sx, float sy, bool useAspectRatio)
+{
+    float W = Graphics::Screen.Width();
+    float H = Graphics::Screen.Height();
+
+    W = sx*W;
+    if (useAspectRatio)     H = sy*H* Graphics::DPI.ASPECT_RATIO;
+    else                    H = sy*H;
+    return QVector2D(W,H);
+}
+
 bool isInsideBox(QVector2D pos, QVector2D bottomLeft, QVector2D siz)
 {
     auto topRight = bottomLeft + siz;
@@ -12,54 +23,51 @@ bool isInsideBox(QVector2D pos, QVector2D bottomLeft, QVector2D siz)
            pos.y()<topRight.y();
 }
 
-Circle::Circle(QPoint pos, DropTargetList *targetList, SpriteMap &atlas)
+Circle::Circle(DropTargetList *targetList, SpriteMap &atlas)
     : sprite( atlas.CreateSprite("slot.png") )
-    , initialPos(pos)
 {
-    EndDrag(pos);
-    sprite->setPos(QVector2D(pos));
     SetTargetList(targetList);
 }
 
-bool Circle::IsInside(QPoint pos)
+bool Circle::IsInside(QVector2D pos)
 {
-    QVector2D p(pos);
-    if(isInsideBox(p, sprite->getPos(), sprite->getSize()))
-    {
-        distanceFromHold = p - sprite->getPos();
-        return true;
-    }
-    return false;
+    return isInsideBox(pos, sprite->getPos(), sprite->getSize());
+}
+
+void Circle::OnStateChanged(DragStates newState)
+{
+//    if (newState==Release)
 }
 
 void Circle::Update()
 {
-//    if (IsDragging())
+    if (IsDragging())
     {
-        sprite->setPos(QVector2D( GetLastPosition()) - distanceFromHold);
+        sprite->setPos(GetLastPosition() - sprite->getSize()/2.f );
     }
 }
 
-void Circle::ResetPos()
+void Circle::ResetLocation()
 {
-    distanceFromHold = QVector2D(0,0);
-    EndDrag(initialPos.toPoint());
+    this->
+    sprite->setPos( toPixels(0.4f, 0.3f, true));
 }
 
 // ---------------------------------------------------------------
 
-TargetBox::TargetBox(QPoint pos, SpriteMap &atlas)
-    :sprite( atlas.CreateSprite("Label.png"))
+TargetBox::TargetBox(QVector2D pos, SpriteMap &atlas)
+    : sprite( atlas.CreateSprite("Label.png"))
 {
     sprite->setPos( QVector2D(pos) );
 }
 
-bool TargetBox::IsDropedInside(QPoint pos, Draggable *source)
+bool TargetBox::IsInside(QVector2D pos, Draggable *source)
 {
-    QVector2D p(pos);
-    if(isInsideBox(p, sprite->getPos(), sprite->getSize()))
+    if (isInsideBox(pos, sprite->getPos(), sprite->getSize()))
     {
-        ((Circle*)source)->ResetPos();
+        Circle* c = (Circle*) source;
+        if (c)
+            c->ResetLocation();
         return true;
     }
     return false;
@@ -69,21 +77,17 @@ bool TargetBox::IsDropedInside(QPoint pos, Draggable *source)
 
 DragToTarget::DragToTarget()
     : atlas(50, ":/textures/textures.atlas")
+    , targetBox(nullptr)
 {
-    screenWidth = Graphics::Screen.Width();
-    screenHeight= Graphics::Screen.Height();
-
-    gDragDropManager = new DragDropManager();
-
     //Create Dragables
-    circle = new Circle( toPixels(0.2f,0.5f), &targets, atlas );
+    circle = new Circle( &targets, atlas );
 
     // Create targetList with DropTargets
-    targetBox = new TargetBox( toPixels(0.2f,0.8f), atlas);
+    targetBox = new TargetBox( toPixels(0.4f, 0.9f, true), atlas);
     targets.Add(targetBox);
 
     // Add draggables to manager
-    gDragDropManager->Draggables.push_back(circle);
+    DragDropManager::Instance()->Draggables.push_back(circle);
 
     Resize( Graphics::Screen );
     Begin();
@@ -91,8 +95,8 @@ DragToTarget::DragToTarget()
 
 DragToTarget::~DragToTarget()
 {
-    delete gDragDropManager;
-    gDragDropManager=nullptr;
+    DragDropManager::DestroyInstance();
+
     delete circle;
     delete targetBox;
 }
@@ -113,19 +117,10 @@ void DragToTarget::Update(float dt)
 
 void DragToTarget::Resize(ViewPort &screen)
 {
-    screenWidth = screen.Width();
-    screenHeight = screen.Height();
     Graphics::rasterShader->UpdateViewport( screen );
 
-    circle->sprite->setSize( QVector2D(toPixels(0.2f, 0.2f, true)) );
-    targetBox->sprite->setSize( QVector2D(toPixels(0.4f, 0.3f, true)) );
-}
-
-QPoint DragToTarget::toPixels(float sx, float sy, bool useAspectRatio)
-{
-    float W = sx*screenWidth;
-    float H;
-    if (useAspectRatio)     H = sy*screenHeight * Graphics::DPI.ASPECT_RATIO;
-    else                    H = sy*screenHeight;
-    return QPoint(W,H);
+    circle->ResetLocation();
+    circle->sprite->setSize( toPixels(0.2f, 0.2f, true) );
+    targetBox->sprite->setPos( toPixels(0.3f, 0.9f, true));
+    targetBox->sprite->setSize( toPixels(0.4f, 0.3f, true) );
 }

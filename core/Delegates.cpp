@@ -1,12 +1,12 @@
 #include "Delegates.h"
-#include "EventArgs.h"
 
-NonTypeDelegate::NonTypeDelegate(void (*pfn)(EventArgs&))
+
+NonTypeDelegate::NonTypeDelegate(void (*pfn)(QVariantMap&))
 		: mpFunc(pfn)
 {
 }
 
-void NonTypeDelegate::Invoke(EventArgs& args)
+void NonTypeDelegate::Invoke(QVariantMap& args)
 {
    mpFunc(args);
 }
@@ -20,12 +20,13 @@ public:
 
 	void example()
 	{
-		EventArgs args("ClickEventArgs", (void*) 0);
+        QVariantMap args;
+        args["ClickEventArgs"] = 0;
 		proxy.Invoke(args);
 	}
 
 	TypeDelegate<Boo> proxy;
 
-	void ProxyHandler(EventArgs& args) {}
+    void ProxyHandler(QVariantMap& args) {}
 };
 

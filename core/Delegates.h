@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <list>
-#include "EventArgs.h"
+#include <QVariantMap>
 #include "SmartPtr.h"
 
 // ------------------------------------------------
@@ -9,7 +9,7 @@
 class Delegate 
 {
 public:
-      virtual void Invoke(EventArgs& args)=0;
+      virtual void Invoke(QVariantMap& args)=0;
 protected:
       Delegate(){}
       virtual ~Delegate(){}
@@ -23,11 +23,11 @@ typedef DelegateList::iterator	DelegateListItr;
 class NonTypeDelegate : public Delegate  
 {
 public:
-   void Invoke(EventArgs& args);
-   NonTypeDelegate(void (*pFunc)(EventArgs&));
+   void Invoke(QVariantMap& args);
+   NonTypeDelegate(void (*pFunc)(QVariantMap&));
    virtual ~NonTypeDelegate(){}
 private:
-   void (*mpFunc)(EventArgs&);
+   void (*mpFunc)(QVariantMap&);
 };
 
 // ------------------------------------------------
@@ -36,33 +36,31 @@ template <typename T>
 class TypeDelegate : public Delegate  
 {
 public:
-   void Invoke(EventArgs& args);
-   TypeDelegate(T *obj, void (T::*pfn)(EventArgs&));
+   void Invoke(QVariantMap& args);
+   TypeDelegate(T *obj, void (T::*pfn)(QVariantMap&));
    ~TypeDelegate(){}
 
 private:
    T* mObject;
-   void (T::*m_pfn)(EventArgs&);
+   void (T::*m_pfn)(QVariantMap&);
 };
 
 // ------------------------------------------------
 
 template<typename T>
-TypeDelegate<T>::TypeDelegate(T *obj, void (T::*pfn)(EventArgs&))
+TypeDelegate<T>::TypeDelegate(T *obj, void (T::*pfn)(QVariantMap&))
     : mObject(obj), m_pfn(pfn)
 {
 }
 
 template<typename T>
-void TypeDelegate<T>::Invoke(EventArgs& args)
+void TypeDelegate<T>::Invoke(QVariantMap& args)
 {
    (mObject->*m_pfn)(args);
 }
-
-
 #define DeclareDelegate(_CLASS_,_METHOD_) \
     TypeDelegate<_CLASS_> delegate_##_METHOD_;\
-    void _METHOD_(EventArgs &args)
+    void _METHOD_(QVariantMap &args)
 
 #define ConstructDelegate(_CLASS_,_METHOD_) delegate_##_METHOD_(this, &_CLASS_::_METHOD_)
 

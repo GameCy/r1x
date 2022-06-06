@@ -40,7 +40,7 @@ void	DelegateDispatcher::Process()
 	}
 }
 
-void	DelegateDispatcher::Queue(float delay, Delegate *dlg, EventArgs args)
+void	DelegateDispatcher::Queue(float delay, Delegate *dlg, QVariantMap args)
 {
 	Dispatch		ti;
     ti.tstamp	= timer->Time + delay;

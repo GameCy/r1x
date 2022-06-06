@@ -34,6 +34,11 @@ void Sprite::SetVisible(bool visible)
     }
 }
 
+QRectF Sprite::calcRect()
+{
+    return QRectF(Pos.toPoint(), (Pos+Size).toPointF());
+}
+
 void Sprite::CloneFrom(Sprite *other)
 {
     Pos = other->Pos;

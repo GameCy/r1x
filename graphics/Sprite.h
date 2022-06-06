@@ -2,6 +2,7 @@
 #define _SPRITE_H
 #include <QVector2D>
 #include <QColor>
+#include <QRectF>
 #include "UVRectArray.h"
 
 class Sprite
@@ -55,6 +56,8 @@ public:
         uvRect = value;
         hasChanged = true;
     }
+
+    QRectF  calcRect();
 
     inline void DeleteLater()
     {

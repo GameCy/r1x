@@ -7,10 +7,10 @@ AudioSample::AudioSample(QObject *parent, WavBuffer *wavBuffer)
     : QIODevice(parent)
     , buffer(wavBuffer)
     , audioOutput(0)
+    , device(QAudioDeviceInfo::defaultOutputDevice())
     , bytePosition(0)
     , looping(false)
     , volume(0.8)
-    , device(QAudioDeviceInfo::defaultOutputDevice())
 {
     extractFormatFromWav( format, buffer );
 

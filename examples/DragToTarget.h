@@ -4,19 +4,22 @@
 #include "SpriteMap.h"
 #include "DragDrop.h"
 
+QVector2D toPixels(float sx, float sy, bool useAspectRatio);
 
 class Circle : public Draggable
 {
 public:
-    Circle(QPoint pos, DropTargetList* targetList, SpriteMap& atlas);
+    Circle(DropTargetList* targetList, SpriteMap& atlas);
     virtual ~Circle() {}
-    virtual bool IsInside(QPoint pos);
     void Update();
-    void ResetPos();
+
+    void ResetLocation();
 
     Sprite* sprite;
-    QVector2D   distanceFromHold;
-    QVector2D   initialPos;
+
+    // Draggable interface
+    virtual bool IsInside(QVector2D pos);
+    void OnStateChanged(DragStates newState);
 };
 
 // ---------------------------------------------------------------
@@ -24,9 +27,9 @@ public:
 class TargetBox : public DropTarget
 {
 public:
-    TargetBox(QPoint pos, SpriteMap& atlas);
+    TargetBox(QVector2D pos, SpriteMap& atlas);
     virtual ~TargetBox() {}
-    virtual bool IsDropedInside(QPoint pos, Draggable* source);
+    virtual bool IsInside(QVector2D pos, Draggable* source);
 
     Sprite* sprite;
 };
@@ -50,10 +53,6 @@ private:
     Circle*     circle;
     TargetBox*  targetBox;
     DropTargetList targets;
-
-    QPoint      toPixels(float sx, float sy, bool useAspectRatio=false);
-    float       screenWidth;
-    float       screenHeight;
 };
 
 #endif // DRAGTOTARGET_H

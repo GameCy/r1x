@@ -1,9 +1,8 @@
 #pragma once
 #include <vector>
 #include "Delegates.h"
-#include "EventArgs.h"
-
-typedef std::vector<EventArgs>	EventArgsVec;
+#include <QVariantMap>
+typedef QVector<QVariantMap>   VecVMArgs;
 
 class EventDispatcher;
 
@@ -17,9 +16,9 @@ public:
 	void Subscribe(Delegate* observer);
 	void Unsubscribe(Delegate* observer);
 
-	void Notify(EventArgs args, float delay=0);
-	void NotifyNow(EventArgs args);
-	EventArgsVec CollectResponses(EventArgs args);
+    void Notify(QVariantMap args, float delay=0);
+    void NotifyNow(QVariantMap args);
+    VecVMArgs CollectResponses(QVariantMap args);
 
 	DelegateList	mSubscribers;
 
@@ -40,7 +39,9 @@ public:
 
     void Start(float duration)
     {
-        Notify(EventArgs("ExpireEvent",0), duration);
+        QVariantMap args;
+        args["expireEvent"] = duration;
+        Notify(args, duration);
     }
 };
 

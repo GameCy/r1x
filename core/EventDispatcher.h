@@ -14,14 +14,14 @@ public:
 
 	void	Process();
 
-	void	QueueNotify(float delay, Event evt, EventArgs args);
+    void	QueueNotify(float delay, Event evt, QVariantMap args);
 
 private:
     struct Dispatch
     {
         float tstamp;
         Event toRaise;
-        EventArgs args;
+        QVariantMap args;
     };
 
     typedef list<Dispatch>			DispatchList;
@@ -29,10 +29,6 @@ private:
 
     DispatchList    triggers;
     Timer*          timer;
-    //s3eThreadLock *_lock;
-    void    CreateLock()	{ } //if (!_lock)  _lock = s3eThreadLockCreate(); }
-    void    DestroyLock()	{ } //if (_lock)  s3eThreadLockDestroy(_lock); }
-    void	Lock()			{ } //if (_lock)  s3eThreadLockAcquire(_lock, -1); }
-    void	Unlock()		{ } //if (_lock)  s3eThreadLockRelease(_lock); }
+
 };
 

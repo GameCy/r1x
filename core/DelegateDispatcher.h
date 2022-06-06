@@ -1,7 +1,6 @@
 #pragma once
 #include <list>
 #include "Delegates.h"
-#include "EventArgs.h"
 #include "Timer.h"
 
 using namespace std;
@@ -14,14 +13,14 @@ public:
 
 	void	Process();
 
-    void	Queue(float delay, Delegate* dlg, EventArgs args);
+    void	Queue(float delay, Delegate* dlg, QVariantMap args);
 
 private:
     struct Dispatch
     {
         float tstamp;
         Delegate* toInvoke;
-        EventArgs args;
+        QVariantMap args;
     };
 
     typedef list<Dispatch>			DispatchList;

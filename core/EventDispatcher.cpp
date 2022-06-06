@@ -5,14 +5,11 @@
 
 EventDispatcher::EventDispatcher(Timer *pTimer)
     : timer(pTimer)
-//	, _lock(0)
 {
-    CreateLock();
 }
 
 EventDispatcher::~EventDispatcher(void)
 {
-    DestroyLock();
 }
 
 void	EventDispatcher::Process()
@@ -21,7 +18,6 @@ void	EventDispatcher::Process()
     float t = timer->Time;
 	DispatchList	pending;
 
-	Unlock();
     DispatchListItr itr=triggers.begin();
     while(itr!=triggers.end())
 	{
@@ -32,7 +28,6 @@ void	EventDispatcher::Process()
 		}
 		else	itr++;
 	}
-	Lock();
 
 	for( itr = pending.begin(); itr!=pending.end(); ++itr)
 	{
@@ -40,15 +35,13 @@ void	EventDispatcher::Process()
 	}
 }
 
-void	EventDispatcher::QueueNotify(float delay, Event evt, EventArgs args)
+void	EventDispatcher::QueueNotify(float delay, Event evt, QVariantMap args)
 {
     Dispatch ti;
     ti.tstamp  = timer->Time + delay;
 	ti.toRaise = evt;
     ti.args    = args;
 
-	Lock();
-        triggers.push_back(ti);
-	Unlock();
+    triggers.push_back(ti);
 }
 

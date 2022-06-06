@@ -36,7 +36,8 @@ public:
             (*target) = endValue;
             if (Finished)
             {
-                EventArgs args("Interpolator Finished", this);
+                QVariantMap args;
+                args["Interpolator*"] = QVariant::fromValue(this);
                 Finished->Invoke(args);
                 Finished=0;
             }
@@ -58,7 +59,12 @@ private:
 #include <QVector2D>
 #include <QVector3D>
 typedef Interpolator<float>     FloatInterpolator;
+Q_DECLARE_METATYPE(FloatInterpolator*)
+
 typedef Interpolator<QVector2D> QV2Interpolator;
+Q_DECLARE_METATYPE(QV2Interpolator*)
+
 typedef Interpolator<QVector3D> QV3Interpolator;
+Q_DECLARE_METATYPE(QV3Interpolator*)
 
 #endif // _INTERPOLATOR_H

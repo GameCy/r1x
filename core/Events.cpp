@@ -20,7 +20,7 @@ void Event::Subscribe(Delegate* observer)		{	mSubscribers.push_back(observer); }
 
 void Event::Unsubscribe(Delegate* observer)		{ 	mSubscribers.remove(observer); }
 
-void Event::Notify(EventArgs args, float delay)
+void Event::Notify(QVariantMap args, float delay)
 {
 	if (dispatcher)
 		dispatcher->QueueNotify(delay, Event(this), args);
@@ -28,7 +28,7 @@ void Event::Notify(EventArgs args, float delay)
         NotifyNow(args);
 }
 
-void Event::NotifyNow(EventArgs args)
+void Event::NotifyNow(QVariantMap args)
 {
 	DelegateListItr itr;
 	for(itr=mSubscribers.begin(); itr!=mSubscribers.end(); ++itr)
@@ -37,15 +37,15 @@ void Event::NotifyNow(EventArgs args)
 	}
 }
 
-EventArgsVec Event::CollectResponses(EventArgs args)
+VecVMArgs Event::CollectResponses(QVariantMap args)
 {
-	EventArgsVec results;
+    VecVMArgs results;
 	results.reserve(mSubscribers.size());
 
 	DelegateListItr itr;
 	for(itr=mSubscribers.begin(); itr!=mSubscribers.end(); ++itr)
 	{
-		EventArgs itemArgs = args;
+        QVariantMap itemArgs = args;
 		(*itr)->Invoke(itemArgs);
 		results.push_back(itemArgs);
 	}
