@@ -6,10 +6,13 @@ It is in early stage. Tested on Ubuntu and Android.
 
 Simple examples with some animated sprites from a texture atlas and rendering 3d mmodels (obj) can be found in the examples folder
 
-![alt text](https://github.com/GameCy/r1x/blob/master/examples/screenshots/ScreenshotExample1.png)
-![alt text](https://github.com/GameCy/r1x/blob/master/examples/screenshots/ScreenshotExample2.png)
-![alt text](https://github.com/GameCy/r1x/blob/master/examples/screenshots/ScreenshotExample3.png)
-![alt text](https://github.com/GameCy/r1x/blob/master/examples/screenshots/ScreenshotExample4.png)
+![screenshot 1](https://gitlab.com/GameCy/r1x/-/blob/master/examples/screenshots/ScreenshotExample1.png)
+
+![screenshot 2](https://gitlab.com/GameCy/r1x/-/blob/master/examples/screenshots/ScreenshotExample2.png)
+
+![screenshot 3](https://gitlab.com/GameCy/r1x/-/blob/master/examples/screenshots/ScreenshotExample3.png)
+
+![screenshot 4](https://gitlab.com/GameCy/r1x/-/blob/master/examples/screenshots/ScreenshotExample4.png)
 
 
 Features
