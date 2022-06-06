@@ -10,9 +10,9 @@ class Circle : public Draggable
 {
 public:
     Circle(DropTargetList* targetList, SpriteMap& atlas);
-    virtual ~Circle() {}
-    void Update();
+    virtual ~Circle();
 
+    void Update();
     void ResetLocation();
 
     Sprite* sprite;

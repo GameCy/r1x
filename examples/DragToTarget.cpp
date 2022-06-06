@@ -27,6 +27,13 @@ Circle::Circle(DropTargetList *targetList, SpriteMap &atlas)
     : sprite( atlas.CreateSprite("slot.png") )
 {
     SetTargetList(targetList);
+    // Add draggables to manager
+    DragDropManager::Instance()->Draggables.push_back(this);
+}
+
+Circle::~Circle()
+{
+    DragDropManager::Instance()->Draggables.remove(this);
 }
 
 bool Circle::IsInside(QVector2D pos)
@@ -86,19 +93,15 @@ DragToTarget::DragToTarget()
     targetBox = new TargetBox( toPixels(0.4f, 0.9f, true), atlas);
     targets.Add(targetBox);
 
-    // Add draggables to manager
-    DragDropManager::Instance()->Draggables.push_back(circle);
-
     Resize( Graphics::Screen );
     Begin();
 }
 
 DragToTarget::~DragToTarget()
 {
-    DragDropManager::DestroyInstance();
-
     delete circle;
     delete targetBox;
+    //DragDropManager::DestroyInstance();
 }
 
 void DragToTarget::Render()
