@@ -21,6 +21,7 @@ Icon::Icon(QString iconSpriteName, QString overlayName, SpriteMapPtr uiMap, UVRe
 
 Icon::~Icon()
 {
+    InputAreaManager::Instance().Remove(this);
     Background->DeleteLater();
     Overlay->DeleteLater();
     disconnect( this, &InputArea::StateChanged, this, &Icon::ChangeVisuals);
@@ -37,18 +38,23 @@ void Icon::SetSize(QVector2D size)
     Size = size;
     UpdateInternals();
 }
+void Icon::CenterAt(QVector2D center)
+{
+    Pos = center -Size/2.f;
+    UpdateInternals();
+}
 
 void Icon::Hide()
 {
     Background->SetVisible(false);
     Overlay->SetVisible(false);
-    InputDisabled=true;;
+    InputDisabled=true;
 }
 void Icon::Show()
 {
     Background->SetVisible(true);
     Overlay->SetVisible(true);
-    InputDisabled=true;;
+    InputDisabled=false;
 }
 
 void Icon::UpdateInternals()
@@ -65,6 +71,8 @@ void Icon::UpdateInternals()
 
 void Icon::ChangeVisuals(InputArea::State newState, InputArea::State oldState, InputArea* sender)
 {
+    Q_UNUSED(oldState)
+    Q_UNUSED(sender)
     float Vheight = TexUVArea.V2 - TexUVArea.V1;
     float deltaV = 0;
     if (newState==InputArea::Pressed)       deltaV += 0.33333f*Vheight;

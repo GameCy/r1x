@@ -1,6 +1,4 @@
 #include "InputAreaManager.h"
-#include "Camera.h"
-#include "Graphics.h"
 
 InputAreaManager* InputAreaManager::instance=0;
 uint InputAreaManager::uniqueIDCounter=0;
@@ -24,6 +22,10 @@ void InputAreaManager::Add(InputArea* area)
 void InputAreaManager::Remove(InputArea* area)
 {
     areas.removeAll(area);
+}
+void InputAreaManager::SetFocusArea(FocusGuard *occupier)
+{
+    focusArea = occupier;
 }
 
 void InputAreaManager::ExecuteRemovals()
@@ -56,6 +58,9 @@ void InputAreaManager::ExecuteRemovals()
 
 void InputAreaManager::TapBeginHandler(int id, QVector2D pos)
 {
+    if (focusArea && focusArea->outsideFocusArea(pos))
+        return;
+
     auto itr = areas.begin();
     while( itr!=areas.end())
     {
@@ -107,5 +112,10 @@ void InputAreaManager::TapMoveHandler(int id, QVector2D pos)
 uint InputAreaManager::GetUniqueID()
 {
     return uniqueIDCounter++;
+}
+
+InputAreaManager::InputAreaManager()
+    : focusArea(nullptr)
+{
 }
 

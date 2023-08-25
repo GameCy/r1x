@@ -4,55 +4,45 @@
 #include <QDebug>
 
 
-void DPIHelper::Update()
+void DPIHelper::Update(ViewPort window)
 {
-    ASPECT_RATIO=1.0f;
+    VIEWPORT_SIZE.setWidth(window.Width());
+    VIEWPORT_SIZE.setHeight(window.Height());
+    VIEWPORT_ASPECT_RATIO = VIEWPORT_SIZE.width() / VIEWPORT_SIZE.height();
+
     QScreen *screen = QApplication::screens().at(0);
     if (screen)
     {
-        DPI_X = screen->physicalDotsPerInchX();
-        DPI_Y = screen->physicalDotsPerInchY();
+        DPI_X = screen->logicalDotsPerInchX();
+        DPI_Y = screen->logicalDotsPerInchY();
         DPI_average = (DPI_X + DPI_Y)/2.f;
-
-        QSizeF physicalSize = screen->physicalSize();
-        float sizeX = physicalSize.width()/ DPI_X;
-        float sizeY = physicalSize.height()/ DPI_Y;
-        bool portrait = (sizeX<sizeY);
-        if (portrait)
-        {
-            if (sizeY>0)   ASPECT_RATIO =  sizeX / sizeY;
-        }
-        else
-        {
-            if (sizeX>0)    ASPECT_RATIO =  sizeY / sizeX;
-        }
-
-        qDebug() << "DPI x y aspect : " << DPI_X << DPI_Y << ASPECT_RATIO;
+        DPI_SQUARE_RATIO = DPI_X/DPI_Y;
+        qDebug() << "DPI x y square_aspect viewport_aspect : "
+                 << DPI_X << DPI_Y << DPI_SQUARE_RATIO << VIEWPORT_ASPECT_RATIO;
     }
 }
 
-void DPIHelper::UpdateWindowed(ViewPort window)
+QVector2D DPIHelper::VisualSize(float pctOfTotal, float visualRelative, bool horizontal)
 {
-    ASPECT_RATIO=1.0f;
-    QScreen *screen = QApplication::screens().at(0);
-    if (screen)
+    QVector2D result;
+    if (horizontal)
     {
-        DPI_X = screen->physicalDotsPerInchX();
-        DPI_Y = screen->physicalDotsPerInchY();
-        DPI_average = (DPI_X + DPI_Y)/2.f;
-
-        float sizeX = window.Width()/ DPI_X;
-        float sizeY = window.Height()/ DPI_Y;
-        bool portrait = (sizeX<sizeY);
-        if (portrait)
-        {
-            if (sizeY>0)   ASPECT_RATIO =  DPI_X / DPI_Y;
-        }
-        else
-        {
-            if (sizeX>0)    ASPECT_RATIO =  DPI_Y / DPI_X;
-        }
-
-        qDebug() << "DPI x y aspect : " << DPI_X << DPI_Y << ASPECT_RATIO;
+        float sx = pctOfTotal*VIEWPORT_SIZE.width();
+        float sy = sx*visualRelative/DPI_SQUARE_RATIO;
+        result = QVector2D(sx, sy);
     }
+    else
+    {
+        float sy = pctOfTotal*VIEWPORT_SIZE.height();
+        float sx = sy*visualRelative*DPI_SQUARE_RATIO;
+        result = QVector2D(sx, sy);
+    }
+    return result;
+}
+
+QVector2D DPIHelper::FitInto(QVector2D currentSize, QVector2D maxArea)
+{
+    float fx = maxArea.x()/currentSize.x();
+    float fy = maxArea.y()/currentSize.y();
+    return ((fx<fy)?fx:fy) * currentSize;;
 }

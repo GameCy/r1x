@@ -40,7 +40,7 @@ void Model::Render()
 
 Mesh* Model::GetMesh(size_t meshIndex)
 {
-    if (meshIndex>=meshArray.size() || meshIndex<0)
+    if (meshIndex>=meshArray.size())
         return 0;
     return &meshArray[meshIndex];
 }

@@ -26,6 +26,7 @@ void UVAnimator::Repeat(int numRepeats)
 
 void UVAnimator::Update(float dt)
 {
+    Q_UNUSED(dt)
     if (IsFinished() && CheckRepeats())
     {
         //Parent->Report Completed

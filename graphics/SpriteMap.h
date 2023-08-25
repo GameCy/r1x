@@ -23,6 +23,7 @@ public:
     MaterialPtr GetMaterial();
     MaterialPtr LoadMaterial(QString path);
     bool        GetUVRect(QString spriteName, UVRect &uvRect);
+    AtlasImporter& GetAtlas();
 
     void Render();
     void Update();

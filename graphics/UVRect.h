@@ -5,8 +5,6 @@ struct UVRect
 {
     UVRect();
     UVRect(float u1, float v1, float u2, float v2);
-    UVRect(UVRect &other);
-    UVRect(const UVRect &other);
 
     void Normalize(float nx, float ny);
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "InputArea.h"
+#include "FocusGuard.h"
 #include <QList>
 
 class InputAreaManager
@@ -15,12 +16,15 @@ public:
     void TapEndHandler(int id, QVector2D pos);
     void TapMoveHandler(int id, QVector2D pos);
 
+    void SetFocusArea(FocusGuard* occupier);
+
     static uint GetUniqueID();
 private:
     QList<InputArea*>  areas;
     QList<InputArea*>  activeAreas;
+    FocusGuard *focusArea;
 
-    InputAreaManager() {}
+    InputAreaManager();
 
     static InputAreaManager* instance;
     static uint uniqueIDCounter;

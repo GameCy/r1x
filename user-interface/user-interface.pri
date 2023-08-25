@@ -14,6 +14,7 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/Button.h \
+    $$PWD/FocusGuard.h \
     $$PWD/Font.h \
     $$PWD/FontData.h \
     $$PWD/FontManager.h \

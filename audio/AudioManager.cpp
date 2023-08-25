@@ -8,7 +8,7 @@ AudioManager::AudioManager()
 
 AudioManager::~AudioManager()
 {
-    for(WavBuffer* buffer : soundBuffers)
+    for(WavBuffer* buffer : qAsConst(soundBuffers))
         buffer->deleteLater();
     soundBuffers.clear();
 }
@@ -75,7 +75,7 @@ void AudioManager::Release(QString name)
 
 void AudioManager::ClearAll()
 {
-    for(auto buffer : soundBuffers)
+    for(auto buffer : qAsConst(soundBuffers))
         delete buffer;
     soundBuffers.clear();
 }

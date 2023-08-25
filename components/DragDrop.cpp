@@ -1,4 +1,5 @@
 #include "DragDrop.h"
+#include <QDebug>
 
 // -----------------------------------------
 
@@ -57,8 +58,8 @@ void Draggable::Update(DragStates newState, QVector2D pos, int touch_id)
 
 void Draggable::CheckDropTargets()
 {
-    if (!targets)
-        return;
+    if (!targets)    return;
+
 	std::list<DropTarget*>::iterator itr;
 	for(itr=targets->List.begin(); itr!=targets->List.end(); ++itr)
 	{
@@ -68,8 +69,8 @@ void Draggable::CheckDropTargets()
 }
 
 void Draggable::OnStateChanged(DragStates newState)
-
 {
+    Q_UNUSED(newState)
 }
 
 // -----------------------------------------

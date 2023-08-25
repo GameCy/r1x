@@ -22,6 +22,12 @@ public:
         hasChanged = true;
     }
 
+    inline void CenterAt(const QVector2D &center)
+    {
+        Pos = center - Size/2.f;
+        hasChanged = true;
+    }
+
     inline float getRotationAngle() const    { return RotationAngle; }
     inline void setRotationAngle(float value)
     {

@@ -28,6 +28,8 @@ public:
     void    SetVolume(qreal vol);
     qreal   GetVolume();
 
+    QString path();
+
     QAudioDeviceInfo getDevice() const;
     void setDevice(const QAudioDeviceInfo &value);
 

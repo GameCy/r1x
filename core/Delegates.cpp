@@ -27,6 +27,6 @@ public:
 
 	TypeDelegate<Boo> proxy;
 
-    void ProxyHandler(QVariantMap& args) {}
+    void ProxyHandler(QVariantMap& args) { Q_UNUSED(args) }
 };
 

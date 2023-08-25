@@ -1,12 +1,10 @@
 #pragma once
-#include "SpriteMap.h"
-#include "Font.h"
 #include "InputArea.h"
 #include <QString>
 #include <QVector3D>
-#include "Font.h"
 #include <QObject>
 #include <QtWidgets>
+#include <Sprite.h>
 #include "TextLabel.h"
 #include "TextRenderer.h"
 
@@ -19,6 +17,7 @@ public:
 
     void    SetText(QString text);
     void    SetPos(QVector2D pos);
+    void    CenterAt(QVector2D center);
     void    SetSize(QVector2D size);
     void    SetTextScale(float scale);
 

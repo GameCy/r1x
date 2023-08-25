@@ -12,11 +12,12 @@ public:
     Icon(QString iconSpriteName, QString overlayName, SpriteMapPtr uiMap, UVRect uvRect);
     ~Icon();
 
-    void    SetPos(QVector2D pos);
-    void    SetSize(QVector2D size);
+    void SetPos(QVector2D pos);
+    void SetSize(QVector2D size);
+    void CenterAt(QVector2D center);
 
-    void    Hide();
-    void    Show();
+    void Hide();
+    void Show();
 
     Sprite*     Background;
     Sprite*     Overlay;

@@ -20,16 +20,33 @@ Slider::Slider(QString backgroundSpriteName, QString handleName, SpriteMapPtr ui
 
 Slider::~Slider()
 {
+    InputAreaManager::Instance().Remove(this);
     this->disconnect();
     Background->DeleteLater();
     Overlay->DeleteLater();
+}
+
+void Slider::SetArea(QVector2D bgPos, QVector2D bgSize, float usableSlidePercentage)
+{
+    Background->setPos(bgPos);
+    Background->setSize(bgSize);
+    if (bHorizontal)
+        Size = bgSize*QVector2D(usableSlidePercentage, 1.f);
+    else
+        Size = bgSize*QVector2D(1.f, usableSlidePercentage);
+
+    Pos = bgPos + 0.5f*(bgSize-Size);
+    UpdateOverlay();
 }
 
 void Slider::SetArea(QVector2D pos, QVector2D size)
 {
     Pos = pos;
     Size = size;
-    UpdateInternals();
+    Background->setPos(pos);
+    Background->setSize(size);
+
+    UpdateOverlay();
 }
 
 void Slider::SetRange(float min, float max, float val)
@@ -54,17 +71,25 @@ void Slider::SetValue(float val)
     else if (val<minimum)   val = minimum;
     value = val;
 
-    UpdateInternals();
+    UpdateOverlay();
 }
 
-void Slider::Hide()       { Background->SetVisible(false); }
-void Slider::Show()       { Background->SetVisible(true); }
-
-void Slider::UpdateInternals()
+void Slider::Hide()
 {
-    Background->setPos(Pos);
-    Background->setSize(Size);
+    Background->SetVisible(false);
+    if (Overlay)    Overlay->SetVisible(false);
+    InputDisabled = true;
+}
 
+void Slider::Show()
+{
+    Background->SetVisible(true);
+    if (Overlay)    Overlay->SetVisible(true);
+    InputDisabled = false;
+}
+
+void Slider::UpdateOverlay()
+{
     QVector2D ovSize;
     QVector2D offset;
     if (bHorizontal)
@@ -90,6 +115,7 @@ void Slider::UpdateInternals()
 void Slider::ChangeVisuals(InputArea::State newState, InputArea::State oldState
                          , InputArea* sender, QVector2D lastMousePos)
 {
+    Q_UNUSED(sender)
     if ( (oldState==InputArea::Normal) && (newState==InputArea::Pressed) )
     {
         beginPos = lastMousePos;

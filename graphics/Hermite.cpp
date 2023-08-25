@@ -118,7 +118,7 @@ QVector3D	Hermite::Interpolate(float t)
 	int segment = (int) t;
     float weight = t- (float)segment;
 
-    if ( (segment+2) > ControlPoints.size())	return QVector3D(0,0,0);	// numseg=nump-1; need to have segment<=numseg;
+    if ( std::size_t(segment+2) > ControlPoints.size())	return QVector3D(0,0,0);	// numseg=nump-1; need to have segment<=numseg;
 
     return HermiteInterpolate( ControlPoints[segment], ControlPoints[segment+1]
                             , Tangents[segment], Tangents[segment+1], weight );

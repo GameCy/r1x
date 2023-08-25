@@ -38,7 +38,7 @@ MaterialPtr SpriteMap::LoadMaterial(QString path)
 Sprite* SpriteMap::CreateSprite(QString spriteName)
 {
     UVRect uvRect(0,0,1,1);
-    if (atlas.IsValid())
+    if (spriteName.isEmpty()==false && atlas.IsValid())
     {
         if (!atlas.GetUVRect(spriteName, uvRect))
             return 0;
@@ -75,6 +75,11 @@ void SpriteMap::DestroyAllSprites()
 bool SpriteMap::GetUVRect(QString spriteName, UVRect &uvRect)
 {
     return atlas.GetUVRect(spriteName, uvRect);
+}
+
+AtlasImporter &SpriteMap::GetAtlas()
+{
+    return atlas;
 }
 
 void SpriteMap::SetQuad2D(Sprite* spr, int quadIndex)

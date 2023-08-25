@@ -36,6 +36,12 @@ void Button::SetPos(QVector2D pos)
     UpdateGeometry();
 }
 
+void Button::CenterAt(QVector2D center)
+{
+    Pos = center - Size/2.f;
+    UpdateGeometry();
+}
+
 void Button::SetSize(QVector2D size)
 {
     Size = size;
@@ -64,6 +70,8 @@ void Button::UpdateGeometry()
 
 void Button::ChangeVisuals(InputArea::State newState, InputArea::State oldState, InputArea *sender)
 {
+    Q_UNUSED(oldState)
+    Q_UNUSED(sender)
     float Vheight = TexUVArea.V2 - TexUVArea.V1;
 
     float deltaV = 0;

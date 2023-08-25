@@ -19,7 +19,7 @@ void BasicModel::Render(CameraPtr camera)
 
 void BasicModel::Update(float dt)
 {
-
+    Q_UNUSED(dt)
 }
 
 bool BasicModel::IsFinished()

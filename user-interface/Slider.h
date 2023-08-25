@@ -12,6 +12,7 @@ public:
     Slider(QString backgroundSpriteName, QString handleName, SpriteMapPtr uiMap, bool horizontal);
     ~Slider();
 
+    void    SetArea(QVector2D bgPos, QVector2D bgSize, float usableSlidePercentage);
     void    SetArea(QVector2D pos, QVector2D size);
     void    SetRange(float min, float max, float val);
     void    SetHandleSize(float steps, float aspect);
@@ -28,7 +29,7 @@ private:
     float   handleSteps, handleAspect;
     bool    bHorizontal;
 
-    void UpdateInternals();
+    void UpdateOverlay();
     QVector2D   beginPos;
     float       beginValue;
 

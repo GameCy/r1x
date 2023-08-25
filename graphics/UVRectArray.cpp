@@ -2,14 +2,14 @@
 
 UVRectArray::UVRectArray()
     : MaxElement(0)
-    , UVS(0)
+    , UVS(nullptr)
 {}
 
 UVRectArray::~UVRectArray()
 {
     if (UVS)
         delete[] UVS;
-    UVS=0;
+    UVS=nullptr;
 }
 
 UVRect *UVRectArray::Get(int element)

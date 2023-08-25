@@ -5,7 +5,6 @@
 #include "PhongShader.h"
 #include "RasterShader.h"
 #include <QMap>
-#include "Randomizer.h"
 #include "DPIHelper.h"
 #include <time.h>
 
@@ -43,5 +42,13 @@ public:
 private:
     Graphics();
 };
+
+#define SNorm(NX,NY) Graphics::Screen.Normalized(NX, NY)
+
+// DX is a percentage of the whole width,
+// VY_RELATIVE is a percentage of DX.
+// E.g. VY_RELATIVE = 1 will always result in visualy square sizes.
+#define XNormYRatio(NX,VY_RELATIVE)  Graphics::DPI.VisualSize(NX, VY_RELATIVE, true)
+#define YNormXRatio(NY,VX_RELATIVE)  Graphics::DPI.VisualSize(NY, VX_RELATIVE, false)
 
 #endif // GRAPHICS_H

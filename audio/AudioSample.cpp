@@ -75,6 +75,7 @@ void AudioSample::Start()
 void AudioSample::Stop()
 {
     bytePosition = 0;
+    looping = false;
     audioOutput->reset();
     audioOutput->stop();
 }
@@ -122,6 +123,11 @@ void AudioSample::SetVolume(qreal vol)
 qreal AudioSample::GetVolume()
 {
     return audioOutput->volume();
+}
+
+QString AudioSample::path()
+{
+    return buffer? buffer->filePath() : "";
 }
 
 QAudioDeviceInfo AudioSample::getDevice() const
