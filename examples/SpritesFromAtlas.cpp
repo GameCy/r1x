@@ -66,14 +66,14 @@ void SpritesFromAtlas::Resize(ViewPort &screen)
 QVector2D SpritesFromAtlas::rectSize(float size)
 {
     float W = screenWidth*size;
-    float H = W * Graphics::DPI.ASPECT_RATIO;
+    float H = W * Graphics::DPI.VIEWPORT_ASPECT_RATIO;
     return QVector2D(W,H);
 }
 
 QVector2D SpritesFromAtlas::rectSize(float sx, float sy)
 {
     float W = sx*screenWidth;
-    float H = sy*screenHeight * Graphics::DPI.ASPECT_RATIO;
+    float H = sy*screenHeight * Graphics::DPI.VIEWPORT_ASPECT_RATIO;
     return QVector2D(W,H);
 }
 

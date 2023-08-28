@@ -1,7 +1,8 @@
 #ifndef AUDIOSAMPLE_H
 #define AUDIOSAMPLE_H
 #include "WavBuffer.h"
-#include <QAudioOutput>
+#include <QAudioSink>
+#include <QAudioDevice>
 
 class AudioSample : public QIODevice
 {
@@ -12,11 +13,8 @@ public:
 
     void Start();
     void Stop();
-    void Pause();
-    void Resume();
     bool isPlaying();
     bool isStoped();
-    bool isPaused();
 
     qint64 readData(char *data, qint64 maxlen);
     qint64 writeData(const char *data, qint64 len);
@@ -30,20 +28,22 @@ public:
 
     QString path();
 
-    QAudioDeviceInfo getDevice() const;
-    void setDevice(const QAudioDeviceInfo &value);
+    QAudioDevice& getDevice();
+    void setDevice(const QAudioDevice &value);
 
 private:
     WavBuffer           *buffer;
-    QAudioOutput        *audioOutput;
-    QAudioDeviceInfo    device;
+    QAudioSink          *audioSink;
+    QAudioDevice        device;
     QAudioFormat        format;
 
     qint64      bytePosition;
     bool        looping;
     qreal       volume;
+    qint64      volumeSlideTick;
 
     void    extractFormatFromWav(QAudioFormat &format, WavBuffer* wav);
+    QAudioFormat::SampleFormat bitsToAudioFormat(int bits);
 
 private slots:
     void AudioStateChanged(QAudio::State newState);

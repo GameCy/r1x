@@ -2,7 +2,7 @@
 TEMPLATE = app
 TARGET = R1X-Examples
 
-QT += core gui widgets multimedia
+QT += core gui widgets openglwidgets multimedia
 
 INCLUDEPATH += $$PWD/../audio
 INCLUDEPATH += $$PWD/../graphics
@@ -15,9 +15,13 @@ include($$PWD/../user-interface/user-interface.pri)
 include($$PWD/../components/components.pri)
 
 SOURCES += \
+    CadRenderer.cpp \
+    CadShader.cpp \
+    CadTest.cpp \
     DragToTarget.cpp \
     InputTracker.cpp \
     PlaySoundFx.cpp \
+    cadvertex.cpp \
     main.cpp \
     mainwidget.cpp \
     UIFactory.cpp \
@@ -28,9 +32,13 @@ SOURCES += \
     TiledMap.cpp
 
 HEADERS += \
+    CadRenderer.h \
+    CadShader.h \
+    CadTest.h \
     DragToTarget.h \
     InputTracker.h \
     PlaySoundFx.h \
+    cadvertex.h \
     mainwidget.h \
     UIFactory.h \
     ExampleBase.h \
@@ -42,6 +50,7 @@ HEADERS += \
 
 RESOURCES += \
     assets/Sounds.qrc \
+    assets/cadshaders.qrc \
     assets/textures.qrc \
     assets/fonts.qrc \
     assets/models.qrc \

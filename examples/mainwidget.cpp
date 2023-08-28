@@ -18,6 +18,7 @@
 #include "TiledMap.h"
 #include "DragToTarget.h"
 #include "PlaySoundFx.h"
+//#include "CadTest.h"
 
 MainWidget::MainWidget(QWidget *parent) :
     QOpenGLWidget(parent)
@@ -55,7 +56,7 @@ void MainWidget::initializeGL()
     ogl.glEnable(GL_DEPTH_TEST);
     ogl.glDisable(GL_CULL_FACE);
 
-    Graphics::DPI.Update();
+    //Graphics::DPI.Update( Graphics::Screen );
 
     if (!Graphics::Init())
         close();
@@ -73,7 +74,7 @@ void MainWidget::initializeGL()
 void MainWidget::resizeGL(int w, int h)
 {
     Graphics::Screen.SetHighPoint(w,h);
-    Graphics::DPI.Update();
+    Graphics::DPI.Update( Graphics::Screen );
 
     if (userInterface)  userInterface->Resize( Graphics::Screen );
     if (example)        example->Resize( Graphics::Screen );
@@ -198,7 +199,7 @@ void MainWidget::quitButtonClicked()
 
 void MainWidget::InstantiateExample(int idxChange)
 {
-    const int maxExampleIndex = 5;
+    const int maxExampleIndex = 6;
     exampleIndex += idxChange;
     if (exampleIndex<0) exampleIndex = maxExampleIndex;
     if (exampleIndex>maxExampleIndex) exampleIndex = 0;
@@ -215,6 +216,7 @@ void MainWidget::InstantiateExample(int idxChange)
         case 3 : example = new TiledMap(); break;
         case 4 : example = new DragToTarget(); break;
         case 5 : example = new PlaySoundFx(); break;
+        //case 6 : example = new CadTest(); break;
     }
 }
 

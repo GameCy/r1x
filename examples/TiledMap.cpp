@@ -66,7 +66,7 @@ void TiledMap::Update(float dt)
     int offsetY = scrollBoundaries.height()*(0.25f +0.25f*sin(0.25f*Time));
     tmxVisibleArea.Y1 = offsetY + scrollBoundaries.top();
     tmxVisibleArea.Y2 = tmxVisibleArea.Y1
-                        + scrollBoundaries.height()*zoom/Graphics::DPI.ASPECT_RATIO;
+                        + scrollBoundaries.height()*zoom/Graphics::DPI.VIEWPORT_ASPECT_RATIO;
 }
 
 void TiledMap::Resize(ViewPort &screen)

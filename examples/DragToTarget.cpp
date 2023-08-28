@@ -9,7 +9,7 @@ QVector2D toPixels(float sx, float sy, bool useAspectRatio)
     float H = Graphics::Screen.Height();
 
     W = sx*W;
-    if (useAspectRatio)     H = sy*H* Graphics::DPI.ASPECT_RATIO;
+    if (useAspectRatio)     H = sy*H* Graphics::DPI.VIEWPORT_ASPECT_RATIO;
     else                    H = sy*H;
     return QVector2D(W,H);
 }

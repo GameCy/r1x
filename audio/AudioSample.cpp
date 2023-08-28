@@ -2,57 +2,42 @@
 #include <qmath.h>
 #include <qendian.h>
 #include <QDebug>
+#include <QMediaDevices>
 
 AudioSample::AudioSample(QObject *parent, WavBuffer *wavBuffer)
     : QIODevice(parent)
     , buffer(wavBuffer)
-    , audioOutput(0)
-    , device(QAudioDeviceInfo::defaultOutputDevice())
+    , audioSink(nullptr)
+    , device(QMediaDevices::defaultAudioOutput())
     , bytePosition(0)
     , looping(false)
     , volume(0.8)
 {
     extractFormatFromWav( format, buffer );
-
-    QAudioDeviceInfo info(device);
-    if (!info.isFormatSupported(format))
+    if (!device.isFormatSupported(format))
     {
         qWarning() << "Default format not supported - trying to use nearest";
-        format = info.nearestFormat(format);
+        format = device.preferredFormat();
     }
-    audioOutput = new QAudioOutput(device, format, this);
-    connect(audioOutput, &QAudioOutput::stateChanged, this, &AudioSample::AudioStateChanged);
-    open(QIODevice::ReadOnly);
-//    SetVolume(0);
+    open(ReadOnly);
+    audioSink = new QAudioSink(format, this);
+    connect(audioSink, &QAudioSink::stateChanged, this, &AudioSample::AudioStateChanged);
 }
 
 AudioSample::~AudioSample()
 {
-    if (audioOutput)
-        audioOutput->disconnect(this);
+    if (audioSink)
+    {
+        audioSink->disconnect(this);
+        audioSink->deleteLater();
+    }
     if (this->isOpen())
         close();
-    audioOutput->deleteLater();
 }
 
-void AudioSample::Pause()
-{
-    if (isPlaying())
-        audioOutput->suspend();
-}
+bool AudioSample::isPlaying()            { return (audioSink->state()==QAudio::ActiveState); }
 
-void AudioSample::Resume()
-{
-    if ( (audioOutput->state() == QAudio::SuspendedState)
-         || (audioOutput->state() == QAudio::StoppedState) )
-        audioOutput->resume();
-}
-
-bool AudioSample::isPlaying()            { return (audioOutput->state() == QAudio::ActiveState); }
-
-bool AudioSample::isStoped()             { return (audioOutput->state() == QAudio::StoppedState); }
-
-bool AudioSample::isPaused()             { return (audioOutput->state() == QAudio::SuspendedState); }
+bool AudioSample::isStoped()             { return (audioSink->state()==QAudio::StoppedState); }
 
 void AudioSample::Loop(bool value)       { looping = value; }
 
@@ -61,44 +46,53 @@ bool AudioSample::isLooping() const      { return looping; }
 
 void AudioSample::Start()
 {
-    if (isOpen())
+    if (!isOpen())
+        return;
+    auto sinkState = audioSink->state();
+    if (sinkState==QAudio::ActiveState || sinkState==QAudio::IdleState)
     {
-        bytePosition=0;
-        audioOutput->reset();
-        audioOutput->setVolume(0.0);
-        audioOutput->start(this);
-        audioOutput->setNotifyInterval(1);
-        connect(audioOutput, &QAudioOutput::notify, this, &AudioSample::slideVolume);
+        qWarning() << "audioSink is already in use";
+        return;
     }
+
+    bytePosition=0;
+    audioSink->setVolume(1.0);
+    audioSink->start(this);
+
+    SetVolume(0);
 }
 
 void AudioSample::Stop()
 {
-    bytePosition = 0;
-    looping = false;
-    audioOutput->reset();
-    audioOutput->stop();
+    audioSink->stop();
 }
 
 qint64 AudioSample::readData(char *data, qint64 maxlen)
 {
     if (buffer->size()==0)
         return 0;
-    if (bytePosition>=buffer->size() )
+
+    slideVolume();
+
+    qint64 requiredBytes = qMin(maxlen, (buffer->size() - bytePosition) );
+    if (looping)
+        requiredBytes = maxlen;
+
+    qint64 bufferedBytes = 0;
+    while(bufferedBytes<requiredBytes)
     {
-        if (looping)
+        if (bytePosition>=buffer->size() )
             bytePosition = 0;
-        else
-            return 0;
+        qint64 chunk = qMin(maxlen, (buffer->size() - bytePosition) );
+        memcpy(data, buffer->data().constData() + bytePosition, chunk);
+        bytePosition += chunk;
+        bufferedBytes += chunk;
+
+        //qDebug() << "  --- chunk=" << chunk << " maxlen: " << maxlen
+        //         << " bytePos: " << bytePosition << " required: " << requiredBytes;
     }
 
-    const qint64 chunk = qMin(maxlen, (buffer->size() - bytePosition) );
-    if (chunk<0)
-        return 0;
-
-    memcpy(data, buffer->data().constData() + bytePosition, chunk);
-    bytePosition = bytePosition + chunk;
-    return chunk;
+    return bufferedBytes;
 }
 
 qint64 AudioSample::writeData(const char *data, qint64 len)
@@ -117,12 +111,12 @@ qint64 AudioSample::bytesAvailable() const
 void AudioSample::SetVolume(qreal vol)
 {
     volume = vol;
-    audioOutput->setNotifyInterval(1);
+    volumeSlideTick=audioSink->processedUSecs();
 }
 
 qreal AudioSample::GetVolume()
 {
-    return audioOutput->volume();
+    return audioSink->volume();
 }
 
 QString AudioSample::path()
@@ -130,12 +124,12 @@ QString AudioSample::path()
     return buffer? buffer->filePath() : "";
 }
 
-QAudioDeviceInfo AudioSample::getDevice() const
+QAudioDevice &AudioSample::getDevice()
 {
     return device;
 }
 
-void AudioSample::setDevice(const QAudioDeviceInfo &value)
+void AudioSample::setDevice(const QAudioDevice &value)
 {
     device = value;
 }
@@ -144,37 +138,55 @@ void AudioSample::extractFormatFromWav(QAudioFormat &format, WavBuffer *wav)
 {
     format.setSampleRate( wav->sampleRate() );
     format.setChannelCount( wav->channelsCount() );
-    format.setSampleSize( wav->bitDepth());
-    format.setCodec("audio/pcm");
-    format.setByteOrder(QAudioFormat::LittleEndian);
-    format.setSampleType(QAudioFormat::SignedInt);
+    format.setSampleFormat( bitsToAudioFormat(wav->bitDepth()) );
+    //format.setCodec("audio/pcm");
+    //format.setByteOrder(QAudioFormat::LittleEndian);
+    //format.setSampleType(QAudioFormat::SignedInt);
+}
+
+QAudioFormat::SampleFormat AudioSample::bitsToAudioFormat(int bits)
+{
+    if (bits == 8) return QAudioFormat::UInt8;
+    if (bits ==16) return QAudioFormat::Int16;
+    if (bits ==32) return QAudioFormat::Int32;
+    //QAudioFormat::Float
+    return QAudioFormat::Unknown;
 }
 
 void AudioSample::AudioStateChanged(QAudio::State newState)
 {
-    qDebug() << "audio state " << newState;
-    if ( (newState==QAudio::IdleState)
-         && bytePosition>=buffer->size()
-         && (!looping) )
+//    qDebug() << "audio state " << newState << " sink error: " << audioSink->error()
+//             << " bytePos: " << bytePosition << " bufferSize: " << buffer->size();
+
+    if (newState==QAudio::IdleState &&
+        bytePosition>=buffer->size() && !looping)
+        audioSink->stop();
+    if(newState==QAudio::StoppedState)
     {
-        Stop();
+        audioSink->reset();
+        audioSink->disconnect();
+        audioSink->deleteLater();
+
+        audioSink = new QAudioSink(format, this);
+        connect(audioSink, &QAudioSink::stateChanged, this, &AudioSample::AudioStateChanged);
     }
 }
 
 void AudioSample::slideVolume()
 {
-    qreal current = audioOutput->volume();
+    qint64 newTick = audioSink->processedUSecs();
+    if ((newTick-volumeSlideTick)<1000)
+        return;
+    volumeSlideTick = newTick;
+
+    qreal current = audioSink->volume();
     qreal diff = current - volume;
     if (diff>0.02)
     {
-        audioOutput->setVolume( current - 0.02);
+        audioSink->setVolume( current - 0.02);
     }
     else if (diff<-0.02)
     {
-        audioOutput->setVolume( current + 0.02);
-    }
-    else
-    {
-        audioOutput->setNotifyInterval(50);
+        audioSink->setVolume( current + 0.02);
     }
 }
