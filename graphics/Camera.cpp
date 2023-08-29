@@ -125,5 +125,5 @@ QVector3D Camera::mouseToGlobalCoords(QVector2D normalizedPos)
     float px = (normalizedPos.x() - 0.5f)*2.0f;
     float py = (normalizedPos.y() - 0.5f)*2.0f;
 
-    return (projectionMatrix*modelMatrix).inverted()*QVector3D(px, py, Near);
+    return (projectionMatrix*modelMatrix).inverted().map(QVector3D(px, py, Near));
 }

@@ -40,7 +40,7 @@ private:
     qint64      bytePosition;
     bool        looping;
     qreal       volume;
-    qint64      volumeSlideTick;
+    int         slideVolumeTimerId;
 
     void    extractFormatFromWav(QAudioFormat &format, WavBuffer* wav);
     QAudioFormat::SampleFormat bitsToAudioFormat(int bits);
@@ -48,6 +48,10 @@ private:
 private slots:
     void AudioStateChanged(QAudio::State newState);
     void slideVolume();
+
+    // QObject interface
+protected:
+    void timerEvent(QTimerEvent *event);
 };
 
 #endif // AUDIOSAMPLE_H

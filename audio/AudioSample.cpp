@@ -12,6 +12,7 @@ AudioSample::AudioSample(QObject *parent, WavBuffer *wavBuffer)
     , bytePosition(0)
     , looping(false)
     , volume(0.8)
+    , slideVolumeTimerId(0)
 {
     extractFormatFromWav( format, buffer );
     if (!device.isFormatSupported(format))
@@ -20,22 +21,28 @@ AudioSample::AudioSample(QObject *parent, WavBuffer *wavBuffer)
         format = device.preferredFormat();
     }
     open(ReadOnly);
-    audioSink = new QAudioSink(format, this);
+    audioSink = new QAudioSink(format, nullptr);
     connect(audioSink, &QAudioSink::stateChanged, this, &AudioSample::AudioStateChanged);
 }
 
 AudioSample::~AudioSample()
 {
+    if (slideVolumeTimerId!=0)
+        killTimer(slideVolumeTimerId);
     if (audioSink)
     {
+        audioSink->stop();
         audioSink->disconnect(this);
-        audioSink->deleteLater();
+        delete audioSink;//->deleteLater();
     }
     if (this->isOpen())
         close();
 }
 
-bool AudioSample::isPlaying()            { return (audioSink->state()==QAudio::ActiveState); }
+bool AudioSample::isPlaying()
+{
+    auto st = audioSink->state();
+    return (st==QAudio::ActiveState || st==QAudio::IdleState); }
 
 bool AudioSample::isStoped()             { return (audioSink->state()==QAudio::StoppedState); }
 
@@ -56,10 +63,9 @@ void AudioSample::Start()
     }
 
     bytePosition=0;
-    audioSink->setVolume(1.0);
     audioSink->start(this);
-
-    SetVolume(0);
+    audioSink->setVolume(0.02f);
+    slideVolumeTimerId = startTimer(1);
 }
 
 void AudioSample::Stop()
@@ -71,8 +77,6 @@ qint64 AudioSample::readData(char *data, qint64 maxlen)
 {
     if (buffer->size()==0)
         return 0;
-
-    slideVolume();
 
     qint64 requiredBytes = qMin(maxlen, (buffer->size() - bytePosition) );
     if (looping)
@@ -111,7 +115,8 @@ qint64 AudioSample::bytesAvailable() const
 void AudioSample::SetVolume(qreal vol)
 {
     volume = vol;
-    volumeSlideTick=audioSink->processedUSecs();
+    if (slideVolumeTimerId==0)
+        slideVolumeTimerId = startTimer(1);
 }
 
 qreal AudioSample::GetVolume()
@@ -174,19 +179,25 @@ void AudioSample::AudioStateChanged(QAudio::State newState)
 
 void AudioSample::slideVolume()
 {
-    qint64 newTick = audioSink->processedUSecs();
-    if ((newTick-volumeSlideTick)<1000)
+    if (!audioSink)
         return;
-    volumeSlideTick = newTick;
 
     qreal current = audioSink->volume();
     qreal diff = current - volume;
-    if (diff>0.02)
+    if (diff>0.1)         current -= 0.1;
+    else if (diff<-0.02)  current += 0.1;
+    else
     {
-        audioSink->setVolume( current - 0.02);
+        current = volume;
+        killTimer(slideVolumeTimerId);
+        slideVolumeTimerId=0;
     }
-    else if (diff<-0.02)
-    {
-        audioSink->setVolume( current + 0.02);
-    }
+    audioSink->setVolume( current);
+    qDebug() << " slideVolume: " << current;
+}
+
+void AudioSample::timerEvent(QTimerEvent *event)
+{
+    Q_UNUSED(event)
+    slideVolume();
 }

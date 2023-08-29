@@ -8,9 +8,7 @@ AudioManager::AudioManager()
 
 AudioManager::~AudioManager()
 {
-    for(WavBuffer* buffer : qAsConst(soundBuffers))
-        buffer->deleteLater();
-    soundBuffers.clear();
+    ClearAll();
 }
 
 AudioSample* AudioManager::PlayAndForget(QObject *parent, QString name, bool loop)
@@ -31,7 +29,7 @@ void AudioManager::RegularCleanup()
         AudioSample* audio = (*itr);
         if (audio->isStoped())
         {
-            audio->deleteLater();
+            delete audio; //->deleteLater();
             itr = playingSamples.erase(itr);
             qDebug() << "active Sounds : " << playingSamples.size();
         }
@@ -75,6 +73,8 @@ void AudioManager::Release(QString name)
 
 void AudioManager::ClearAll()
 {
+    for(auto sample : playingSamples)
+        sample->Stop();
     for(auto buffer : qAsConst(soundBuffers))
         delete buffer;
     soundBuffers.clear();
