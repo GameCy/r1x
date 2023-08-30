@@ -118,7 +118,7 @@ void MainWidget::mousePressEvent(QMouseEvent *e)
 {
     if (e->button()==Qt::LeftButton)
     {
-        QVector2D invpos(e->localPos().x(), Graphics::Screen.Height() - e->localPos().y());
+        QVector2D invpos(e->position().x(), Graphics::Screen.Height() - e->position().y());
         InputAreaManager::Instance().TapBeginHandler(123456, invpos);
 
         //QVector2D pos(e->localPos().x(), e->localPos().y());
@@ -134,7 +134,7 @@ void MainWidget::mouseMoveEvent(QMouseEvent *e)
     // for mouseMoveEvent you should use buttons method.
     if (e->buttons()==Qt::LeftButton)
     {
-        QVector2D invpos(e->localPos().x(), Graphics::Screen.Height() - e->localPos().y());
+        QVector2D invpos(e->position().x(), Graphics::Screen.Height() - e->position().y());
         InputAreaManager::Instance().TapMoveHandler(123456, invpos);
 
         //QVector2D pos(e->localPos().x(), e->localPos().y());
@@ -148,7 +148,7 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e)
 {
     if (e->button()==Qt::LeftButton)
     {
-        QVector2D invpos(e->localPos().x(), Graphics::Screen.Height() - e->localPos().y());
+        QVector2D invpos(e->position().x(), Graphics::Screen.Height() - e->position().y());
         InputAreaManager::Instance().TapEndHandler(123456, invpos);
 
         //QVector2D pos(e->localPos().x(), e->localPos().y());

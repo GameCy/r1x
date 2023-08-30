@@ -1,0 +1,78 @@
+
+include(${CMAKE_CURRENT_LIST_DIR}/../core/CMakeLists.txt)
+
+set(R1X_GRAPHICS
+    ${R1X_CORE}
+
+    ${CMAKE_CURRENT_LIST_DIR}/AngleInterpolator.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/BlinkFloat.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Graphics.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/AtlasImporter.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Camera.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/CellMap.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/DPIHelper.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/FrameRate.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Hermite.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Material.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Mesh.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Model.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/ModelManager.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/PhongShader.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Ogl.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/QuadRendererBase.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/RasterShader.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Sprite.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/SpriteMap.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Texture.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/TextureManager.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Utils.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/OBJLoader.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Vertex.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/InstanceRender.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Interpolator.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/QuadTypes.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/QuadRenderers.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/SampledCurve.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/UVRect.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/UVRectArray.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/UVAnimator.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/SampledChannel.cpp
+
+    ${CMAKE_CURRENT_LIST_DIR}/AngleInterpolator.h
+    ${CMAKE_CURRENT_LIST_DIR}/AtlasImporter.h
+    ${CMAKE_CURRENT_LIST_DIR}/BlinkFloat.h
+    ${CMAKE_CURRENT_LIST_DIR}/Camera.h
+    ${CMAKE_CURRENT_LIST_DIR}/CellMap.h
+    ${CMAKE_CURRENT_LIST_DIR}/DPIHelper.h
+    ${CMAKE_CURRENT_LIST_DIR}/FrameRate.h
+    ${CMAKE_CURRENT_LIST_DIR}/Graphics.h
+    ${CMAKE_CURRENT_LIST_DIR}/Hermite.h
+    ${CMAKE_CURRENT_LIST_DIR}/IClipper.h
+    ${CMAKE_CURRENT_LIST_DIR}/Material.h
+    ${CMAKE_CURRENT_LIST_DIR}/Mesh.h
+    ${CMAKE_CURRENT_LIST_DIR}/Model.h
+    ${CMAKE_CURRENT_LIST_DIR}/ModelManager.h
+    ${CMAKE_CURRENT_LIST_DIR}/Ogl.h
+    ${CMAKE_CURRENT_LIST_DIR}/PhongShader.h
+    ${CMAKE_CURRENT_LIST_DIR}/QuadRendererBase.h
+    ${CMAKE_CURRENT_LIST_DIR}/RasterShader.h
+    ${CMAKE_CURRENT_LIST_DIR}/Sprite.h
+    ${CMAKE_CURRENT_LIST_DIR}/SpriteMap.h
+    ${CMAKE_CURRENT_LIST_DIR}/Texture.h
+    ${CMAKE_CURRENT_LIST_DIR}/TextureManager.h
+    ${CMAKE_CURRENT_LIST_DIR}/Utils.h
+    ${CMAKE_CURRENT_LIST_DIR}/OBJLoader.h
+    ${CMAKE_CURRENT_LIST_DIR}/Vertex.h
+    ${CMAKE_CURRENT_LIST_DIR}/InstanceRenderer.h
+    ${CMAKE_CURRENT_LIST_DIR}/ViewPort.h
+    ${CMAKE_CURRENT_LIST_DIR}/Interpolator.h
+    ${CMAKE_CURRENT_LIST_DIR}/QuadTypes.h
+    ${CMAKE_CURRENT_LIST_DIR}/QuadRenderers.h
+    ${CMAKE_CURRENT_LIST_DIR}/SampledCurve.h
+    ${CMAKE_CURRENT_LIST_DIR}/UVRect.h
+    ${CMAKE_CURRENT_LIST_DIR}/UVRectArray.h
+    ${CMAKE_CURRENT_LIST_DIR}/UVAnimator.h
+    ${CMAKE_CURRENT_LIST_DIR}/SampledChannel.h
+
+    ${CMAKE_CURRENT_LIST_DIR}/shaders/shaders.qrc
+)
