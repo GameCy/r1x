@@ -21,7 +21,7 @@ private:
         QVariantMap args;
     };
 
-    typedef list<Dispatch>			DispatchList;
+    typedef std::list<Dispatch>			DispatchList;
     typedef	DispatchList::iterator	DispatchListItr;
 
     DispatchList    triggers;
