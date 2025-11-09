@@ -53,7 +53,7 @@ public:
     SmartPtr& operator=(const SmartPtr& other)
     {
         if(other.pObject)
-            other->AddRef();
+            other.pObject->AddRef();
         if(pObject)
             pObject->ReleaseRef();
         pObject = other.pObject;
