@@ -3,8 +3,6 @@
 #include "Delegates.h"
 #include "Timer.h"
 
-using namespace std;
-
 class DelegateDispatcher
 {
 public:
