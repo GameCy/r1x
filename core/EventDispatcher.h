@@ -3,9 +3,6 @@
 #include "Events.h"
 #include "Timer.h"
 
-using namespace std;
-
-
 class EventDispatcher
 {
 public:
