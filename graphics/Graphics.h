@@ -34,6 +34,12 @@ public:
             delete phongShader;
             phongShader=0;
         }
+        if (rasterShader)
+        {
+            rasterShader->Destroy();
+            delete rasterShader;
+            rasterShader=0;
+        }
 
         Model.ClearAll();
         Texture.ClearAll();
